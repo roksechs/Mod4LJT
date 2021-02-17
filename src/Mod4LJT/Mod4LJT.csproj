@@ -55,6 +55,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)..\..\ModForLJT\$(TargetFileName)"</PostBuildEvent>
+    <PostBuildEvent>copy "$(TargetPath)" "$(ProjectDir)..\..\Mod4LJT\$(TargetFileName)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
