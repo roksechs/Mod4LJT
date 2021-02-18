@@ -9,15 +9,17 @@ namespace Mod4LJT
 		{
 			GameObject mod = new GameObject("Mod4LJT");
 			UnityEngine.Object.DontDestroyOnLoad(mod);
-			this.AddBlockScript();
+			this.AddBlockScripts();
 		}
 
 
-        public void AddBlockScript()
+        public void AddBlockScripts()
         {
 			BlockBehaviour BB;
 			PrefabMaster.GetBlock(BlockType.Grabber, out BB);
 			BB.gameObject.AddComponent<GrabberFix>();
+			PrefabMaster.GetBlock(BlockType.Bomb, out BB);
+			BB.gameObject.AddComponent<BombFix>();
         }
 
 		public static void Log(string message) => Debug.Log("4LJT Log: " + message);
