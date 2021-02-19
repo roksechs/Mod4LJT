@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Mod4LJT
+namespace Mod4LJT.Blocks
 {
-    class GrabberFix : MonoBehaviour
+    class GrabberFix : AbstractBlock
     {
         Joint joint;
 
