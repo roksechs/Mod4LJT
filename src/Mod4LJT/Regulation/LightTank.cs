@@ -8,8 +8,9 @@ namespace Mod4LJT.Regulation
     class LightTank : Regulation
     {
         private static readonly LightTank instance = new LightTank();
-        new public static LightTank Instance => instance;
+        public static LightTank Instance => instance;
 
+        public override Dictionary<int, BlockRestriction> ChildBlockRestriction => this.blockRestrictions;
         public TankType tankType = TankType.LightTank;
         new public Dictionary<int, BlockRestriction> blockRestrictions;
 

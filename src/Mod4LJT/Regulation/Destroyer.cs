@@ -8,8 +8,9 @@ namespace Mod4LJT.Regulation
     class Destroyer : Regulation
     {
         private static readonly Destroyer instance = new Destroyer();
-        new public static Destroyer Instance => instance;
+        public static Destroyer Instance => instance;
 
+        public override Dictionary<int, BlockRestriction> ChildBlockRestriction => this.blockRestrictions;
         public TankType tankType = TankType.Destroyer;
         new public Dictionary<int, BlockRestriction> blockRestrictions;
 

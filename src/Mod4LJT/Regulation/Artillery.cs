@@ -15,8 +15,9 @@ namespace Mod4LJT.Regulation
         class Artillery : global::Mod4LJT.Regulation.Regulation
         {
             private static readonly Artillery instance = new Artillery();
-            new public static Artillery Instance => instance;
+            public static Artillery Instance => instance;
 
+            public override Dictionary<int, BlockRestriction> ChildBlockRestriction => this.blockRestrictions;
             public TankType tankType = TankType.Artillery;
             new public Dictionary<int, BlockRestriction> blockRestrictions;
 

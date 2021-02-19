@@ -5,12 +5,10 @@ using System.Text;
 
 namespace Mod4LJT.Regulation
 {
-    class Regulation
+    abstract class Regulation
     {
-        private static readonly Regulation instance = new Regulation();
-        public static Regulation Instance => instance;
-
         public Dictionary<int, BlockRestriction> blockRestrictions;
+        public abstract Dictionary<int, BlockRestriction> ChildBlockRestriction { get; }
 
         public Regulation()
         {
