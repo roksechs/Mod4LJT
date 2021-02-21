@@ -28,7 +28,6 @@ namespace Mod4LJT.Regulation
             { (int) TankType.Destroyer, Destroyer.Instance },
             { (int) TankType.Artillery, Mod4LJT.Regulation.Artillery.Instance },
         };
-        private Dictionary<int, int> numOfBlocks = new Dictionary<int, int>();
         bool hudToggle = true;
         bool minimise = false;
         Rect windowRect = new Rect(25f, 125f, 200f, 10f);
@@ -38,20 +37,9 @@ namespace Mod4LJT.Regulation
         public event CannonCountHandler OnCannonCountChange;
         public event ShrapnelCannonCountHandler OnShrapnelCannonCountChange;
 
-        public int TotalBlock => Machine.Active().DisplayBlockCount;
-        public TankType TankType => this._tankType;
-
         void Awake()
         {
             this.SetTankType(TankType.LightTank);
-            Events.OnBlockPlaced += this.AddBlock;
-            Events.OnBlockRemoved += this.RemoveBlock;
-            Events.OnMachineDestroyed += () =>
-            {
-                this.numOfBlocks.Clear();
-                SetTankType(this._tankType);
-            };
-            SceneManager.sceneUnloaded += (x) => { this.numOfBlocks.Clear(); };
             StartCoroutine(CheckVersion());
         }
 
@@ -66,24 +54,10 @@ namespace Mod4LJT.Regulation
             this.machine = Machine.Active();
             this._tankType = tankType;
             this.regulations.TryGetValue((int)_tankType, out this.regulation);
-            foreach(var kvp in this.regulation.ChildBlockRestriction)
-            {
-                if (!this.numOfBlocks.ContainsKey(kvp.Key))
-                {
-                    this.numOfBlocks.Add(kvp.Key, 0);
-                }
-            }
         }
 
         public void Update()
         {
-            if(StatMaster.SimulationState == SimulationState.SpectatorMode && StatMaster.isMP)
-            {
-                if(this.numOfBlocks.Count != 0)
-                {
-                    this.numOfBlocks.Clear();
-                }
-            }
             if (InputManager.ToggleHUDKey())
             {
                 this.hudToggle = !this.hudToggle;
@@ -133,7 +107,7 @@ namespace Mod4LJT.Regulation
             GUILayout.EndHorizontal();
             foreach (var kvp in this.regulation.ChildBlockRestriction)
             {
-                int num2 = this.numOfBlocks[kvp.Key];
+                int num2 = this.GetNumOfBlock(kvp.Key);
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(((BlockType)kvp.Key).ToString(), GUILayout.Width(150f));
                 GUILayout.Label(kvp.Value.minNum.ToString(), GUILayout.Width(100f));
@@ -172,48 +146,16 @@ namespace Mod4LJT.Regulation
             GUILayout.EndHorizontal();
         }
 
-        public void AddBlock(Block block)
+        public int GetNumOfBlock(int blockId)
         {
-            int blockType = (int) block.Prefab.InternalObject.Type;
-            if(this.numOfBlocks.ContainsKey(blockType))
+            int index = 0;
+            this.machine.BuildingBlocks.ForEach(BB => 
             {
-                this.numOfBlocks[blockType]++;
-            }
+                if (BB.BlockID == blockId)
+                    index++;
+            });
+            return index;
         }
-
-        public void RemoveBlock(Block block)
-        {
-            int blockType = (int)block.Prefab.InternalObject.Type;
-            if (this.numOfBlocks.ContainsKey(blockType))
-            {
-                this.numOfBlocks[blockType]--;
-            }
-        }
-
-        //public void Update()
-        //{
-        //    if (StatMaster.isMP)
-        //    {
-        //        if (this.player == null)
-        //        {
-        //            this.player = Player.From(this.machine.PlayerID).InternalObject;
-        //        }
-        //        if (OptionsMaster.votingEnabled)
-        //        {
-        //            if (!this.hasCompliance && player.voteState)
-        //            {
-        //                player.voteState = false;
-        //                NetworkAddPiece.Instance.UpdateVoting();
-        //            }
-        //        }
-        //        if (this.votingPlayerView == null)
-        //            this.votingPlayerView = GameObject.Find("HUD/Top/AlignTopRightNoFold/PLAYERVIEWER").transform.GetChild(this.machine.PlayerID + 1).GetComponent<VotingPlayerView>();
-        //        if (this.votingPlayerView.voteState == VotingPlayerView.State.VoteToStart && !this.hasCompliance)
-        //        {
-        //            this.votingPlayerView.ButtonClick();
-        //        }
-        //    }
-        //}
 
         public override string Name => "MachineInspector";
     }
