@@ -50,7 +50,7 @@ namespace Mod4LJT.Regulation
                 this.numOfBlocks.Clear();
                 SetTankType(this._tankType);
             };
-            SceneManager.sceneUnloaded += (x) => this.numOfBlocks.Clear();
+            SceneManager.sceneUnloaded += (x) => { this.numOfBlocks.Clear(); };
         }
 
         public void SetTankType(TankType tankType)
