@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Mod4LJT.Blocks
 {
-    class GrabberFix : AbstractBlock
+    class GrabberFix : MonoBehaviour
     {
         Joint joint;
 

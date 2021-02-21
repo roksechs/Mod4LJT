@@ -11,7 +11,7 @@ namespace Mod4LJT
     {
         BlockMapper blockMapper;
         BlockBehaviour block;
-        bool refresh;
+        internal bool refresh;
         MachineInspector machineInspector = MachineInspector.Instance;
         int cannonCount;
         int shrapnelCannonCount;
@@ -20,7 +20,8 @@ namespace Mod4LJT
         {
             this.refresh = true;
             BlockMapper.onMapperClose += () => { this.refresh = true; Mod.Log("Mapper closed"); };
-            machineInspector.OnClick += x => this.refresh = true;
+            //machineInspector.OnClick += x => this.refresh = true;
+
             machineInspector.OnCannonCountChange += x =>
             {
                 this.cannonCount = x;

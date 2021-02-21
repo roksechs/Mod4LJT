@@ -46,9 +46,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blocks\BombFix.cs" />
-    <Compile Include="Blocks\AbstractBlock.cs" />
-    <Compile Include="Blocks\TankTypeRegister.cs" />
     <Compile Include="BoundResetter.cs" />
     <Compile Include="Blocks\GrabberFix.cs" />
     <Compile Include="Regulation\BlockRestriction.cs" />

@@ -8,7 +8,7 @@ using Modding.Blocks;
 
 namespace Mod4LJT.Regulation
 {
-    delegate void ClickEventHandler(int index);
+    //delegate void ClickEventHandler(int index);
     delegate void CannonCountHandler(int count);
     delegate void ShrapnelCannonCountHandler(int count);
 
@@ -30,10 +30,9 @@ namespace Mod4LJT.Regulation
         bool hudToggle = true;
         bool minimise = false;
         Rect windowRect = new Rect(25f, 125f, 200f, 10f);
-        int typeInt = 0;
         int cannonCount = 0;
         int shrapnelCannonCount = 0;
-        public event ClickEventHandler OnClick;
+        //public event ClickEventHandler OnClick;
         public event CannonCountHandler OnCannonCountChange;
         public event ShrapnelCannonCountHandler OnShrapnelCannonCountChange;
 
@@ -50,8 +49,7 @@ namespace Mod4LJT.Regulation
         {
             this.machine = Machine.Active();
             this._tankType = tankType;
-            this.typeInt = (int)tankType;
-            this.regulations.TryGetValue((int)this._tankType, out this.regulation);
+            this.regulations.TryGetValue((int)tankType, out this.regulation);
             foreach(var kvp in this.regulation.ChildBlockRestriction)
             {
                 if (!this.numOfBlocks.ContainsKey(kvp.Key))
@@ -98,22 +96,16 @@ namespace Mod4LJT.Regulation
         public void RegulationLabels()
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Tank Type: " + this._tankType.ToString());
-            GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            int num1 = GUILayout.Toolbar(typeInt, Enum.GetNames(typeof(TankType)));
-            if(this.typeInt != num1)
-            {
-                this.typeInt = num1;
-                this.OnClick(this.typeInt);
-            }
+            GUILayout.Label("Tank Type", GUILayout.Width(150f));
+            GUILayout.Label(this._tankType.ToString(), GUILayout.Width(100f));
+            GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.Space(15f);
             GUILayout.BeginHorizontal();
             GUILayout.Label("Block", GUILayout.Width(150f));
-            GUILayout.Label("MinCount", GUILayout.Width(100f));
-            GUILayout.Label("MaxCount", GUILayout.Width(100f));
-            GUILayout.Label("CurrentCount", GUILayout.Width(100f));
+            GUILayout.Label("Minimum", GUILayout.Width(100f));
+            GUILayout.Label("Maximum", GUILayout.Width(100f));
+            GUILayout.Label("Current", GUILayout.Width(100f));
             GUILayout.Label("Judgement", GUILayout.Width(100f));
             GUILayout.EndHorizontal();
             foreach (var kvp in this.regulation.ChildBlockRestriction)
