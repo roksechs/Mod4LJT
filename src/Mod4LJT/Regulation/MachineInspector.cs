@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Modding;
 using Modding.Blocks;
 
@@ -49,6 +50,7 @@ namespace Mod4LJT.Regulation
                 this.numOfBlocks.Clear();
                 SetTankType(this._tankType);
             };
+            SceneManager.sceneUnloaded += (x) => this.numOfBlocks.Clear();
         }
 
         public void SetTankType(TankType tankType)
@@ -67,6 +69,14 @@ namespace Mod4LJT.Regulation
 
         public void Update()
         {
+            if(StatMaster.SimulationState == SimulationState.SpectatorMode && StatMaster.isMP)
+            {
+                if(this.numOfBlocks.Count != 0)
+                {
+                    Mod.Log("Switching to spectator");
+                    this.numOfBlocks.Clear();
+                }
+            }
             if (InputManager.ToggleHUDKey())
             {
                 this.hudToggle = !this.hudToggle;
@@ -77,7 +87,7 @@ namespace Mod4LJT.Regulation
 
         public void OnGUI()
         {
-            if (StatMaster.SimulationState >= SimulationState.GlobalSimulation || StatMaster.inMenu || StatMaster.isMainMenu) return;
+            if (StatMaster.SimulationState >= SimulationState.GlobalSimulation || StatMaster.inMenu || StatMaster.isMainMenu || (StatMaster.SimulationState == SimulationState.SpectatorMode && StatMaster.isMP)) return;
             if (hudToggle)
             {
                 this.hasCompliance = true;
