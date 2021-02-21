@@ -43,6 +43,11 @@ namespace Mod4LJT.Regulation
         {
             Events.OnBlockPlaced += this.AddBlock;
             Events.OnBlockRemoved += this.RemoveBlock;
+            Events.OnMachineDestroyed += () =>
+            {
+                this.numOfBlocks.Clear();
+                SetTankType(this._tankType);
+            };
         }
 
         public void SetTankType(TankType tankType)
