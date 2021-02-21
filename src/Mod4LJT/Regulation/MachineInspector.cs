@@ -41,6 +41,7 @@ namespace Mod4LJT.Regulation
 
         void Awake()
         {
+            this.SetTankType(TankType.LightTank);
             Events.OnBlockPlaced += this.AddBlock;
             Events.OnBlockRemoved += this.RemoveBlock;
             Events.OnMachineDestroyed += () =>
@@ -54,7 +55,7 @@ namespace Mod4LJT.Regulation
         {
             this.machine = Machine.Active();
             this._tankType = tankType;
-            this.regulations.TryGetValue((int)tankType, out this.regulation);
+            this.regulations.TryGetValue((int)_tankType, out this.regulation);
             foreach(var kvp in this.regulation.ChildBlockRestriction)
             {
                 if (!this.numOfBlocks.ContainsKey(kvp.Key))

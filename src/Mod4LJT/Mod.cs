@@ -37,6 +37,7 @@ namespace Mod4LJT
 					{
 						MachineInspector.Instance.SetTankType((TankType)x);
 						BoundResetter.Instance.refresh = true;
+						Mod.Log("SetTankType");
 					};
 					//MachineInspector.Instance.OnClick += x => 
 					//{
