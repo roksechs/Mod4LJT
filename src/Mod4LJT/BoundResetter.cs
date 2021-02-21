@@ -19,9 +19,6 @@ namespace Mod4LJT
         public void Start()
         {
             this.refresh = true;
-            BlockMapper.onMapperClose += () => { this.refresh = true; Mod.Log("Mapper closed"); };
-            //machineInspector.OnClick += x => this.refresh = true;
-
             machineInspector.OnCannonCountChange += x =>
             {
                 this.cannonCount = x;

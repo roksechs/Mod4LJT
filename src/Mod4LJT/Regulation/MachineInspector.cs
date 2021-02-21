@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,6 +52,13 @@ namespace Mod4LJT.Regulation
                 SetTankType(this._tankType);
             };
             SceneManager.sceneUnloaded += (x) => { this.numOfBlocks.Clear(); };
+            StartCoroutine(CheckVersion());
+        }
+
+        private IEnumerator CheckVersion()
+        {
+            yield return new WaitForSeconds(1f);
+            Mod.Log("version " + Mods.GetVersion(new Guid("4713d96a-ce6c-4556-8bf4-7dc838b52973")));
         }
 
         public void SetTankType(TankType tankType)
@@ -73,7 +81,6 @@ namespace Mod4LJT.Regulation
             {
                 if(this.numOfBlocks.Count != 0)
                 {
-                    Mod.Log("Switching to spectator");
                     this.numOfBlocks.Clear();
                 }
             }

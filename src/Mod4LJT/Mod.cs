@@ -24,10 +24,10 @@ namespace Mod4LJT
 			UnityEngine.Object.DontDestroyOnLoad(machineInspector);
 			LightTank lightTank = new LightTank();
 			Events.OnBlockInit += this.AddBlockScript;
+
 		}
 
-
-        public void AddBlockScript(Block block)
+		public void AddBlockScript(Block block)
         {
             switch (block.Prefab.InternalObject.Type)
             {
@@ -37,15 +37,7 @@ namespace Mod4LJT
 					{
 						MachineInspector.Instance.SetTankType((TankType)x);
 						BoundResetter.Instance.refresh = true;
-						Mod.Log("SetTankType");
 					};
-					//MachineInspector.Instance.OnClick += x => 
-					//{
-					//	tankTypeMenu.SetValue(x);
-					//	tankTypeMenu.ApplyValue();
-					//	BlockMapper.Open(block.InternalObject);
-					//	BlockMapper.OnEditField(BlockMapper.CurrentInstance.Current, tankTypeMenu);
-					//};
 					break;
 				case BlockType.Grabber:
 					block.GameObject.AddComponent<GrabberFix>();
