@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Mod4LJT.Regulation
 {
-    class HeavyTank : Regulation
+    class HeavyTank : CommonRegulation
     {
+        public override int MaxBlockCount => 251;
         private static readonly HeavyTank instance = new HeavyTank();
         public static HeavyTank Instance => instance;
 
@@ -22,7 +23,7 @@ namespace Mod4LJT.Regulation
                 { (int) BlockType.Flamethrower,  new BlockRestriction(0, 2)},
                 { (int) BlockType.Crossbow,  new BlockRestriction(0, 2)},
                 { (int) BlockType.Cannon,  new BlockRestriction(0, 4, new float[]{ 10f, 7f, 5f, 5f })},
-                { (int) BlockType.ShrapnelCannon, new BlockRestriction(0, 4, 6) },
+                { (int) BlockType.ShrapnelCannon, new BlockRestriction(0, 4, 10f) },
             };
             foreach (var kvp in base.blockRestrictions)
             {

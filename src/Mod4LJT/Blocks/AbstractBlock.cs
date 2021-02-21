@@ -10,7 +10,7 @@ namespace Mod4LJT.Blocks
     {
         public BlockBehaviour BB;
 
-        void Awake()
+        internal virtual void Awake()
         {
             this.BB = this.GetComponent<BlockBehaviour>();
         }

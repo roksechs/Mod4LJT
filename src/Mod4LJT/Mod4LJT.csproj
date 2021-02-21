@@ -56,7 +56,7 @@
     <Compile Include="Regulation\Destroyer.cs" />
     <Compile Include="Regulation\HeavyTank.cs" />
     <Compile Include="Regulation\MediumTank.cs" />
-    <Compile Include="Regulation\Regulation.cs" />
+    <Compile Include="Regulation\CommonRegulation.cs" />
     <Compile Include="Regulation\LightTank.cs" />
     <Compile Include="Regulation\TankType.cs" />
     <Compile Include="Regulation\MachineInspector.cs" />

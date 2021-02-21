@@ -5,15 +5,13 @@ using System.Text;
 
 namespace Mod4LJT.Regulation
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     namespace Mod4LJT.Regulation
     {
-        class Artillery : global::Mod4LJT.Regulation.Regulation
+        class Artillery : CommonRegulation
         {
+            public override int MaxBlockCount => 251;
             private static readonly Artillery instance = new Artillery();
             public static Artillery Instance => instance;
 
@@ -25,7 +23,7 @@ namespace Mod4LJT.Regulation
             {
                 this.blockRestrictions = new Dictionary<int, BlockRestriction>()
             {
-                { (int) BlockType.Bomb,  new BlockRestriction(0, int.MaxValue)},
+                { (int) BlockType.Bomb,  new BlockRestriction(0, 251)},
             };
                 foreach (var kvp in base.blockRestrictions)
                 {

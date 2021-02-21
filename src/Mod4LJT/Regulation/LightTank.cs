@@ -5,8 +5,9 @@ using System.Text;
 
 namespace Mod4LJT.Regulation
 {
-    class LightTank : Regulation
+    class LightTank : CommonRegulation
     {
+        public override int MaxBlockCount => 251;
         private static readonly LightTank instance = new LightTank();
         public static LightTank Instance => instance;
 
@@ -18,13 +19,15 @@ namespace Mod4LJT.Regulation
         {
             this.blockRestrictions = new Dictionary<int, BlockRestriction>()
             {
-                { (int) BlockType.Propeller,  new BlockRestriction(10, int.MaxValue)},
-                { (int) BlockType.SmallPropeller,  new BlockRestriction(10, int.MaxValue)},
+                { (int) BlockType.Propeller,  new BlockRestriction(10, 251)},
+                { (int) BlockType.SmallPropeller,  new BlockRestriction(10, 251)},
                 { (int) BlockType.Log,  new BlockRestriction(0, 10)},
                 { (int) BlockType.Flamethrower,  new BlockRestriction(0, 1)},
                 { (int) BlockType.Crossbow,  new BlockRestriction(0, 1)},
                 { (int) BlockType.Cannon,  new BlockRestriction(0, 2, new float[]{ 7f, 5f })},
-                { (int) BlockType.CogMediumPowered,  new BlockRestriction(0, int.MaxValue, 4)},
+                { (int) BlockType.ShrapnelCannon,  new BlockRestriction(0, 2, 7f)},
+                { (int) BlockType.WaterCannon,  new BlockRestriction(0, 8)},
+                { (int) BlockType.CogMediumPowered,  new BlockRestriction(0, 251, 4f)},
             };
             foreach(var kvp in base.blockRestrictions)
             {

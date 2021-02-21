@@ -30,6 +30,7 @@ namespace Mod4LJT.Regulation
             this.minNum = minNum;
             this.maxNum = maxNum;
             this.maxPowers = maxPowers;
+            Mod.Log((this.maxPowers != null).ToString());
         }
     }
 }
