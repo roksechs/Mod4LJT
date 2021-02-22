@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Modding;
-using Modding.Blocks;
 
 namespace Mod4LJT.Regulation
 {
@@ -172,7 +168,17 @@ namespace Mod4LJT.Regulation
             this.machine.BuildingBlocks.ForEach(BB => 
             {
                 if (BB.BlockID == blockId)
-                    index++;
+                {
+                    if (blockId == (int)BlockType.Rocket)
+                    {
+                        if ((BB as TimedRocket).PowerSlider.Value > 0.5f)
+                            index++;
+                    }
+                    else
+                    {
+                        index++;
+                    }
+                }
             });
             return index;
         }
