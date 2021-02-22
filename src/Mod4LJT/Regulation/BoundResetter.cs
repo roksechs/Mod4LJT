@@ -1,10 +1,8 @@
 ﻿using Modding;
 using Selectors;
 using System;
-using UnityEngine;
-using Mod4LJT.Regulation;
 
-namespace Mod4LJT
+namespace Mod4LJT.Regulation
 {
 
     class BoundResetter : SingleInstance<BoundResetter>

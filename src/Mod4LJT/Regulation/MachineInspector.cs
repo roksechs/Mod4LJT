@@ -107,30 +107,50 @@ namespace Mod4LJT.Regulation
             GUILayout.EndHorizontal();
             foreach (var kvp in this.regulation.ChildBlockRestriction)
             {
-                int num2 = this.GetNumOfBlock(kvp.Key);
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(((BlockType)kvp.Key).ToString(), GUILayout.Width(150f));
-                GUILayout.Label(kvp.Value.minNum.ToString(), GUILayout.Width(100f));
-                GUILayout.Label(kvp.Value.maxNum.ToString(), GUILayout.Width(100f));
-                GUILayout.Label(num2.ToString(), GUILayout.Width(100f));
-                bool flag1 = num2 >= kvp.Value.minNum && num2 <= kvp.Value.maxNum;
-                this.hasCompliance &= flag1;
-                GUILayout.Label(flag1 ? "OK" : "NO" , GUILayout.Width(100f));
-                GUILayout.EndHorizontal();
-                if(kvp.Key == (int)BlockType.Cannon)
+                if(kvp.Key == (int)BlockType.Propeller)
                 {
-                    if(this.cannonCount != num2)
-                    {
-                        this.cannonCount = num2;
-                        this.OnCannonCountChange(this.cannonCount);
-                    }
+                    int num3 = this.GetNumOfBlock((int)BlockType.Propeller) + this.GetNumOfBlock((int)BlockType.SmallPropeller);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label((ReferenceMaster.TranslateBlockName((BlockType)kvp.Key)), GUILayout.Width(150f));
+                    GUILayout.Label(kvp.Value.minNum.ToString(), GUILayout.Width(100f));
+                    GUILayout.Label(kvp.Value.maxNum.ToString(), GUILayout.Width(100f));
+                    GUILayout.Label(num3.ToString(), GUILayout.Width(100f));
+                    bool flag3 = num3 >= kvp.Value.minNum && num3 <= kvp.Value.maxNum;
+                    this.hasCompliance &= flag3;
+                    GUILayout.Label(flag3 ? "OK" : "NO", GUILayout.Width(100f));
+                    GUILayout.EndHorizontal();
                 }
-                else if (kvp.Key == (int)BlockType.ShrapnelCannon)
+                else if(kvp.Key == (int)BlockType.SmallPropeller || kvp.Key == (int)BlockType.BuildEdge || kvp.Key == (int)BlockType.BuildNode)
                 {
-                    if (this.shrapnelCannonCount != num2)
+                    continue;
+                }
+                else
+                {
+                    int num2 = this.GetNumOfBlock(kvp.Key);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label((ReferenceMaster.TranslateBlockName((BlockType)kvp.Key)), GUILayout.Width(150f));
+                    GUILayout.Label(kvp.Value.minNum.ToString(), GUILayout.Width(100f));
+                    GUILayout.Label(kvp.Value.maxNum.ToString(), GUILayout.Width(100f));
+                    GUILayout.Label(num2.ToString(), GUILayout.Width(100f));
+                    bool flag1 = num2 >= kvp.Value.minNum && num2 <= kvp.Value.maxNum;
+                    this.hasCompliance &= flag1;
+                    GUILayout.Label(flag1 ? "OK" : "NO", GUILayout.Width(100f));
+                    GUILayout.EndHorizontal();
+                    if (kvp.Key == (int)BlockType.Cannon)
                     {
-                        this.shrapnelCannonCount = num2;
-                        this.OnShrapnelCannonCountChange(this.shrapnelCannonCount);
+                        if (this.cannonCount != num2)
+                        {
+                            this.cannonCount = num2;
+                            this.OnCannonCountChange(this.cannonCount);
+                        }
+                    }
+                    else if (kvp.Key == (int)BlockType.ShrapnelCannon)
+                    {
+                        if (this.shrapnelCannonCount != num2)
+                        {
+                            this.shrapnelCannonCount = num2;
+                            this.OnShrapnelCannonCountChange(this.shrapnelCannonCount);
+                        }
                     }
                 }
             }
