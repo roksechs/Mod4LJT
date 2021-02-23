@@ -57,7 +57,10 @@ namespace Mod4LJT.Regulation
         public void SetTankType(TankType tankType)
         {
             this.machine = Machine.Active();
-            Mod.Log(machine.PlayerID.ToString());
+            if(machine.PlayerID != null)
+            {
+                Mod.Log(machine.PlayerID.ToString());
+            }
             this._tankType = tankType;
             //this._tankTypeInt = (int)tankType;
             this.regulations.TryGetValue((int)_tankType, out this.regulation);
