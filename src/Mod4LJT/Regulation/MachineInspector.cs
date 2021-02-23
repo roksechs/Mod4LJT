@@ -6,7 +6,7 @@ using Modding;
 
 namespace Mod4LJT.Regulation
 {
-    //delegate void ClickEventHandler(int index);
+    //delegate void TypeChangeHandler(int index);
     delegate void CannonCountHandler(int count);
     delegate void ShrapnelCannonCountHandler(int count);
 
@@ -24,12 +24,13 @@ namespace Mod4LJT.Regulation
             { (int) TankType.Destroyer, Destroyer.Instance },
             { (int) TankType.Artillery, Mod4LJT.Regulation.Artillery.Instance },
         };
+        //int _tankTypeInt = 0;
         bool hudToggle = true;
         bool minimise = false;
         Rect windowRect = new Rect(25f, 125f, 200f, 10f);
         int cannonCount = 0;
         int shrapnelCannonCount = 0;
-        //public event ClickEventHandler OnClick;
+        //public event TypeChangeHandler OnTypeChangeFromGUI;
         public event CannonCountHandler OnCannonCountChange;
         public event ShrapnelCannonCountHandler OnShrapnelCannonCountChange;
 
@@ -49,7 +50,9 @@ namespace Mod4LJT.Regulation
         {
             this.machine = Machine.Active();
             this._tankType = tankType;
+            //this._tankTypeInt = (int)tankType;
             this.regulations.TryGetValue((int)_tankType, out this.regulation);
+            BoundResetter.Instance.refresh = true;
         }
 
         public void Update()
@@ -93,6 +96,11 @@ namespace Mod4LJT.Regulation
             GUILayout.Label(this._tankType.ToString(), GUILayout.Width(100f));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+            //GUILayout.BeginHorizontal();
+            //GUILayout.Toolbar(this._tankTypeInt, Enum.GetNames(typeof(TankType)));
+            //if (this._tankTypeInt != (int)this._tankType)
+            //    this.OnTypeChangeFromGUI(this._tankTypeInt);
+            //GUILayout.EndHorizontal();
             GUILayout.Space(15f);
             GUILayout.BeginHorizontal();
             GUILayout.Label("Block", GUILayout.Width(150f));
