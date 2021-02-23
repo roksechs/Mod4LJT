@@ -36,8 +36,6 @@ namespace Mod4LJT.Regulation
                 this.blockMapper = BlockMapper.CurrentInstance;
                 this.block = null;
                 this.refresh = true;
-                Mod.Log("Current Mapper" + BlockMapper.CurrentInstance.name);
-                Mod.Log("this.blockMapper" + this.blockMapper.name);
             }
             if (!this.refresh) return;
             if (this.blockMapper.IsBlock)
