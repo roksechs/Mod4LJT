@@ -1,0 +1,22 @@
+Key,English,Japanese
+TankType,TANK TYPE,車種
+LightTank,LIGHT TANK,軽戦車
+MediumTank,MEDIUM TANK,中戦車
+HeavyTank,HEAVY TANK,重戦車
+Destroyer,DESTROYER,駆逐戦車
+Artillery,ARTILLERLY,自走榴弾砲
+Minimum,MIN,最小
+Maximum,MAX,最大
+Current,CURRENT,現在
+Judgement,JUDGEMENT,判定
+Block,BLOCK,ブロック
+Machine(All),MACHINE (ALL),マシン（すべて）
+Minimise,MINIMISE,最小化
+UF,USAGE&FUNCTION,使い方＆機能
+UF1,Choose Tank Type at the menu of Starting Block.,コアブロックの設定画面から車種を選択してください。
+UF2,Then you can see min max and current number of blocks which restricted for the tank type in the ragulation.,車種に応じて、レギュレーションで制限されているブロックの最小数、最大数、現在の数を表示します。
+UF3,And this mod automatically set max value of cannon and others for the tank type.,砲などの最大値を車種に合わせて自動的に変更します。
+UF4,Grabber's root joint breakForce is reset to 20000 as well as breakTorque.,グラバーの根本接続の強さは20000に設定されています。
+UF5,Please report to Rok in official discord when you meet some bug.,不具合等ございましたら公式DicordのRokまで御報告の方よろしくお願いします。
+Link,Regulation (external link),レギュレーション（外部リンク）
+Title,LJT Regulation,LJT　レギュレーション

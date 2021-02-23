@@ -39,6 +39,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
@@ -46,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Localisation\LocalisationFile.cs" />
     <Compile Include="Regulation\BoundResetter.cs" />
     <Compile Include="Blocks\GrabberFix.cs" />
     <Compile Include="Regulation\BlockRestriction.cs" />

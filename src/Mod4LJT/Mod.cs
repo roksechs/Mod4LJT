@@ -5,6 +5,7 @@ using Modding;
 using Modding.Blocks;
 using Mod4LJT.Blocks;
 using Mod4LJT.Regulation;
+using Mod4LJT.Localisation;
 
 namespace Mod4LJT
 {
@@ -24,7 +25,7 @@ namespace Mod4LJT
             UnityEngine.Object.DontDestroyOnLoad(machineInspector);
             LightTank lightTank = new LightTank();
             Events.OnBlockInit += this.AddBlockScript;
-
+            LocalisationFile.ReadLocalisationFile();
         }
 
         public void AddBlockScript(Block block)
