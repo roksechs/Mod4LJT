@@ -36,12 +36,11 @@ namespace Mod4LJT
                     MMenu tankTypeMenu = block.InternalObject.AddMenu(new MMenu("tankTypeMenu", 0, Enum.GetNames(typeof(TankType)).ToList(), false));
                     tankTypeMenu.ValueChanged += x =>
                     {
-                        MachineInspector.Instance.SetTankType((TankType)x);
+                        if(block.Machine.InternalObject == Machine.Active())
+                        {
+                            MachineInspector.Instance.SetTankType((TankType)x);
+                        }
                     };
-                    //MachineInspector.Instance.OnTypeChangeFromGUI += index =>
-                    //{
-                    //    tankTypeMenu.Value = index;
-                    //};
                     break;
                 case BlockType.Grabber:
                     block.GameObject.AddComponent<GrabberFix>();
