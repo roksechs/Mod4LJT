@@ -15,7 +15,6 @@ namespace Mod4LJT
         public static Mod Instance;
         BoundResetter resetbound;
         MachineInspector machineInspector;
-        LJTReferenceMaster referenceMaster;
         LJTPlayerLabelManager namePlateManager;
         BlockScriptManager blockScriptManager;
 
@@ -28,8 +27,6 @@ namespace Mod4LJT
             UnityEngine.Object.DontDestroyOnLoad(resetbound);
             this.machineInspector = MachineInspector.Instance;
             UnityEngine.Object.DontDestroyOnLoad(machineInspector);
-            this.referenceMaster = LJTReferenceMaster.Instance;
-            UnityEngine.Object.DontDestroyOnLoad(referenceMaster);
             this.namePlateManager = LJTPlayerLabelManager.Instance;
             UnityEngine.Object.DontDestroyOnLoad(namePlateManager);
             this.blockScriptManager = BlockScriptManager.Instance;

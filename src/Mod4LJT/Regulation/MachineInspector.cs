@@ -75,15 +75,15 @@ namespace Mod4LJT.Regulation
             {
                 case "English":
                 default:
-                    this.languageInt = 1;
+                    LocalisationFile.languageInt = 1;
                     break;
                 case "Japanese":
-                    this.languageInt = 2;
+                    LocalisationFile.languageInt = 2;
                     break;
             }
             for (int i = 0; i < 5; i++)
             {
-                this.translatedNames[i] = LocalisationFile.GetTranslatedString(typeNames[i], this.languageInt);
+                this.translatedNames[i] = LocalisationFile.GetTranslatedString(typeNames[i]);
             }
         }
 
@@ -112,21 +112,22 @@ namespace Mod4LJT.Regulation
             if (hudToggle)
             {
                 this.hasCompliance = true;
-                this.windowRect = GUILayout.Window(32575339, this.windowRect, new GUI.WindowFunction(this.Mapper), LocalisationFile.GetTranslatedString("Title", this.languageInt));
+                this.windowRect = GUILayout.Window(32575339, this.windowRect, new GUI.WindowFunction(this.Mapper), LocalisationFile.GetTranslatedString("Title"));
                 if (this.uf)
                 {
-                    this.windowRect2 = GUILayout.Window(32575340, this.windowRect2, new GUI.WindowFunction(this.UsageAndFunction), LocalisationFile.GetTranslatedString("UF", this.languageInt));
+                    this.windowRect2 = GUILayout.Window(32575340, this.windowRect2, new GUI.WindowFunction(this.UsageAndFunction), LocalisationFile.GetTranslatedString("UF"));
                 }
             }
         }
 
         public void UsageAndFunction(int windowId)
         {
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF1", this.languageInt));
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF2", this.languageInt));
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF3", this.languageInt));
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF4", this.languageInt));
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF5", this.languageInt));
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF1"));
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF2"));
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF3"));
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF4"));
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF5"));
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF6"));
             GUI.DragWindow();
         }
 
@@ -139,11 +140,11 @@ namespace Mod4LJT.Regulation
             GUILayout.FlexibleSpace();
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
-            this.openURL = GUILayout.Button(LocalisationFile.GetTranslatedString("Link", this.languageInt));
+            this.openURL = GUILayout.Button(LocalisationFile.GetTranslatedString("Link"));
             GUILayout.FlexibleSpace();
-            this.uf = GUILayout.Toggle(this.uf, LocalisationFile.GetTranslatedString("UF", this.languageInt));
+            this.uf = GUILayout.Toggle(this.uf, LocalisationFile.GetTranslatedString("UF"));
             GUILayout.Space(15f);
-            this.minimise = GUILayout.Toggle(this.minimise, LocalisationFile.GetTranslatedString("Minimise", this.languageInt));
+            this.minimise = GUILayout.Toggle(this.minimise, LocalisationFile.GetTranslatedString("Minimise"));
             GUILayout.EndHorizontal();
             GUI.DragWindow(new Rect(0, 0, 10000f, 20f));
         }
@@ -152,22 +153,17 @@ namespace Mod4LJT.Regulation
         {
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("TankType", this.languageInt), GUILayout.Width(150f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString(this._tankType.ToString(), this.languageInt));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("TankType"), GUILayout.Width(150f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString(this._tankType.ToString()));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            //GUILayout.BeginHorizontal();
-            //this._tankTypeInt = GUILayout.Toolbar(this._tankTypeInt, translatedNames);
-            //if (this._tankTypeInt != (int)this._tankType)
-            //    this.OnTypeChangeFromGUI(this._tankTypeInt);
-            //GUILayout.EndHorizontal();
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Block", this.languageInt), GUILayout.Width(150f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Minimum", this.languageInt), GUILayout.Width(100f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Maximum", this.languageInt), GUILayout.Width(100f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Current", this.languageInt), GUILayout.Width(100f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Judgement", this.languageInt), GUILayout.Width(100f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Block"), GUILayout.Width(150f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Minimum"), GUILayout.Width(100f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Maximum"), GUILayout.Width(100f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Current"), GUILayout.Width(100f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Judgement"), GUILayout.Width(100f));
             GUILayout.EndHorizontal();
             foreach (var kvp in this.regulation.ChildBlockRestriction)
             {
@@ -224,7 +220,7 @@ namespace Mod4LJT.Regulation
             }
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("WeakPointBomb", this.languageInt), GUILayout.Width(150f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("WeakPointBomb"), GUILayout.Width(150f));
             GUILayout.Label(1.ToString(), GUILayout.Width(100f));
             GUILayout.Label(1.ToString(), GUILayout.Width(100f));
             GUILayout.Label(this.weakPointCount.ToString(), GUILayout.Width(100f));
@@ -234,7 +230,7 @@ namespace Mod4LJT.Regulation
             GUILayout.EndHorizontal();
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Machine(All)", this.languageInt), GUILayout.Width(150f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Machine(All)"), GUILayout.Width(150f));
             GUILayout.Label(0.ToString(), GUILayout.Width(100f));
             GUILayout.Label(this.regulation.MaxBlockCount.ToString(), GUILayout.Width(100f));
             GUILayout.Label(this.machine.DisplayBlockCount.ToString(), GUILayout.Width(100f));

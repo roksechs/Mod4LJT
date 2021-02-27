@@ -11,6 +11,7 @@ namespace Mod4LJT.Localisation
         static readonly string locatisationFilePath = "Resources/Mod4LJTLocalizastion.csv";
         static string[] lines;
         public static string[] languages;
+        public static int languageInt;
         public static Dictionary<string, string[]> localisationDic = new Dictionary<string, string[]>();
 
         public static void ReadLocalisationFile()
@@ -25,7 +26,7 @@ namespace Mod4LJT.Localisation
             }
         }
 
-        public static string GetTranslatedString(string key, int languageInt)
+        public static string GetTranslatedString(string key)
         {
             localisationDic.TryGetValue(key, out string[] strs);
             return strs[languageInt];

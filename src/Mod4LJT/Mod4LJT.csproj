@@ -52,7 +52,6 @@
     <Compile Include="Blocks\BlockScriptManager.cs" />
     <Compile Include="Blocks\WeakPointBomb.cs" />
     <Compile Include="LJTPlayerLabelManager.cs" />
-    <Compile Include="LJTReferenceMaster.cs" />
     <Compile Include="Localisation\LocalisationFile.cs" />
     <Compile Include="Regulation\BoundResetter.cs" />
     <Compile Include="Blocks\GrabberFix.cs" />
