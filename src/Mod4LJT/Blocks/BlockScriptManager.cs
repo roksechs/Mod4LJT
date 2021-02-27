@@ -10,47 +10,44 @@ namespace Mod4LJT.Blocks
     {
         public void AddBlockScript(Block block)
         {
-            if (!StatMaster.levelSimulating)
+            switch (block.Prefab.InternalObject.Type)
             {
-                switch (block.Prefab.InternalObject.Type)
-                {
-                    case BlockType.StartingBlock:
-                        this.AddHealthController(block);
-                        this.AddTankTypeMenu(block);
-                        break;
-                    case BlockType.Bomb:
-                        MToggle weakPointToggle = block.InternalObject.AddToggle(new MToggle("Weak Point", "weak_point", false));
-                        weakPointToggle.Toggled += x =>
+                case BlockType.StartingBlock:
+                    this.AddHealthController(block);
+                    this.AddTankTypeMenu(block);
+                    break;
+                case BlockType.Bomb:
+                    MToggle weakPointToggle = block.InternalObject.AddToggle(new MToggle("Weak Point", "weak_point", false));
+                    weakPointToggle.Toggled += x =>
+                    {
+                        if (x)
                         {
-                            if (x)
+                            if (!block.GameObject.GetComponent<WeakPointBomb>())
                             {
-                                if (!block.GameObject.GetComponent<WeakPointBomb>())
-                                {
-                                    block.GameObject.AddComponent<WeakPointBomb>();
-                                    Mod.Log("Added weak point");
-                                }
+                                block.GameObject.AddComponent<WeakPointBomb>();
+                                Mod.Log("Added weak point");
                             }
-                            else
+                        }
+                        else
+                        {
+                            if (block.GameObject.GetComponent<WeakPointBomb>())
                             {
-                                if (block.GameObject.GetComponent<WeakPointBomb>())
-                                {
-                                    Destroy(block.GameObject.GetComponent<WeakPointBomb>());
-                                    Mod.Log("Removed weak point");
-                                }
+                                Destroy(block.GameObject.GetComponent<WeakPointBomb>());
+                                Mod.Log("Removed weak point");
                             }
-                        };
-                        break;
-                    case BlockType.Grabber:
-                        block.GameObject.AddComponent<GrabberFix>();
-                        break;
-                }
+                        }
+                    };
+                    break;
+                case BlockType.Grabber:
+                    block.GameObject.AddComponent<GrabberFix>();
+                    break;
             }
         }
 
         void AddHealthController(Block block)
         {
-            if (block.Machine.InternalObject == Machine.Active())
-                LJTReferenceMaster.Instance.machineHealthController = block.GameObject.AddComponent<Blocks.MachineHealthController>();
+            if (StatMaster.levelSimulating) return;
+            LJTReferenceMaster.Instance.machineHealthController = block.GameObject.AddComponent<Blocks.MachineHealthController>();
         }
 
         void AddTankTypeMenu(Block block)
@@ -64,8 +61,8 @@ namespace Mod4LJT.Blocks
                 }
                 if (StatMaster.isMP)
                 {
-                    //LJTPlayerLabelManager.Instance.ChangeTeamIcon(block.Machine.Player.InternalObject, x);
                     LJTPlayerLabelManager.Instance.SetPlayerTankType(block.Machine.Player.InternalObject, x);
+                    Mod.Log("PlayerTankTypeSet");
                 }
             };
             //MachineInspector.Instance.OnTypeChangeFromGUI += x =>
