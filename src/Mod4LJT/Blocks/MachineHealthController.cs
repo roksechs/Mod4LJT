@@ -8,22 +8,22 @@ namespace Mod4LJT.Blocks
 {
     class MachineHealthController : MonoBehaviour
     {
-        BlockBehaviour weakPoint;
+        GameObject weakPoint;
 
         void Update()
         {
             if (StatMaster._customLevelSimulating)
             {
                 if (!this.weakPoint) return;
-                if (!this.weakPoint.gameObject.activeSelf)
+                if (!this.weakPoint.activeSelf)
                 {
-                    (Machine.Active() as ServerMachine).DamageController.ApplyBlockDamage(this.weakPoint, 10000f);
+                    (Machine.Active() as ServerMachine).DamageController.ApplyBlockDamage(this.weakPoint.GetComponent<BlockBehaviour>(), 10000f);
                     Mod.Log("Damaged");
                 }
             }
         }
 
-        public void SetWeakPoint(BlockBehaviour weakPoint)
+        public void SetWeakPoint(GameObject weakPoint)
         {
             this.weakPoint = weakPoint;
         }
