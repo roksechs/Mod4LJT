@@ -13,7 +13,6 @@ namespace Mod4LJT.Blocks
             switch (block.Prefab.InternalObject.Type)
             {
                 case BlockType.StartingBlock:
-                    this.AddHealthController(block);
                     this.AddTankTypeMenu(block);
                     break;
                 case BlockType.Bomb:
@@ -24,7 +23,8 @@ namespace Mod4LJT.Blocks
                         {
                             if (!block.GameObject.GetComponent<WeakPointBomb>())
                             {
-                                block.GameObject.AddComponent<WeakPointBomb>();
+                                WeakPointBomb weakPoint = block.GameObject.AddComponent<WeakPointBomb>();
+                                weakPoint.machine = block.Machine.InternalObject;
                                 Mod.Log("Added weak point");
                             }
                         }
@@ -42,12 +42,6 @@ namespace Mod4LJT.Blocks
                     block.GameObject.AddComponent<GrabberFix>();
                     break;
             }
-        }
-
-        void AddHealthController(Block block)
-        {
-            if (StatMaster.levelSimulating) return;
-            LJTReferenceMaster.Instance.machineHealthController = block.GameObject.AddComponent<Blocks.MachineHealthController>();
         }
 
         void AddTankTypeMenu(Block block)

@@ -5,12 +5,13 @@ namespace Mod4LJT.Blocks
 {
     class WeakPointBomb : MonoBehaviour
     {
+        public Machine machine;
+
         void Awake()
         {
             if (StatMaster._customLevelSimulating)
             {
-                (Machine.Active() as ServerMachine).DamageController.AddTotalDamage(1.0f);
-                LJTReferenceMaster.Instance.machineHealthController.SetWeakPoint(this.gameObject);
+                (this.machine as ServerMachine).DamageController.AddTotalDamage(1.0f);
             }
         }
 
@@ -18,7 +19,7 @@ namespace Mod4LJT.Blocks
         {
             if (StatMaster._customLevelSimulating)
             {
-                (Machine.Active() as ServerMachine).DamageController.RemoveTotalDamage(1.0f);
+                (this.machine as ServerMachine).DamageController.RemoveTotalDamage(1.0f);
             }
         }
     }

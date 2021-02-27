@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blocks\BlockScriptManager.cs" />
-    <Compile Include="Blocks\MachineHealthController.cs" />
     <Compile Include="Blocks\WeakPointBomb.cs" />
     <Compile Include="LJTPlayerLabelManager.cs" />
     <Compile Include="LJTReferenceMaster.cs" />
