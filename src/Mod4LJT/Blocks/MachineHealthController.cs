@@ -15,7 +15,7 @@ namespace Mod4LJT.Blocks
             if (StatMaster._customLevelSimulating)
             {
                 if (!this.weakPoint) return;
-                if (!this.weakPoint.activeSelf)
+                if (!this.weakPoint.activeInHierarchy)
                 {
                     (Machine.Active() as ServerMachine).DamageController.ApplyBlockDamage(this.weakPoint.GetComponent<BlockBehaviour>(), 10000f);
                     Mod.Log("Damaged");

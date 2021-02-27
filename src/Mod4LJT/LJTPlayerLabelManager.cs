@@ -93,10 +93,10 @@ namespace Mod4LJT
                     GameObject teamIcon = playerLabel.transform.Find("Content/TeamIcon").gameObject;
                     if(this.typeIconDic.TryGetValue(machineTypeInt, out string iconName))
                     {
-                        Mod.Log("playerLabelIndex: " + playerLabel.transform.GetSiblingIndex().ToString());
-                        Mod.Log("iconName: " + iconName);
+                        //Mod.Log("playerLabelIndex: " + playerLabel.transform.GetSiblingIndex().ToString());
+                        //Mod.Log("iconName: " + iconName);
                         teamIcon.GetComponent<MeshRenderer>().material.mainTexture = ModResource.GetTexture(iconName);
-                        Mod.Log("Team Icon Changed");
+                        //Mod.Log("Team Icon Changed");
                     }
                 }
             }

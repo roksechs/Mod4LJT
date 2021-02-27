@@ -13,7 +13,7 @@ namespace Mod4LJT.Blocks
                 this.joint = this.GetComponent<Joint>();
                 joint.breakForce = 20000f;
                 joint.breakTorque = 20000f;
-                Mod.Log("joint force changed");
+                //Mod.Log("joint force changed");
             }
         }
     }
