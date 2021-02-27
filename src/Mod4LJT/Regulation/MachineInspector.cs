@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Modding;
 using Mod4LJT.Localisation;
+using Mod4LJT.Blocks;
 
 namespace Mod4LJT.Regulation
 {
@@ -49,7 +50,6 @@ namespace Mod4LJT.Regulation
             this.SetLanguage();
             this.SetTankType(TankType.LightTank);
             StatMaster.hudHiddenChanged += () => this.hudToggle = !this.hudToggle;
-            SceneManager.activeSceneChanged += (x, y) => this.weakPointCount = 0;
             StartCoroutine(CheckVersion());
         }
 
@@ -216,6 +216,10 @@ namespace Mod4LJT.Regulation
                             this.OnShrapnelCannonCountChange(this.shrapnelCannonCount);
                         }
                     }
+                    else if (kvp.Key == (int)BlockType.Bomb)
+                    {
+                        this.weakPointCount = this.GetNumOfWeakPoint();
+                    }
                 }
             }
             GUILayout.Space(5f);
@@ -257,6 +261,18 @@ namespace Mod4LJT.Regulation
                         index++;
                     }
                 }
+            });
+            return index;
+        }
+
+        public int GetNumOfWeakPoint()
+        {
+            int index = 0;
+            this.machine.BuildingBlocks.ForEach(BB =>
+            {
+                if (BB.BlockID == (int)BlockType.Bomb)
+                    if(BB.gameObject.GetComponent<WeakPointBomb>())
+                        index++;
             });
             return index;
         }

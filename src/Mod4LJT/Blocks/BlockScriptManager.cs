@@ -34,7 +34,7 @@ namespace Mod4LJT.Blocks
                             {
                                 if (block.GameObject.GetComponent<WeakPointBomb>())
                                 {
-                                    UnityEngine.Object.DestroyImmediate(block.GameObject.GetComponent<WeakPointBomb>());
+                                    Destroy(block.GameObject.GetComponent<WeakPointBomb>());
                                     Mod.Log("Removed weak point");
                                 }
                             }
