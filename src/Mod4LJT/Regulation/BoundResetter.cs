@@ -75,7 +75,7 @@ namespace Mod4LJT.Regulation
                         sliderHolder.SetValue(value);
                     }
                 }
-                else if (this.block.Prefab.Type == BlockType.CogMediumPowered)
+                else if (this.block.Prefab.Type == BlockType.CogMediumPowered || this.block.Prefab.Type == BlockType.Wheel || this.block.Prefab.Type == BlockType.LargeWheel)
                 {
                     this.machineInspector.regulation.ChildBlockRestriction.TryGetValue((int)BlockType.CogMediumPowered, out BlockRestriction blockRestriction);
                     SliderSelector sliderSelector = this.blockMapper.GetComponentInChildren<SliderSelector>();
@@ -91,7 +91,6 @@ namespace Mod4LJT.Regulation
                 }
             }
             this.refresh = false;
-
         }
 
         public override string Name => "ResetBound";

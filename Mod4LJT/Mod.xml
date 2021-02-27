@@ -2,7 +2,7 @@
 	<Name>Mod4LJT</Name>
 	<Author>Rok</Author> <!-- FIX: Insert your name here. -->
 	<!-- Major.Minor.Build -->
-	<Version>0.1.11</Version>
+	<Version>0.2.12</Version>
 	
 	<Description>
 This mod is for LJT.
@@ -116,6 +116,11 @@ This mod is for LJT.
 		<!-- <Mesh name="some-mesh-name" path="some_mesh_file.obj" /> -->
 		<!-- <Texture name="some-texture-name" path="some_texture_file.png" /> -->
 		<Texture name="thumbnail" path="thumbnail.png" />
+		<Texture name="LightTankIcon" path="LightTankIcon.png" />
+		<Texture name="MediumTankIcon" path="MediumTankIcon.png" />
+		<Texture name="HeavyTankIcon" path="HeavyTankIcon.png" />
+		<Texture name="DestroyerIcon" path="DestroyerIcon.png" />
+		<Texture name="ArtilleryIcon" path="ArtilleryIcon.png" />
 	</Resources>
 
 

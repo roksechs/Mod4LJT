@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Modding;
 using Mod4LJT.Localisation;
 
@@ -15,9 +15,12 @@ namespace Mod4LJT.Regulation
     class MachineInspector : SingleInstance<MachineInspector>
     {
         private TankType _tankType;
+        private string[] typeNames = Enum.GetNames(typeof(TankType));
+        public string[] translatedNames = new string[5];
         public CommonRegulation regulation;
         private Machine machine;
         private bool hasCompliance;
+        public int weakPointCount = 0;
         private Dictionary<int, CommonRegulation> regulations = new Dictionary<int, CommonRegulation>()
         {
             { (int) TankType.LightTank, LightTank.Instance },
@@ -41,14 +44,16 @@ namespace Mod4LJT.Regulation
         public event CannonCountHandler OnCannonCountChange;
         public event ShrapnelCannonCountHandler OnShrapnelCannonCountChange;
 
-        void Awake()
+        void Start()
         {
             this.SetLanguage();
             this.SetTankType(TankType.LightTank);
+            StatMaster.hudHiddenChanged += () => this.hudToggle = !this.hudToggle;
+            SceneManager.activeSceneChanged += (x, y) => this.weakPointCount = 0;
             StartCoroutine(CheckVersion());
         }
 
-        private IEnumerator CheckVersion()
+        IEnumerator CheckVersion()
         {
             yield return new WaitForSeconds(1f);
             Mod.Log("version " + Mods.GetVersion(new Guid("4713d96a-ce6c-4556-8bf4-7dc838b52973")));
@@ -76,6 +81,10 @@ namespace Mod4LJT.Regulation
                     this.languageInt = 2;
                     break;
             }
+            for (int i = 0; i < 5; i++)
+            {
+                this.translatedNames[i] = LocalisationFile.GetTranslatedString(typeNames[i], this.languageInt);
+            }
         }
 
         public void Update()
@@ -84,10 +93,10 @@ namespace Mod4LJT.Regulation
             {
                 this.SetLanguage();
             }
-            if (InputManager.ToggleHUDKey())
-            {
-                this.hudToggle = !this.hudToggle;
-            }
+            //if (InputManager.ToggleHUDKey())
+            //{
+            //    this.hudToggle = !this.hudToggle;
+            //}
             if (this.minimise)
                 this.windowRect.size = new Vector2(200f, 10f);
             if (openURL)
@@ -148,17 +157,17 @@ namespace Mod4LJT.Regulation
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             //GUILayout.BeginHorizontal();
-            //GUILayout.Toolbar(this._tankTypeInt, Enum.GetNames(typeof(TankType)));
+            //this._tankTypeInt = GUILayout.Toolbar(this._tankTypeInt, translatedNames);
             //if (this._tankTypeInt != (int)this._tankType)
             //    this.OnTypeChangeFromGUI(this._tankTypeInt);
             //GUILayout.EndHorizontal();
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
             GUILayout.Label(LocalisationFile.GetTranslatedString("Block", this.languageInt), GUILayout.Width(150f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Minimum", this.languageInt), GUILayout.Width(75f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Maximum", this.languageInt), GUILayout.Width(75f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Current", this.languageInt), GUILayout.Width(75f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Judgement", this.languageInt), GUILayout.Width(90f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Minimum", this.languageInt), GUILayout.Width(100f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Maximum", this.languageInt), GUILayout.Width(100f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Current", this.languageInt), GUILayout.Width(100f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("Judgement", this.languageInt), GUILayout.Width(100f));
             GUILayout.EndHorizontal();
             foreach (var kvp in this.regulation.ChildBlockRestriction)
             {
@@ -167,12 +176,12 @@ namespace Mod4LJT.Regulation
                     int num3 = this.GetNumOfBlock((int)BlockType.Propeller) + this.GetNumOfBlock((int)BlockType.SmallPropeller);
                     GUILayout.BeginHorizontal();
                     GUILayout.Label((ReferenceMaster.TranslateBlockName((BlockType)kvp.Key)), GUILayout.Width(150f));
-                    GUILayout.Label(kvp.Value.minNum.ToString(), GUILayout.Width(75f));
-                    GUILayout.Label(kvp.Value.maxNum.ToString(), GUILayout.Width(75f));
-                    GUILayout.Label(num3.ToString(), GUILayout.Width(75f));
+                    GUILayout.Label(kvp.Value.minNum.ToString(), GUILayout.Width(100f));
+                    GUILayout.Label(kvp.Value.maxNum.ToString(), GUILayout.Width(100f));
+                    GUILayout.Label(num3.ToString(), GUILayout.Width(100f));
                     bool flag3 = num3 >= kvp.Value.minNum && num3 <= kvp.Value.maxNum;
                     this.hasCompliance &= flag3;
-                    GUILayout.Label(flag3 ? "OK" : "NO", GUILayout.Width(90f));
+                    GUILayout.Label(flag3 ? "OK" : "NO", GUILayout.Width(100f));
                     GUILayout.EndHorizontal();
                 }
                 else if(kvp.Key == (int)BlockType.SmallPropeller || kvp.Key == (int)BlockType.BuildEdge || kvp.Key == (int)BlockType.BuildNode)
@@ -184,12 +193,12 @@ namespace Mod4LJT.Regulation
                     int num2 = this.GetNumOfBlock(kvp.Key);
                     GUILayout.BeginHorizontal();
                     GUILayout.Label((ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpperInvariant()), GUILayout.Width(150f));
-                    GUILayout.Label(kvp.Value.minNum.ToString(), GUILayout.Width(75f));
-                    GUILayout.Label(kvp.Value.maxNum.ToString(), GUILayout.Width(75f));
-                    GUILayout.Label(num2.ToString(), GUILayout.Width(75f));
+                    GUILayout.Label(kvp.Value.minNum.ToString(), GUILayout.Width(100f));
+                    GUILayout.Label(kvp.Value.maxNum.ToString(), GUILayout.Width(100f));
+                    GUILayout.Label(num2.ToString(), GUILayout.Width(100f));
                     bool flag1 = num2 >= kvp.Value.minNum && num2 <= kvp.Value.maxNum;
                     this.hasCompliance &= flag1;
-                    GUILayout.Label(flag1 ? "OK" : "NO", GUILayout.Width(90f));
+                    GUILayout.Label(flag1 ? "OK" : "NO", GUILayout.Width(100f));
                     GUILayout.EndHorizontal();
                     if (kvp.Key == (int)BlockType.Cannon)
                     {
@@ -211,13 +220,23 @@ namespace Mod4LJT.Regulation
             }
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
+            GUILayout.Label(LocalisationFile.GetTranslatedString("WeakPointBomb", this.languageInt), GUILayout.Width(150f));
+            GUILayout.Label(1.ToString(), GUILayout.Width(100f));
+            GUILayout.Label(1.ToString(), GUILayout.Width(100f));
+            GUILayout.Label(this.weakPointCount.ToString(), GUILayout.Width(100f));
+            bool flag4 = this.weakPointCount == 1;
+            this.hasCompliance &= flag4;
+            GUILayout.Label(flag4? "OK" : "NO", GUILayout.Width(100f));
+            GUILayout.EndHorizontal();
+            GUILayout.Space(5f);
+            GUILayout.BeginHorizontal();
             GUILayout.Label(LocalisationFile.GetTranslatedString("Machine(All)", this.languageInt), GUILayout.Width(150f));
-            GUILayout.Label(0.ToString(), GUILayout.Width(75f));
-            GUILayout.Label(this.regulation.MaxBlockCount.ToString(), GUILayout.Width(75f));
-            GUILayout.Label(this.machine.DisplayBlockCount.ToString(), GUILayout.Width(75f));
+            GUILayout.Label(0.ToString(), GUILayout.Width(100f));
+            GUILayout.Label(this.regulation.MaxBlockCount.ToString(), GUILayout.Width(100f));
+            GUILayout.Label(this.machine.DisplayBlockCount.ToString(), GUILayout.Width(100f));
             bool flag2 = this.regulation.MaxBlockCount >= this.machine.DisplayBlockCount;
             this.hasCompliance &= flag2;
-            GUILayout.Label(this.hasCompliance ? "OK" : "NO", GUILayout.Width(90f));
+            GUILayout.Label(this.hasCompliance ? "OK" : "NO", GUILayout.Width(100f));
             GUILayout.EndHorizontal();
         }
 

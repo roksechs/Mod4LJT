@@ -8,9 +8,13 @@ namespace Mod4LJT.Blocks
 
         void Start()
         {
-            this.joint = this.GetComponent<Joint>();
-            joint.breakForce = 20000f;
-            joint.breakTorque = 20000f;
+            if (Machine.Active().isSimulating)
+            {
+                this.joint = this.GetComponent<Joint>();
+                joint.breakForce = 20000f;
+                joint.breakTorque = 20000f;
+                Mod.Log("joint force changed");
+            }
         }
     }
 }

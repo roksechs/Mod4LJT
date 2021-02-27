@@ -11,42 +11,34 @@ namespace Mod4LJT
 {
     public class Mod : ModEntryPoint
     {
-        private GameObject mod;
-        private BoundResetter resetbound;
-        private MachineInspector machineInspector;
+        public GameObject mod;
+        public static Mod Instance;
+        BoundResetter resetbound;
+        MachineInspector machineInspector;
+        LJTReferenceMaster referenceMaster;
+        LJTPlayerLabelManager namePlateManager;
+        BlockScriptManager blockScriptManager;
 
         public override void OnLoad()
         {
             this.mod = new GameObject("Mod4LJT");
             UnityEngine.Object.DontDestroyOnLoad(mod);
+            Instance = this;
             this.resetbound = BoundResetter.Instance;
             UnityEngine.Object.DontDestroyOnLoad(resetbound);
             this.machineInspector = MachineInspector.Instance;
             UnityEngine.Object.DontDestroyOnLoad(machineInspector);
-            LightTank lightTank = new LightTank();
-            Events.OnBlockInit += this.AddBlockScript;
+            this.referenceMaster = LJTReferenceMaster.Instance;
+            UnityEngine.Object.DontDestroyOnLoad(referenceMaster);
+            this.namePlateManager = LJTPlayerLabelManager.Instance;
+            UnityEngine.Object.DontDestroyOnLoad(namePlateManager);
+            this.blockScriptManager = BlockScriptManager.Instance;
+            UnityEngine.Object.DontDestroyOnLoad(blockScriptManager);
+            Events.OnBlockInit += this.blockScriptManager.AddBlockScript;
             LocalisationFile.ReadLocalisationFile();
         }
 
-        public void AddBlockScript(Block block)
-        {
-            switch (block.Prefab.InternalObject.Type)
-            {
-                case BlockType.StartingBlock:
-                    MMenu tankTypeMenu = block.InternalObject.AddMenu(new MMenu("tankTypeMenu", 0, Enum.GetNames(typeof(TankType)).ToList(), false));
-                    tankTypeMenu.ValueChanged += x =>
-                    {
-                        if(block.Machine.InternalObject == Machine.Active())
-                        {
-                            MachineInspector.Instance.SetTankType((TankType)x);
-                        }
-                    };
-                    break;
-                case BlockType.Grabber:
-                    block.GameObject.AddComponent<GrabberFix>();
-                    break;
-            }
-        }
+        
 
         public static void Log(string message) => Debug.Log("Mod4LJT Log: " + message);
         public static void Warning(string msg) => Debug.LogWarning("Mod4LJT Warning: " + msg);
