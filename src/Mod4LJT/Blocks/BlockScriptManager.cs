@@ -27,7 +27,6 @@ namespace Mod4LJT.Blocks
                                 if (!block.GameObject.GetComponent<WeakPointBomb>())
                                 {
                                     block.GameObject.AddComponent<WeakPointBomb>();
-                                    MachineInspector.Instance.weakPointCount++;
                                     Mod.Log("Added weak point");
                                 }
                             }
@@ -36,7 +35,6 @@ namespace Mod4LJT.Blocks
                                 if (block.GameObject.GetComponent<WeakPointBomb>())
                                 {
                                     UnityEngine.Object.DestroyImmediate(block.GameObject.GetComponent<WeakPointBomb>());
-                                    MachineInspector.Instance.weakPointCount--;
                                     Mod.Log("Removed weak point");
                                 }
                             }

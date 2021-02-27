@@ -7,6 +7,7 @@ namespace Mod4LJT.Blocks
     {
         void Awake()
         {
+            MachineInspector.Instance.weakPointCount++;
             if (StatMaster._customLevelSimulating)
             {
                 (Machine.Active() as ServerMachine).DamageController.AddTotalDamage(1.0f);
