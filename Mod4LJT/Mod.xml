@@ -12,7 +12,7 @@ This mod is for LJT.
 	
 	<Debug>false</Debug>
 
-	<LoadInTitleScreen>false</LoadInTitleScreen>
+	<!--<LoadInTitleScreen>false</LoadInTitleScreen>-->
 	
 	<MultiplayerCompatible>true</MultiplayerCompatible>
 	
