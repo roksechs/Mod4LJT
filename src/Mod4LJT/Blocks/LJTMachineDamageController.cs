@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Mod4LJT.Blocks
 {
@@ -10,15 +11,11 @@ namespace Mod4LJT.Blocks
 
         void Awake()
         {
-            ReferenceMaster.onLevelSimulation += (x) =>
+            SceneManager.activeSceneChanged += (x, y) =>
             {
-                if (x)
-                {
-                    this.weakPointDic.Clear();
-                    this.damagedBoolDic.Clear();
-                    Mod.Log("Cleared.");
-                }
-
+                this.weakPointDic.Clear();
+                this.damagedBoolDic.Clear();
+                Mod.Log("Cleared.");
             };
         }
 
@@ -33,7 +30,7 @@ namespace Mod4LJT.Blocks
             {
                 this.weakPointDic.Add(serverMachine, weakPoint);
                 this.damagedBoolDic.Add(serverMachine, weakPoint);
-                Mod.Log("Added Weak Point");
+                //Mod.Log("Added Weak Point");
             }
         }
 
@@ -49,7 +46,7 @@ namespace Mod4LJT.Blocks
                         kvp.Key.DamageController.ApplyJointDamage(1000f);
                         kvp.Key.DamageController.RemoveTotalDamage(1f);
                         this.damagedBoolDic[kvp.Key] = true;
-                        Mod.Log("Damaged.");
+                        //Mod.Log("Damaged.");
                     }
                 }
             }

@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Modding;
-using Mod4LJT.Regulation;
 
 namespace Mod4LJT
 {
@@ -68,9 +67,12 @@ namespace Mod4LJT
 
         void LateUpdate()
         {
-            foreach (var kvp in this.playerTankTypeDic)
+            if (StatMaster.isMP)
             {
-                this.ChangeTeamIcon(kvp.Key, kvp.Value);
+                foreach (var kvp in this.playerTankTypeDic)
+                {
+                    this.ChangeTeamIcon(kvp.Key, kvp.Value);
+                }
             }
         }
 
