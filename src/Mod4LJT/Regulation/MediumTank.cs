@@ -19,13 +19,13 @@ namespace Mod4LJT.Regulation
         {
             this.blockRestrictions = new Dictionary<int, BlockRestriction>()
             {
-                { (int) BlockType.Propeller,  new BlockRestriction(0, 10)},
-                { (int) BlockType.SmallPropeller,  new BlockRestriction(0, 10)},
-                { (int) BlockType.Log,  new BlockRestriction(0, 20)},
-                { (int) BlockType.Flamethrower,  new BlockRestriction(0, 2)},
-                { (int) BlockType.Crossbow,  new BlockRestriction(0, 2)},
                 { (int) BlockType.Cannon,  new BlockRestriction(0, 3, new float[]{ 8f, 6f, 5f })},
                 { (int) BlockType.ShrapnelCannon,  new BlockRestriction(0, 4, 8f)},
+                { (int) BlockType.Flamethrower,  new BlockRestriction(0, 2)},
+                { (int) BlockType.Crossbow,  new BlockRestriction(0, 2)},
+                { (int) BlockType.Log,  new BlockRestriction(0, 20)},
+                { (int) BlockType.Propeller,  new BlockRestriction(0, 10)},
+                { (int) BlockType.SmallPropeller,  new BlockRestriction(0, 10)},
             };
             foreach (var kvp in base.blockRestrictions)
             {

@@ -28,8 +28,10 @@ namespace Mod4LJT.Localisation
 
         public static string GetTranslatedString(string key)
         {
-            localisationDic.TryGetValue(key, out string[] strs);
-            return strs[languageInt];
+            if(localisationDic.TryGetValue(key, out string[] strs))
+                return strs[languageInt];
+            Mod.Warning("Cannot find in the localisation file: " + key);
+            return key;
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Mod4LJT.Blocks
 
         void Awake()
         {
+            if (MachineInspector.Instance.isJunkTank) return;
             if (StatMaster._customLevelSimulating)
             {
                 (this.machine as ServerMachine).DamageController.AddTotalDamage(1.0f);
@@ -17,6 +18,7 @@ namespace Mod4LJT.Blocks
 
         void OnDestroy()
         {
+            if (MachineInspector.Instance.isJunkTank) return;
             if (StatMaster._customLevelSimulating)
             {
                 (this.machine as ServerMachine).DamageController.RemoveTotalDamage(1.0f);

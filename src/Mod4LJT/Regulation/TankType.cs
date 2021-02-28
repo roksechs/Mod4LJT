@@ -12,5 +12,6 @@ namespace Mod4LJT.Regulation
         HeavyTank,
         Destroyer,
         Artillery,
+        JunkTank
     }
 }

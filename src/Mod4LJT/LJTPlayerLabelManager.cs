@@ -2,38 +2,38 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Modding;
+using Mod4LJT.Regulation;
 
 namespace Mod4LJT
 {
     class LJTPlayerLabelManager : SingleInstance<LJTPlayerLabelManager>
     {
         GameObject playerLabels;
-        List<PlayerLabel> currentPlayerLabels = new List<PlayerLabel>();
         Dictionary<PlayerData, int> playerTankTypeDic = new Dictionary<PlayerData, int>();
-        readonly Dictionary<int, string> typeIconDic = new Dictionary<int, string>() 
+        readonly List<string> typeIconList = new List<string>() 
         {
-            { 0, "LightTankIcon" },
-            { 1, "MediumTankIcon" },
-            { 2, "HeavyTankIcon" },
-            { 3, "DestroyerIcon" },
-            { 4, "ArtilleryIcon" },
+            "LightTankIcon",
+            "MediumTankIcon",
+            "HeavyTankIcon",
+            "DestroyerIcon",
+            "ArtilleryIcon",
+            "JunkTankIcon",
         };
-        SimulationState simulationState;
+        Dictionary<int, Texture> typeIconDic = new Dictionary<int, Texture>();
 
         void Awake()
         {
-            this.simulationState = StatMaster.SimulationState;
             if (StatMaster.isMP)
             {
                 this.playerLabels = GameObject.Find("HUD/MULTIPLAYER/PLAYER_LABELS");
-                this.DepthDisplayChange(0);
+                this.DepthDisplayChange(10);
             }
             SceneManager.activeSceneChanged += (x, y) =>
             {
                 if (StatMaster.isMP)
                 {
                     this.playerLabels = GameObject.Find("HUD/MULTIPLAYER/PLAYER_LABELS");
-                    this.DepthDisplayChange(0);
+                    this.DepthDisplayChange(10);
                 }
             };
             StatMaster.hudHiddenChanged += () => 
@@ -41,6 +41,14 @@ namespace Mod4LJT
                 if (StatMaster.isMP)
                 {
                     this.playerLabels.SetActive(!this.playerLabels.activeSelf);
+                }
+            };
+            ModResource.OnAllResourcesLoaded += () =>
+            {
+                for(int i = 0; i < this.typeIconList.Count; i++)
+                {
+                    Texture texture = ModResource.GetTexture(this.typeIconList[i]);
+                    this.typeIconDic.Add(i, texture);
                 }
             };
         }
@@ -91,12 +99,9 @@ namespace Mod4LJT
                 if (NetworkScene.Instance.hud.playerLabelManager.Get(player, out PlayerLabel playerLabel))
                 {
                     GameObject teamIcon = playerLabel.transform.Find("Content/TeamIcon").gameObject;
-                    if(this.typeIconDic.TryGetValue(machineTypeInt, out string iconName))
+                    if(this.typeIconDic.TryGetValue(machineTypeInt, out Texture iconTexture))
                     {
-                        //Mod.Log("playerLabelIndex: " + playerLabel.transform.GetSiblingIndex().ToString());
-                        //Mod.Log("iconName: " + iconName);
-                        teamIcon.GetComponent<MeshRenderer>().material.mainTexture = ModResource.GetTexture(iconName);
-                        //Mod.Log("Team Icon Changed");
+                        teamIcon.GetComponent<MeshRenderer>().material.mainTexture = iconTexture;
                     }
                 }
             }
@@ -112,6 +117,7 @@ namespace Mod4LJT
             {
                 this.playerTankTypeDic.Add(player, tankType);
             }
+            this.DepthDisplayChange(tankType != 5 ? 10 : 23);
         }
 
         public override string Name => "Name Plate Manager";

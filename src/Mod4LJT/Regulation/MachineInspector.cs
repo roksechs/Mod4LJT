@@ -9,7 +9,7 @@ using Mod4LJT.Blocks;
 
 namespace Mod4LJT.Regulation
 {
-    //delegate void TypeChangeHandler(int index);
+    delegate void TypeChangeHandler(int index);
     delegate void CannonCountHandler(int count);
     delegate void ShrapnelCannonCountHandler(int count);
 
@@ -17,11 +17,12 @@ namespace Mod4LJT.Regulation
     {
         private TankType _tankType;
         private string[] typeNames = Enum.GetNames(typeof(TankType));
-        public string[] translatedNames = new string[5];
+        public string[] translatedNames = new string[6];
         public CommonRegulation regulation;
         private Machine machine;
         private bool hasCompliance;
         public int weakPointCount = 0;
+        public bool isJunkTank = false;
         private Dictionary<int, CommonRegulation> regulations = new Dictionary<int, CommonRegulation>()
         {
             { (int) TankType.LightTank, LightTank.Instance },
@@ -29,10 +30,10 @@ namespace Mod4LJT.Regulation
             { (int) TankType.HeavyTank, HeavyTank.Instance },
             { (int) TankType.Destroyer, Destroyer.Instance },
             { (int) TankType.Artillery, Mod4LJT.Regulation.Artillery.Instance },
+            { (int) TankType.JunkTank, JunkTank.Instance },
         };
-        //int _tankTypeInt = 0;
+        int _tankTypeInt = 0;
         string language;
-        int languageInt;
         bool hudToggle = true;
         bool minimise = false;
         bool uf = false;
@@ -41,21 +42,30 @@ namespace Mod4LJT.Regulation
         Rect windowRect2 = new Rect(700f, 400f, 400f, 10f);
         int cannonCount = 0;
         int shrapnelCannonCount = 0;
-        //public event TypeChangeHandler OnTypeChangeFromGUI;
+        public event TypeChangeHandler OnTypeChangeFromGUI;
         public event CannonCountHandler OnCannonCountChange;
         public event ShrapnelCannonCountHandler OnShrapnelCannonCountChange;
 
         void Start()
         {
             this.SetLanguage();
-            this.SetTankType(TankType.LightTank);
+            this.SetTankType(TankType.JunkTank);
             StatMaster.hudHiddenChanged += () => this.hudToggle = !this.hudToggle;
+            //SceneManager.activeSceneChanged += (x, y) =>
+            //{
+            //    Mod.Log(y.buildIndex.ToString());
+            //    if(y.buildIndex == 9)
+            //    {
+            //        BinButton binButton = GameObject.Find("HUD/Top/TopBar/Middle/Icons/BinTool").GetComponent<BinButton>();
+            //        binButton.OnClicked();
+            //    }
+            //};
             StartCoroutine(CheckVersion());
         }
 
         IEnumerator CheckVersion()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSecondsRealtime(1f);
             Mod.Log("version " + Mods.GetVersion(new Guid("4713d96a-ce6c-4556-8bf4-7dc838b52973")));
         }
 
@@ -63,9 +73,17 @@ namespace Mod4LJT.Regulation
         {
             this.machine = Machine.Active();
             this._tankType = tankType;
-            //this._tankTypeInt = (int)tankType;
+            this._tankTypeInt = (int)tankType;
             this.regulations.TryGetValue((int)_tankType, out this.regulation);
             BoundResetter.Instance.refresh = true;
+            if (this._tankTypeInt == 5)
+            {
+                this.isJunkTank = true;
+            }
+            else
+            {
+                this.isJunkTank = false;
+            }
         }
 
         void SetLanguage()
@@ -81,7 +99,7 @@ namespace Mod4LJT.Regulation
                     LocalisationFile.languageInt = 2;
                     break;
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 6; i++)
             {
                 this.translatedNames[i] = LocalisationFile.GetTranslatedString(typeNames[i]);
             }
@@ -89,14 +107,14 @@ namespace Mod4LJT.Regulation
 
         public void Update()
         {
-            if(this.language != OptionsMaster.BesiegeConfig.Language)
+            if (this.language != OptionsMaster.BesiegeConfig.Language)
             {
                 this.SetLanguage();
             }
-            //if (InputManager.ToggleHUDKey())
-            //{
-            //    this.hudToggle = !this.hudToggle;
-            //}
+            if (InputManager.ToggleHUDKey())
+            {
+                this.hudToggle = !this.hudToggle;
+            }
             if (this.minimise)
                 this.windowRect.size = new Vector2(200f, 10f);
             if (openURL)
@@ -153,11 +171,15 @@ namespace Mod4LJT.Regulation
         {
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("TankType"), GUILayout.Width(150f));
-            GUILayout.Label(LocalisationFile.GetTranslatedString(this._tankType.ToString()));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("TankType"));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            GUILayout.Space(5f);
+            GUILayout.BeginHorizontal();
+            this._tankTypeInt = GUILayout.SelectionGrid(_tankTypeInt, translatedNames, 3);
+            if (this._tankTypeInt != (int)this._tankType)
+                this.OnTypeChangeFromGUI(this._tankTypeInt);
+            GUILayout.EndHorizontal();
+            GUILayout.Space(10f);
             GUILayout.BeginHorizontal();
             GUILayout.Label(LocalisationFile.GetTranslatedString("Block"), GUILayout.Width(150f));
             GUILayout.Label(LocalisationFile.GetTranslatedString("Minimum"), GUILayout.Width(100f));
@@ -167,7 +189,7 @@ namespace Mod4LJT.Regulation
             GUILayout.EndHorizontal();
             foreach (var kvp in this.regulation.ChildBlockRestriction)
             {
-                if(kvp.Key == (int)BlockType.Propeller)
+                if (kvp.Key == (int)BlockType.Propeller)
                 {
                     int num3 = this.GetNumOfBlock((int)BlockType.Propeller) + this.GetNumOfBlock((int)BlockType.SmallPropeller);
                     GUILayout.BeginHorizontal();
@@ -180,7 +202,7 @@ namespace Mod4LJT.Regulation
                     GUILayout.Label(flag3 ? "OK" : "NO", GUILayout.Width(100f));
                     GUILayout.EndHorizontal();
                 }
-                else if(kvp.Key == (int)BlockType.SmallPropeller || kvp.Key == (int)BlockType.BuildEdge || kvp.Key == (int)BlockType.BuildNode)
+                else if (kvp.Key == (int)BlockType.SmallPropeller || kvp.Key == (int)BlockType.BuildEdge || kvp.Key == (int)BlockType.BuildNode)
                 {
                     continue;
                 }
@@ -226,7 +248,7 @@ namespace Mod4LJT.Regulation
             GUILayout.Label(this.weakPointCount.ToString(), GUILayout.Width(100f));
             bool flag4 = this.weakPointCount == 1;
             this.hasCompliance &= flag4;
-            GUILayout.Label(flag4? "OK" : "NO", GUILayout.Width(100f));
+            GUILayout.Label(flag4 ? "OK" : "NO", GUILayout.Width(100f));
             GUILayout.EndHorizontal();
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
@@ -243,7 +265,7 @@ namespace Mod4LJT.Regulation
         public int GetNumOfBlock(int blockId)
         {
             int index = 0;
-            this.machine.BuildingBlocks.ForEach(BB => 
+            this.machine.BuildingBlocks.ForEach(BB =>
             {
                 if (BB.BlockID == blockId)
                 {
@@ -267,7 +289,7 @@ namespace Mod4LJT.Regulation
             this.machine.BuildingBlocks.ForEach(BB =>
             {
                 if (BB.BlockID == (int)BlockType.Bomb)
-                    if(BB.gameObject.GetComponent<WeakPointBomb>())
+                    if (BB.gameObject.GetComponent<WeakPointBomb>())
                         index++;
             });
             return index;

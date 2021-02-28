@@ -46,7 +46,7 @@ namespace Mod4LJT.Blocks
 
         void AddTankTypeMenu(Block block)
         {
-            MMenu tankTypeMenu = block.InternalObject.AddMenu(new MMenu("tankTypeMenu", 0, Enum.GetNames(typeof(TankType)).ToList(), false));
+            MMenu tankTypeMenu = block.InternalObject.AddMenu(new MMenu("tankTypeMenu", 5, Enum.GetNames(typeof(TankType)).ToList(), false));
             tankTypeMenu.ValueChanged += x =>
             {
                 if (block.Machine.InternalObject == Machine.Active())
@@ -59,15 +59,15 @@ namespace Mod4LJT.Blocks
                     Mod.Log("PlayerTankTypeSet");
                 }
             };
-            //MachineInspector.Instance.OnTypeChangeFromGUI += x =>
-            //{
-            //    if (block.Machine.InternalObject == Machine.Active())
-            //    {
-            //        tankTypeMenu.SetValue(x);
-            //        tankTypeMenu.ApplyValue();
-            //        block.InternalObject.OnSave(new XDataHolder());
-            //    }
-            //};
+            MachineInspector.Instance.OnTypeChangeFromGUI += x =>
+            {
+                if (block.Machine.InternalObject == Machine.Active())
+                {
+                    tankTypeMenu.SetValue(x);
+                    tankTypeMenu.ApplyValue();
+                    block.InternalObject.OnSave(new XDataHolder());
+                }
+            };
         }
 
         public override string Name => "Block Script Manager";

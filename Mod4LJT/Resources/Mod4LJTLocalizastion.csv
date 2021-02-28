@@ -5,6 +5,7 @@ MediumTank,MEDIUM TANK,中戦車
 HeavyTank,HEAVY TANK,重戦車
 Destroyer,DESTROYER,駆逐戦車
 Artillery,ARTILLERLY,自走榴弾砲
+JunkTank,JUNK TANK,ジャンクタンク
 Minimum,MIN,最小
 Maximum,MAX,最大
 Current,CURRENT,現在
