@@ -6,7 +6,7 @@ namespace Mod4LJT.Blocks
     {
         void Start()
         {
-            if (StatMaster._customLevelSimulating && StatMaster.isHosting)
+            if (StatMaster._customLevelSimulating)
                 LJTMachineDamageController.Instance.AddWeakPoint(this.transform.parent.parent.GetComponent<ServerMachine>(), this.gameObject);
         }
     }
