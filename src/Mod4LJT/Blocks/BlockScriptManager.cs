@@ -21,20 +21,11 @@ namespace Mod4LJT.Blocks
                     {
                         if (x)
                         {
-                            if (!block.GameObject.GetComponent<WeakPointBomb>())
-                            {
-                                WeakPointBomb weakPoint = block.GameObject.AddComponent<WeakPointBomb>();
-                                weakPoint.machine = block.Machine.InternalObject;
-                                Mod.Log("Added weak point");
-                            }
+                            block.GameObject.AddComponent<WeakPointBomb>();
                         }
                         else
                         {
-                            if (block.GameObject.GetComponent<WeakPointBomb>())
-                            {
-                                Destroy(block.GameObject.GetComponent<WeakPointBomb>());
-                                Mod.Log("Removed weak point");
-                            }
+                            DestroyImmediate(block.GameObject.GetComponent<WeakPointBomb>());
                         }
                     };
                     break;
@@ -56,18 +47,17 @@ namespace Mod4LJT.Blocks
                 if (StatMaster.isMP)
                 {
                     LJTPlayerLabelManager.Instance.SetPlayerTankType(block.Machine.Player.InternalObject, x);
-                    Mod.Log("PlayerTankTypeSet");
                 }
             };
-            MachineInspector.Instance.OnTypeChangeFromGUI += x =>
-            {
-                if (block.Machine.InternalObject == Machine.Active())
-                {
-                    tankTypeMenu.SetValue(x);
-                    tankTypeMenu.ApplyValue();
-                    block.InternalObject.OnSave(new XDataHolder());
-                }
-            };
+            //MachineInspector.Instance.OnTypeChangeFromGUI += x =>
+            //{
+            //    if (block.Machine.InternalObject == Machine.Active())
+            //    {
+            //        tankTypeMenu.SetValue(x);
+            //        tankTypeMenu.ApplyValue();
+            //        block.InternalObject.OnSave(new XDataHolder());
+            //    }
+            //};
         }
 
         public override string Name => "Block Script Manager";

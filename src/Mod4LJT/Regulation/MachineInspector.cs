@@ -9,7 +9,7 @@ using Mod4LJT.Blocks;
 
 namespace Mod4LJT.Regulation
 {
-    delegate void TypeChangeHandler(int index);
+    //delegate void TypeChangeHandler(int index);
     delegate void CannonCountHandler(int count);
     delegate void ShrapnelCannonCountHandler(int count);
 
@@ -38,11 +38,11 @@ namespace Mod4LJT.Regulation
         bool minimise = false;
         bool uf = false;
         bool openURL = false;
-        Rect windowRect = new Rect(25f, 125f, 200f, 10f);
+        Rect windowRect = new Rect(25f, 125f, 550f, 10f);
         Rect windowRect2 = new Rect(700f, 400f, 400f, 10f);
         int cannonCount = 0;
         int shrapnelCannonCount = 0;
-        public event TypeChangeHandler OnTypeChangeFromGUI;
+        //public event TypeChangeHandler OnTypeChangeFromGUI;
         public event CannonCountHandler OnCannonCountChange;
         public event ShrapnelCannonCountHandler OnShrapnelCannonCountChange;
 
@@ -169,17 +169,24 @@ namespace Mod4LJT.Regulation
 
         public void RegulationLabels()
         {
+            if (!this.machine)
+            {
+                GUILayout.Label(LocalisationFile.GetTranslatedString("Caution"));
+
+                return;
+            }
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("TankType"));
+            GUILayout.Label(LocalisationFile.GetTranslatedString("TankType"), GUILayout.Width(150f));
+            GUILayout.Label(LocalisationFile.GetTranslatedString(this._tankType.ToString()));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            this._tankTypeInt = GUILayout.SelectionGrid(_tankTypeInt, translatedNames, 3);
-            if (this._tankTypeInt != (int)this._tankType)
-                this.OnTypeChangeFromGUI(this._tankTypeInt);
+            //this._tankTypeInt = GUILayout.SelectionGrid(_tankTypeInt, translatedNames, 3);
+            //if (this._tankTypeInt != (int)this._tankType)
+            //    this.OnTypeChangeFromGUI(this._tankTypeInt);
             GUILayout.EndHorizontal();
-            GUILayout.Space(10f);
+            GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
             GUILayout.Label(LocalisationFile.GetTranslatedString("Block"), GUILayout.Width(150f));
             GUILayout.Label(LocalisationFile.GetTranslatedString("Minimum"), GUILayout.Width(100f));

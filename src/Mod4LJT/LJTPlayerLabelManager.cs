@@ -9,7 +9,7 @@ namespace Mod4LJT
     class LJTPlayerLabelManager : SingleInstance<LJTPlayerLabelManager>
     {
         GameObject playerLabels;
-        Dictionary<PlayerData, int> playerTankTypeDic = new Dictionary<PlayerData, int>();
+        readonly Dictionary<PlayerData, int> playerTankTypeDic = new Dictionary<PlayerData, int>();
         readonly List<string> typeIconList = new List<string>() 
         {
             "LightTankIcon",
@@ -19,7 +19,7 @@ namespace Mod4LJT
             "ArtilleryIcon",
             "JunkTankIcon",
         };
-        Dictionary<int, Texture> typeIconDic = new Dictionary<int, Texture>();
+        readonly Dictionary<int, Texture> typeIconDic = new Dictionary<int, Texture>();
 
         void Awake()
         {

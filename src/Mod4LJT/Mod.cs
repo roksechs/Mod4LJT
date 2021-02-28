@@ -17,6 +17,7 @@ namespace Mod4LJT
         MachineInspector machineInspector;
         LJTPlayerLabelManager namePlateManager;
         BlockScriptManager blockScriptManager;
+        LJTMachineDamageController machineDamageController;
 
         public override void OnLoad()
         {
@@ -31,6 +32,8 @@ namespace Mod4LJT
             UnityEngine.Object.DontDestroyOnLoad(namePlateManager);
             this.blockScriptManager = BlockScriptManager.Instance;
             UnityEngine.Object.DontDestroyOnLoad(blockScriptManager);
+            this.machineDamageController = LJTMachineDamageController.Instance;
+            UnityEngine.Object.DontDestroyOnLoad(machineDamageController);
             Events.OnBlockInit += this.blockScriptManager.AddBlockScript;
             LocalisationFile.ReadLocalisationFile();
         }

@@ -1,28 +1,13 @@
 ﻿using UnityEngine;
-using Mod4LJT.Regulation;
 
 namespace Mod4LJT.Blocks
 {
     class WeakPointBomb : MonoBehaviour
     {
-        public Machine machine;
-
-        void Awake()
+        void Start()
         {
-            if (MachineInspector.Instance.isJunkTank) return;
-            if (StatMaster._customLevelSimulating)
-            {
-                (this.machine as ServerMachine).DamageController.AddTotalDamage(1.0f);
-            }
-        }
-
-        void OnDestroy()
-        {
-            if (MachineInspector.Instance.isJunkTank) return;
-            if (StatMaster._customLevelSimulating)
-            {
-                (this.machine as ServerMachine).DamageController.RemoveTotalDamage(1.0f);
-            }
+            if (StatMaster._customLevelSimulating && StatMaster.isHosting)
+                LJTMachineDamageController.Instance.AddWeakPoint(this.transform.parent.parent.GetComponent<ServerMachine>(), this.gameObject);
         }
     }
 }
