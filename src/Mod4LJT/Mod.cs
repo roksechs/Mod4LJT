@@ -1,8 +1,5 @@
-using System;
-using System.Linq;
 using UnityEngine;
 using Modding;
-using Modding.Blocks;
 using Mod4LJT.Blocks;
 using Mod4LJT.Regulation;
 using Mod4LJT.Localisation;
@@ -37,8 +34,6 @@ namespace Mod4LJT
             Events.OnBlockInit += this.blockScriptManager.AddBlockScript;
             LocalisationFile.ReadLocalisationFile();
         }
-
-        
 
         public static void Log(string message) => Debug.Log("Mod4LJT Log: " + message);
         public static void Warning(string msg) => Debug.LogWarning("Mod4LJT Warning: " + msg);

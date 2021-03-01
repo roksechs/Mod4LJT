@@ -10,25 +10,24 @@ namespace Mod4LJT.Blocks
     {
         public void AddBlockScript(Block block)
         {
+            if (StatMaster.levelSimulating) return;
             switch (block.Prefab.InternalObject.Type)
             {
                 case BlockType.StartingBlock:
                     this.AddTankTypeMenu(block);
                     break;
                 case BlockType.Bomb:
+                    WeakPointBomb weakPoint = block.GameObject.AddComponent<WeakPointBomb>();
                     MToggle weakPointToggle = block.InternalObject.AddToggle(new MToggle("Weak Point", "weak_point", false));
                     weakPointToggle.Toggled += x =>
                     {
                         if (x)
                         {
-                            if (!block.GameObject.GetComponent<WeakPointBomb>())
-                            {
-                                block.GameObject.AddComponent<WeakPointBomb>();
-                            }
+                            weakPoint.isWeakPoint = true;
                         }
                         else
                         {
-                            DestroyImmediate(block.GameObject.GetComponent<WeakPointBomb>());
+                            weakPoint.isWeakPoint = false;
                         }
                     };
                     break;

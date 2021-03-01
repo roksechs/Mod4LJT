@@ -66,7 +66,7 @@ namespace Mod4LJT.Regulation
                     MSlider slider = sliderSelector.Slider;
                     string name = slider.DisplayName;
                     string key = slider.Key;
-                    float max = blockRestriction.maxPower;
+                    float max = blockRestriction.maxPowers[0];
                     float value = slider.Value;
                     if (shrapnelCannonCount <= blockRestriction.maxNum && shrapnelCannonCount > 0)
                     {
@@ -83,7 +83,7 @@ namespace Mod4LJT.Regulation
                     MSlider slider = sliderSelector.Slider;
                     string name = slider.DisplayName;
                     string key = slider.Key;
-                    float max = blockRestriction.maxPower;
+                    float max = blockRestriction.maxPowers[0];
                     float value = slider.Value;
                     sliderSelector.Slider = new MSlider(name, key, value, 0.1f, max, null, null, true, false);
                     sliderSelector.Value = value;

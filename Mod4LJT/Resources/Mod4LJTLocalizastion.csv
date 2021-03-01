@@ -9,7 +9,8 @@ JunkTank,JUNK TANK,ジャンクタンク
 Minimum,MIN,最小
 Maximum,MAX,最大
 Current,CURRENT,現在
-Judgement,JUDGEMENT,判定
+Power,POWER ,パワー
+Judge,JUDGE,判定
 Block,BLOCK,ブロック
 Machine(All),MACHINE (ALL),マシン（すべて）
 Minimise,MINIMISE,最小化

@@ -21,12 +21,15 @@ namespace Mod4LJT.Regulation
             {
                 { (int) BlockType.Cannon,  new BlockRestriction(0, 2, new float[]{ 7f, 5f })},
                 { (int) BlockType.ShrapnelCannon,  new BlockRestriction(0, 4, 7f)},
-                { (int) BlockType.WaterCannon,  new BlockRestriction(0, 8)},{ (int) BlockType.Propeller,  new BlockRestriction(10, 251)},
+                { (int) BlockType.WaterCannon,  new BlockRestriction(0, 8)},
                 { (int) BlockType.Flamethrower,  new BlockRestriction(0, 1)},
                 { (int) BlockType.Crossbow,  new BlockRestriction(0, 1)},
                 { (int) BlockType.Log,  new BlockRestriction(0, 10)},
                 { (int) BlockType.CogMediumPowered,  new BlockRestriction(0, 251, 4f)},
+                { (int) BlockType.Wheel,  new BlockRestriction(0, 251, 4f)},
+                { (int) BlockType.LargeWheel,  new BlockRestriction(0, 251, 4f)},
                 { (int) BlockType.SmallPropeller,  new BlockRestriction(10, 251)},
+                { (int) BlockType.Propeller,  new BlockRestriction(10, 251)},
             };
             foreach(var kvp in base.blockRestrictions)
             {

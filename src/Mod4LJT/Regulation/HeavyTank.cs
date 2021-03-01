@@ -26,6 +26,8 @@ namespace Mod4LJT.Regulation
                 { (int) BlockType.Crossbow,  new BlockRestriction(0, 2)},
                 { (int) BlockType.Rocket, new BlockRestriction(0, 2) },
                 { (int) BlockType.Grabber, new BlockRestriction(0, 10) },
+                { (int) BlockType.Propeller,  new BlockRestriction(0, 0)},
+                { (int) BlockType.SmallPropeller,  new BlockRestriction(0, 0)},
             };
             foreach (var kvp in base.blockRestrictions)
             {

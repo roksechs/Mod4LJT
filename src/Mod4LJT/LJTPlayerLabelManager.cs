@@ -26,7 +26,7 @@ namespace Mod4LJT
             if (StatMaster.isMP)
             {
                 this.playerLabels = GameObject.Find("HUD/MULTIPLAYER/PLAYER_LABELS");
-                this.DepthDisplayChange(8);
+                this.DepthDisplayChange(0);
             }
             SceneManager.activeSceneChanged += (x, y) =>
             {
@@ -35,7 +35,7 @@ namespace Mod4LJT
                 if (StatMaster.isMP)
                 {
                     this.playerLabels = GameObject.Find("HUD/MULTIPLAYER/PLAYER_LABELS");
-                    this.DepthDisplayChange(8);
+                    this.DepthDisplayChange(0);
                 }
             };
             StatMaster.hudHiddenChanged += () => 

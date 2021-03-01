@@ -58,6 +58,7 @@
     <Compile Include="Blocks\GrabberFix.cs" />
     <Compile Include="Regulation\BlockRestriction.cs" />
     <Compile Include="Regulation\Artillery.cs" />
+    <Compile Include="Regulation\BlockCount.cs" />
     <Compile Include="Regulation\JunkTank.cs" />
     <Compile Include="Regulation\Destroyer.cs" />
     <Compile Include="Regulation\HeavyTank.cs" />
