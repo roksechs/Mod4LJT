@@ -4,9 +4,9 @@ namespace Mod4LJT.Blocks
 {
     class WeakPointBomb : MonoBehaviour
     {
-        void Start()
+        void Awake()
         {
-            if (StatMaster._customLevelSimulating && StatMaster.isHosting)
+            if (StatMaster._customLevelSimulating)
                 LJTMachineDamageController.Instance.AddWeakPoint(this.transform.parent.parent.GetComponent<ServerMachine>(), this.gameObject);
         }
     }

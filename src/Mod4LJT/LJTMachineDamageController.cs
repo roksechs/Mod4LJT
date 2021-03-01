@@ -1,20 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Mod4LJT.Blocks
+namespace Mod4LJT
 {
     class LJTMachineDamageController : SingleInstance<LJTMachineDamageController>
     {
         readonly Dictionary<ServerMachine, GameObject> weakPointDic = new Dictionary<ServerMachine, GameObject>();
-        readonly Dictionary<ServerMachine, bool> damagedBoolDic = new Dictionary<ServerMachine, bool>();
+        bool isEempty = true;
 
         void Awake()
         {
             SceneManager.activeSceneChanged += (x, y) =>
             {
                 this.weakPointDic.Clear();
-                this.damagedBoolDic.Clear();
+                this.isEempty = true;
                 Mod.Log("Cleared.");
             };
         }
@@ -24,29 +25,37 @@ namespace Mod4LJT.Blocks
             if (this.weakPointDic.ContainsKey(serverMachine))
             {
                 this.weakPointDic[serverMachine] = weakPoint;
-                this.damagedBoolDic[serverMachine] = false;
+                Mod.Log("Reset Weak Point");
             }
             else
             {
                 this.weakPointDic.Add(serverMachine, weakPoint);
-                this.damagedBoolDic.Add(serverMachine, weakPoint);
-                //Mod.Log("Added Weak Point");
+                this.isEempty = false;
+                Mod.Log("Added Weak Point");
+            }
+        }
+
+        public void RemoveWeakPoint(ServerMachine serverMachine, GameObject weakPoint)
+        {
+            if (this.weakPointDic.ContainsKey(serverMachine))
+            {
+                this.weakPointDic.Remove(serverMachine);
+                Mod.Log("Removed");
             }
         }
 
         void Update()
         {
-            if (StatMaster._customLevelSimulating)
+            if (!this.isEempty && StatMaster._customLevelSimulating)
             {
-                foreach(var kvp in this.weakPointDic)
+                foreach (var kvp in this.weakPointDic)
                 {
-                    if (!kvp.Value.activeSelf && !this.damagedBoolDic[kvp.Key])
+                    if (!kvp.Value.activeSelf && kvp.Key.Health > 0)
                     {
                         kvp.Key.DamageController.AddTotalDamage(1f);
                         kvp.Key.DamageController.ApplyJointDamage(1000f);
                         kvp.Key.DamageController.RemoveTotalDamage(1f);
-                        this.damagedBoolDic[kvp.Key] = true;
-                        //Mod.Log("Damaged.");
+                        kvp.Key.DamageController.Toggle(false);
                     }
                 }
             }

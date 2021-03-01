@@ -9,7 +9,7 @@ namespace Mod4LJT.Blocks
 
         void Start()
         {
-            if (StatMaster.levelSimulating && !StatMaster.isClient)
+            if (StatMaster.levelSimulating && (!StatMaster.isClient || StatMaster.isLocalSim))
             {
                 if (MachineInspector.Instance.isJunkTank) return;
                 this.joint = this.GetComponent<Joint>();

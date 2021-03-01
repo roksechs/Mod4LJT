@@ -19,20 +19,23 @@ namespace Mod4LJT
             "JunkTankIcon",
         };
         readonly Dictionary<int, Texture> typeIconDic = new Dictionary<int, Texture>();
+        bool isEmpty = true;
 
         void Awake()
         {
             if (StatMaster.isMP)
             {
                 this.playerLabels = GameObject.Find("HUD/MULTIPLAYER/PLAYER_LABELS");
-                this.DepthDisplayChange(10);
+                this.DepthDisplayChange(8);
             }
             SceneManager.activeSceneChanged += (x, y) =>
             {
+                this.playerTankTypeDic.Clear();
+                this.isEmpty = true;
                 if (StatMaster.isMP)
                 {
                     this.playerLabels = GameObject.Find("HUD/MULTIPLAYER/PLAYER_LABELS");
-                    this.DepthDisplayChange(10);
+                    this.DepthDisplayChange(8);
                 }
             };
             StatMaster.hudHiddenChanged += () => 
@@ -67,7 +70,7 @@ namespace Mod4LJT
 
         void LateUpdate()
         {
-            if (StatMaster.isMP)
+            if (StatMaster.isMP && !this.isEmpty)
             {
                 foreach (var kvp in this.playerTankTypeDic)
                 {
@@ -118,6 +121,7 @@ namespace Mod4LJT
             else
             {
                 this.playerTankTypeDic.Add(player, tankType);
+                this.isEmpty = false;
             }
             this.DepthDisplayChange(tankType != 5 ? 10 : 23);
         }

@@ -21,7 +21,10 @@ namespace Mod4LJT.Blocks
                     {
                         if (x)
                         {
-                            block.GameObject.AddComponent<WeakPointBomb>();
+                            if (!block.GameObject.GetComponent<WeakPointBomb>())
+                            {
+                                block.GameObject.AddComponent<WeakPointBomb>();
+                            }
                         }
                         else
                         {
