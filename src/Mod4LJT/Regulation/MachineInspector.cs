@@ -132,10 +132,6 @@ namespace Mod4LJT.Regulation
             {
                 this.SetLanguage();
             }
-            if (InputManager.ToggleHUDKey())
-            {
-                this.hudToggle = !this.hudToggle;
-            }
             if (this.minimise)
                 this.windowRect.size = new Vector2(200f, 10f);
             if (openURL)
