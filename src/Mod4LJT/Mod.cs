@@ -3,6 +3,7 @@ using Modding;
 using Mod4LJT.Blocks;
 using Mod4LJT.Regulation;
 using Mod4LJT.Localisation;
+using Mod4LJT.Network;
 
 namespace Mod4LJT
 {
@@ -14,7 +15,6 @@ namespace Mod4LJT
         MachineInspector machineInspector;
         LJTPlayerLabelManager namePlateManager;
         BlockScriptManager blockScriptManager;
-        LJTMachineDamageController machineDamageController;
 
         public override void OnLoad()
         {
@@ -29,10 +29,9 @@ namespace Mod4LJT
             UnityEngine.Object.DontDestroyOnLoad(namePlateManager);
             this.blockScriptManager = BlockScriptManager.Instance;
             UnityEngine.Object.DontDestroyOnLoad(blockScriptManager);
-            this.machineDamageController = LJTMachineDamageController.Instance;
-            UnityEngine.Object.DontDestroyOnLoad(machineDamageController);
             Events.OnBlockInit += this.blockScriptManager.AddBlockScript;
             LocalisationFile.ReadLocalisationFile();
+            LJTMessages.CreateMessageTypes();
         }
 
         public static void Log(string message) => Debug.Log("Mod4LJT Log: " + message);

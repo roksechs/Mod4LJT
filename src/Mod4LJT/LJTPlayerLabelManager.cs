@@ -2,13 +2,13 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Modding;
+using Mod4LJT.Blocks;
 
 namespace Mod4LJT
 {
     class LJTPlayerLabelManager : SingleInstance<LJTPlayerLabelManager>
     {
         GameObject playerLabels;
-        readonly Dictionary<PlayerData, int> playerTankTypeDic = new Dictionary<PlayerData, int>();
         readonly List<string> typeIconList = new List<string>() 
         {
             "LightTankIcon",
@@ -19,7 +19,6 @@ namespace Mod4LJT
             "JunkTankIcon",
         };
         readonly Dictionary<int, Texture> typeIconDic = new Dictionary<int, Texture>();
-        bool isEmpty = true;
 
         void Awake()
         {
@@ -30,8 +29,6 @@ namespace Mod4LJT
             }
             SceneManager.activeSceneChanged += (x, y) =>
             {
-                this.playerTankTypeDic.Clear();
-                this.isEmpty = true;
                 if (StatMaster.isMP)
                 {
                     this.playerLabels = GameObject.Find("HUD/MULTIPLAYER/PLAYER_LABELS");
@@ -55,26 +52,13 @@ namespace Mod4LJT
             };
         }
 
-        //void Update()
-        //{
-        //    if (StatMaster.SimulationState != simulationState)
-        //    {
-        //        Mod.Log("Simulation State Changed.");
-        //        this.simulationState = StatMaster.SimulationState;
-        //        foreach(var kvp in this.playerTankTypeDic)
-        //        {
-        //            this.ChangeTeamIcon(kvp.Key, kvp.Value);
-        //        }
-        //    }
-        //}
-
         void LateUpdate()
         {
-            if (StatMaster.isMP && !this.isEmpty)
+            if (StatMaster.isMP)
             {
-                foreach (var kvp in this.playerTankTypeDic)
+                foreach(var kvp in LJTMachine.MachineDic)
                 {
-                    this.ChangeTeamIcon(kvp.Key, kvp.Value);
+                    this.ChangeTeamIcon(kvp.Key.Player.InternalObject, kvp.Value.TankTypeInt);
                 }
             }
         }
@@ -110,20 +94,6 @@ namespace Mod4LJT
                     }
                 }
             }
-        }
-
-        public void SetPlayerTankType(PlayerData player, int tankType)
-        {
-            if (this.playerTankTypeDic.ContainsKey(player))
-            {
-                this.playerTankTypeDic[player] = tankType;
-            }
-            else
-            {
-                this.playerTankTypeDic.Add(player, tankType);
-                this.isEmpty = false;
-            }
-            this.DepthDisplayChange(tankType != 5 ? 10 : 23);
         }
 
         public override string Name => "Name Plate Manager";

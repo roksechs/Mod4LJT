@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using Modding.Blocks;
 using Mod4LJT.Regulation;
@@ -15,6 +16,11 @@ namespace Mod4LJT.Blocks
             {
                 case BlockType.StartingBlock:
                     this.AddTankTypeMenu(block);
+                    if (StatMaster.isMP)
+                    {
+                        LJTMachine ljtMachine = block.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
+                        ljtMachine.PlayerMachine = block.Machine;
+                    }
                     break;
                 case BlockType.Bomb:
                     WeakPointBomb weakPoint = block.GameObject.AddComponent<WeakPointBomb>();
@@ -40,26 +46,33 @@ namespace Mod4LJT.Blocks
         void AddTankTypeMenu(Block block)
         {
             MMenu tankTypeMenu = block.InternalObject.AddMenu(new MMenu("tankTypeMenu", 5, Enum.GetNames(typeof(TankType)).ToList(), false));
-            tankTypeMenu.ValueChanged += x =>
+            tankTypeMenu.ValueChanged += tankTypeInt =>
             {
-                if (block.Machine.InternalObject == Machine.Active())
+                Mod.Log("Type Changed");
+                if (block.Machine == PlayerMachine.GetLocal())
                 {
-                    MachineInspector.Instance.SetTankType((TankType)x);
-                }
-                if (StatMaster.isMP)
-                {
-                    LJTPlayerLabelManager.Instance.SetPlayerTankType(block.Machine.Player.InternalObject, x);
+                    MachineInspector.Instance.SetTankType((TankType)tankTypeInt);
+                    StartCoroutine(this.SetTankTypeCoroutine(block.Machine, tankTypeInt));
                 }
             };
-            //MachineInspector.Instance.OnTypeChangeFromGUI += x =>
-            //{
-            //    if (block.Machine.InternalObject == Machine.Active())
-            //    {
-            //        tankTypeMenu.SetValue(x);
-            //        tankTypeMenu.ApplyValue();
-            //        block.InternalObject.OnSave(new XDataHolder());
-            //    }
-            //};
+            MachineInspector.Instance.OnTypeChangeFromGUI += x =>
+            {
+                if (block.Machine == PlayerMachine.GetLocal())
+                {
+                    tankTypeMenu.SetValue(x);
+                    tankTypeMenu.ApplyValue();
+                    block.InternalObject.OnSave(new XDataHolder());
+                }
+            };
+        }
+
+        IEnumerator SetTankTypeCoroutine(PlayerMachine playerMachine, int tankTypeInt)
+        {
+            yield return null;
+            if (LJTMachine.MachineDic.TryGetValue(playerMachine, out LJTMachine ljtMachine))
+            {
+                ljtMachine.TankTypeInt = tankTypeInt;
+            }
         }
 
         public override string Name => "Block Script Manager";

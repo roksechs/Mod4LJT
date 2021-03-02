@@ -8,7 +8,7 @@ using Mod4LJT.Blocks;
 
 namespace Mod4LJT.Regulation
 {
-    //delegate void TypeChangeHandler(int index);
+    delegate void TypeChangeHandler(int index);
     delegate void CannonCountHandler(int count);
     delegate void ShrapnelCannonCountHandler(int count);
 
@@ -69,7 +69,7 @@ namespace Mod4LJT.Regulation
         readonly GUIStyleState yesStyleState = new GUIStyleState();
         int cannonCount = 0;
         int shrapnelCannonCount = 0;
-        //public event TypeChangeHandler OnTypeChangeFromGUI;
+        public event TypeChangeHandler OnTypeChangeFromGUI;
         public event CannonCountHandler OnCannonCountChange;
         public event ShrapnelCannonCountHandler OnShrapnelCannonCountChange;
 
@@ -203,11 +203,11 @@ namespace Mod4LJT.Regulation
             GUILayout.Label(LocalisationFile.GetTranslatedString(this._tankType.ToString()));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
-            //GUILayout.BeginHorizontal();
-            //this._tankTypeInt = GUILayout.SelectionGrid(_tankTypeInt, translatedNames, 3);
-            //if (this._tankTypeInt != (int)this._tankType)
-            //    this.OnTypeChangeFromGUI(this._tankTypeInt);
-            //GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            this._tankTypeInt = GUILayout.SelectionGrid(_tankTypeInt, translatedNames, 3);
+            if (this._tankTypeInt != (int)this._tankType)
+                this.OnTypeChangeFromGUI(this._tankTypeInt);
+            GUILayout.EndHorizontal();
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
             GUILayout.Label(LocalisationFile.GetTranslatedString("Block"), GUILayout.Width(150f));

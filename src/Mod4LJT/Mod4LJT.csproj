@@ -50,10 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Blocks\BlockScriptManager.cs" />
+    <Compile Include="Blocks\LJTMachine.cs" />
     <Compile Include="Blocks\WeakPointBomb.cs" />
-    <Compile Include="LJTMachineDamageController.cs" />
     <Compile Include="LJTPlayerLabelManager.cs" />
     <Compile Include="Localisation\LocalisationFile.cs" />
+    <Compile Include="Network\LJTMessages.cs" />
     <Compile Include="Regulation\BoundResetter.cs" />
     <Compile Include="Blocks\GrabberFix.cs" />
     <Compile Include="Regulation\BlockRestriction.cs" />
