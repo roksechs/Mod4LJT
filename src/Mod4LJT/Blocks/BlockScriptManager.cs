@@ -48,7 +48,6 @@ namespace Mod4LJT.Blocks
             MMenu tankTypeMenu = block.InternalObject.AddMenu(new MMenu("tankTypeMenu", 5, Enum.GetNames(typeof(TankType)).ToList(), false));
             tankTypeMenu.ValueChanged += tankTypeInt =>
             {
-                Mod.Log("Type Changed");
                 if (block.Machine == PlayerMachine.GetLocal())
                 {
                     MachineInspector.Instance.SetTankType((TankType)tankTypeInt);
