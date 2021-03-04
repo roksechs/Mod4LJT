@@ -18,8 +18,11 @@ namespace Mod4LJT.Blocks
                     this.AddTankTypeMenu(block);
                     if (StatMaster.isMP)
                     {
-                        LJTMachine ljtMachine = block.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
-                        ljtMachine.PlayerMachine = block.Machine;
+                        if (!block.Machine.InternalObject.gameObject.GetComponent<LJTMachine>())
+                        {
+                            LJTMachine ljtMachine = block.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
+                            ljtMachine.PlayerMachine = block.Machine;
+                        }
                     }
                     break;
                 case BlockType.Bomb:
@@ -48,10 +51,13 @@ namespace Mod4LJT.Blocks
             MMenu tankTypeMenu = block.InternalObject.AddMenu(new MMenu("tankTypeMenu", 5, Enum.GetNames(typeof(TankType)).ToList(), false));
             tankTypeMenu.ValueChanged += tankTypeInt =>
             {
-                if (block.Machine == PlayerMachine.GetLocal())
+                if (!StatMaster.levelSimulating)
                 {
-                    MachineInspector.Instance.SetTankType((TankType)tankTypeInt);
-                    StartCoroutine(this.SetTankTypeCoroutine(block.Machine, tankTypeInt));
+                    if (block.Machine == PlayerMachine.GetLocal())
+                    {
+                        MachineInspector.Instance.SetTankType((TankType)tankTypeInt);
+                        StartCoroutine(this.SetTankTypeCoroutine(block.Machine, tankTypeInt));
+                    }
                 }
             };
             MachineInspector.Instance.OnTypeChangeFromGUI += x =>

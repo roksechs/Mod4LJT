@@ -15,7 +15,7 @@ namespace Mod4LJT.Regulation
                 { (int) BlockType.Bomb, new BlockRestriction(1, 1) },
                 { (int) BlockType.Cannon, new BlockRestriction(0, 2, new float[]{ 4f, 4f }) },
                 { (int) BlockType.ShrapnelCannon, new BlockRestriction(0, 4, 4f) },
-                { (int) BlockType.WaterCannon, new BlockRestriction(0, 2) },
+                { (int) BlockType.WaterCannon, new BlockRestriction(0, 2, 4f) },
                 { (int) BlockType.Flamethrower,  new BlockRestriction(0, 0)},
                 { (int) BlockType.Crossbow,  new BlockRestriction(0, 0)},
                 { (int) BlockType.Rocket,  new BlockRestriction(0, 251)},

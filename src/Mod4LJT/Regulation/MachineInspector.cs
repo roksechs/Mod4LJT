@@ -9,8 +9,6 @@ using Mod4LJT.Blocks;
 namespace Mod4LJT.Regulation
 {
     delegate void TypeChangeHandler(int index);
-    delegate void CannonCountHandler(int count);
-    delegate void ShrapnelCannonCountHandler(int count);
 
     class MachineInspector : SingleInstance<MachineInspector>
     {
@@ -67,11 +65,7 @@ namespace Mod4LJT.Regulation
         readonly GUIStyle yesStyle = new GUIStyle();
         readonly GUIStyleState noStyleState = new GUIStyleState();
         readonly GUIStyleState yesStyleState = new GUIStyleState();
-        int cannonCount = 0;
-        int shrapnelCannonCount = 0;
         public event TypeChangeHandler OnTypeChangeFromGUI;
-        public event CannonCountHandler OnCannonCountChange;
-        public event ShrapnelCannonCountHandler OnShrapnelCannonCountChange;
 
         void Start()
         {
@@ -234,6 +228,10 @@ namespace Mod4LJT.Regulation
                         if (this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue < (BB as CogMotorControllerHinge).SpeedSlider.Value)
                             this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue = (BB as CogMotorControllerHinge).SpeedSlider.Value;
                         continue;
+                    case BlockType.Rocket:
+                        if ((BB as TimedRocket).PowerSlider.Value < 0.5f)
+                            this.restrictedBlocksDic[(int)BB.Prefab.Type].currentCount--;
+                        continue;
                     case BlockType.Bomb:
                         if (BB.gameObject.GetComponent<WeakPointBomb>().isWeakPoint)
                             this.weakPointCount++;
@@ -279,7 +277,7 @@ namespace Mod4LJT.Regulation
                         }
                         else if (current <= max)
                         {
-                            judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.ChildBlockRestriction[kvp.Key].maxPowers[current -1];
+                            judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.ChildBlockRestriction[kvp.Key].maxPowers[current - 1];
                         }
                         else
                         {
@@ -295,11 +293,6 @@ namespace Mod4LJT.Regulation
                         GUILayout.Label(powerFlag ? "OK" : "NO", powerFlag ? this.yesStyle : this.noStyle, GUILayout.Width(75f));
                         GUILayout.Label(judge ? "OK" : "NO", judge ? this.yesStyle : this.noStyle, GUILayout.Width(75f));
                         GUILayout.EndHorizontal();
-                        if (this.cannonCount != current)
-                        {
-                            this.cannonCount = current;
-                            this.OnCannonCountChange(this.cannonCount);
-                        }
                         continue;
                     case (int)BlockType.ShrapnelCannon:
                         min = this.regulation.ChildBlockRestriction[kvp.Key].minNum;
@@ -316,11 +309,6 @@ namespace Mod4LJT.Regulation
                         GUILayout.Label(powerFlag ? "OK" : "NO", powerFlag ? this.yesStyle : this.noStyle, GUILayout.Width(75f));
                         GUILayout.Label(judge ? "OK" : "NO", judge ? this.yesStyle : this.noStyle, GUILayout.Width(75f));
                         GUILayout.EndHorizontal();
-                        if (this.shrapnelCannonCount != current)
-                        {
-                            this.shrapnelCannonCount = current;
-                            this.OnShrapnelCannonCountChange(this.shrapnelCannonCount);
-                        }
                         continue;
                     default:
                         min = this.regulation.ChildBlockRestriction[kvp.Key].minNum;

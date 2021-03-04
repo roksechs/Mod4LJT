@@ -20,19 +20,10 @@ namespace Mod4LJT.Blocks
 
         void Start()
         {
-            Events.OnMachineSimulationToggle += OnMachineSimulationToggle;
             if (LJTMachine.MachineDic.ContainsKey(this.playerMachine))
                 LJTMachine.MachineDic[this.playerMachine] = this;
             else
                 LJTMachine.MachineDic.Add(this.playerMachine, this);
-        }
-
-        void OnMachineSimulationToggle(PlayerMachine playerMachine, bool toggle)
-        {
-            if (this.playerMachine == playerMachine)
-            {
-                this.SendTankTypeMessage();
-            }
         }
 
         void SendTankTypeMessage()
@@ -44,8 +35,18 @@ namespace Mod4LJT.Blocks
 
         public static void OnTankTypeMessageReceive(Message message)
         {
+            if (message.Sender.Machine == null) return;
             if(LJTMachine.MachineDic.TryGetValue(message.Sender.Machine, out LJTMachine ljtMachine))
+            {
                 ljtMachine.TankTypeInt = ((byte[])message.GetData(0))[0];
+            }
+            else
+            {
+                LJTMachine newLJTMachine = message.Sender.Machine.InternalObject.gameObject.GetComponent<LJTMachine>();
+                if (!newLJTMachine)
+                    newLJTMachine = message.Sender.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
+                newLJTMachine.playerMachine = message.Sender.Machine;
+            }
         }
 
         void ApplyDamage()
