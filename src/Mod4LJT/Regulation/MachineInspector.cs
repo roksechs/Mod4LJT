@@ -229,7 +229,7 @@ namespace Mod4LJT.Regulation
                             this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue = (BB as CogMotorControllerHinge).SpeedSlider.Value;
                         continue;
                     case BlockType.Rocket:
-                        if ((BB as TimedRocket).PowerSlider.Value < 0.5f)
+                        if ((BB as TimedRocket).PowerSlider.Value <= 0.5f)
                             this.restrictedBlocksDic[(int)BB.Prefab.Type].currentCount--;
                         continue;
                     case BlockType.Bomb:
