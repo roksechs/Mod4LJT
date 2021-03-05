@@ -113,6 +113,21 @@ namespace Mod4LJT.Regulation
                         sliderSelector.Value = value;
                         sliderHolder.SetValue(value);
                     }
+                    else if (this.block.Prefab.Type == BlockType.Rocket)
+                    {
+                        SliderSelector[] selectors = this.blockMapper.GetComponentsInChildren<SliderSelector>();
+                        SliderSelector sliderSelector = selectors[1];
+                        SliderHolder[] holders = this.blockMapper.GetComponentsInChildren<SliderHolder>();
+                        SliderHolder sliderHolder = holders[1];
+                        MSlider slider = sliderSelector.Slider;
+                        string name = slider.DisplayName;
+                        string key = slider.Key;
+                        float max = 4f;
+                        float value = slider.Value;
+                        sliderSelector.Slider = new MSlider(name, key, value, 0.0f, max, null, null, true, false);
+                        sliderSelector.Value = value;
+                        sliderHolder.SetValue(value);
+                    }
                 }
                 this.refresh = false;
             }

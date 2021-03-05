@@ -10,12 +10,14 @@ namespace Mod4LJT.Blocks
     {
         PlayerMachine playerMachine;
         int tankTypeInt;
+        bool hasCompliance;
         GameObject weakPointObject;
         float unscaledElapsedTime;
         public static readonly Dictionary<PlayerMachine, LJTMachine> MachineDic = new Dictionary<PlayerMachine, LJTMachine>();
 
         public PlayerMachine PlayerMachine { get => this.playerMachine; set => this.playerMachine = value; }
         public int TankTypeInt { get => this.tankTypeInt; set => this.tankTypeInt = value; }
+        public bool HasCompliance { get => this.hasCompliance; set => this.hasCompliance = value; }
         public GameObject WeakPointObject { get => this.weakPointObject; set => this.weakPointObject = value; }
 
         void Start()
@@ -29,7 +31,7 @@ namespace Mod4LJT.Blocks
         void SendTankTypeMessage()
         {
             byte[] data = new byte[1] { (byte)this.tankTypeInt };
-            Message message = LJTMessages.tankTypeMessage.CreateMessage(data);
+            Message message = LJTMessages.tankTypeMessage.CreateMessage(data, this.hasCompliance);
             ModNetworking.SendToAll(message);
         }
 
@@ -39,6 +41,7 @@ namespace Mod4LJT.Blocks
             if(LJTMachine.MachineDic.TryGetValue(message.Sender.Machine, out LJTMachine ljtMachine))
             {
                 ljtMachine.TankTypeInt = ((byte[])message.GetData(0))[0];
+                ljtMachine.hasCompliance = (bool)message.GetData(1);
             }
             else
             {

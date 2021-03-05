@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Modding;
+using Modding.Blocks;
 using Mod4LJT.Localisation;
 using Mod4LJT.Blocks;
 
@@ -25,6 +26,7 @@ namespace Mod4LJT.Regulation
             { (int) BlockType.Bomb, new BlockCount() },
             { (int) BlockType.Cannon, new BlockCount() },
             { (int) BlockType.ShrapnelCannon, new BlockCount() },
+            { (int) BlockType.WaterCannon, new BlockCount() },
             { (int) BlockType.Flamethrower, new BlockCount() },
             { (int) BlockType.Crossbow, new BlockCount() },
             { (int) BlockType.Rocket, new BlockCount() },
@@ -58,9 +60,11 @@ namespace Mod4LJT.Regulation
         bool hudToggle = true;
         bool minimise = false;
         bool uf = false;
+        bool playerStats = false;
         bool openURL = false;
         Rect windowRect = new Rect(25f, 125f, 525f, 10f);
         Rect windowRect2 = new Rect(700f, 400f, 400f, 10f);
+        //Rect windowRect3 = new Rect(700f, 800f, 400, 10f);
         readonly GUIStyle noStyle = new GUIStyle();
         readonly GUIStyle yesStyle = new GUIStyle();
         readonly GUIStyleState noStyleState = new GUIStyleState();
@@ -147,11 +151,9 @@ namespace Mod4LJT.Regulation
                 }
                 this.weakPointCount = 0;
                 this.hasCompliance = true;
-                this.windowRect = GUILayout.Window(32575339, this.windowRect, new GUI.WindowFunction(this.Mapper), LocalisationFile.GetTranslatedString("Title"));
+                this.windowRect = GUILayout.Window(32575339, this.windowRect, new GUI.WindowFunction(this.MainWindow), LocalisationFile.GetTranslatedString("Title"));
                 if (this.uf)
-                {
                     this.windowRect2 = GUILayout.Window(32575340, this.windowRect2, new GUI.WindowFunction(this.UsageAndFunction), LocalisationFile.GetTranslatedString("UF"));
-                }
             }
         }
 
@@ -166,11 +168,30 @@ namespace Mod4LJT.Regulation
             GUI.DragWindow();
         }
 
-        public void Mapper(int windowId)
+        //public void StatusWindow(int windowId)
+        //{
+        //    GUILayout.BeginHorizontal();
+        //    GUILayout.Label(LocalisationFile.GetTranslatedString("Player"), GUILayout.Width(100f));
+        //    GUILayout.Label(LocalisationFile.GetTranslatedString("Machine"), GUILayout.Width(100f));
+        //    GUILayout.Label(LocalisationFile.GetTranslatedString("TankType"), GUILayout.Width(100f));
+        //    GUILayout.Label(LocalisationFile.GetTranslatedString("Compliance"), GUILayout.Width(100f));
+        //    GUILayout.EndHorizontal();
+        //    foreach (var kvp in LJTMachine.MachineDic)
+        //    {
+        //        GUILayout.BeginHorizontal();
+        //        GUILayout.Label(kvp.Key.Player.Name, GUILayout.Width(100f));
+        //        GUILayout.Label(kvp.Key.Name, GUILayout.Width(100f));
+        //        GUILayout.Label(LocalisationFile.GetTranslatedString(((TankType)kvp.Value.TankTypeInt).ToString()), GUILayout.Width(100f));
+        //        GUILayout.Label(kvp.Value.HasCompliance ? "OK" : "NO", kvp.Value.HasCompliance ? this.yesStyle : this.noStyle, GUILayout.Width(100f));
+        //        GUILayout.EndHorizontal();
+        //    }
+        //}
+
+        public void MainWindow(int windowId)
         {
             if (!this.minimise)
             {
-                this.RegulationLabels();
+                this.RegulationCheck();
             }
             GUILayout.FlexibleSpace();
             GUILayout.Space(5f);
@@ -184,7 +205,7 @@ namespace Mod4LJT.Regulation
             GUI.DragWindow(new Rect(0, 0, 10000f, 20f));
         }
 
-        public void RegulationLabels()
+        public void RegulationCheck()
         {
             if (!this.machine)
             {
