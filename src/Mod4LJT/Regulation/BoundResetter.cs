@@ -9,7 +9,7 @@ namespace Mod4LJT.Regulation
         BlockMapper blockMapper;
         BlockBehaviour block;
         internal bool refresh;
-        MachineInspector machineInspector = MachineInspector.Instance;
+        readonly MachineInspector machineInspector = MachineInspector.Instance;
         int cannonCount;
         int shrapnelCannonCount;
         int waterCannonCount;

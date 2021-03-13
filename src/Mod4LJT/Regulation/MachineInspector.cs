@@ -60,7 +60,7 @@ namespace Mod4LJT.Regulation
         bool hudToggle = true;
         bool minimise = false;
         bool uf = false;
-        bool playerStats = false;
+        //bool playerStats = false;
         bool openURL = false;
         Rect windowRect = new Rect(25f, 125f, 525f, 10f);
         Rect windowRect2 = new Rect(700f, 400f, 400f, 10f);
