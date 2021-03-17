@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Mod4LJT.Regulation
 {
     class HeavyTank : CommonRegulation
     {
-        public override int MaxBlockCount => 251;
+        public override int MaxBlockCount => 271;
         private static readonly HeavyTank instance = new HeavyTank();
         public static HeavyTank Instance => instance;
 
