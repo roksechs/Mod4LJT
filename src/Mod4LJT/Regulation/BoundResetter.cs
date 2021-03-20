@@ -124,7 +124,7 @@ namespace Mod4LJT.Regulation
                         string key = slider.Key;
                         float max = 4f;
                         float value = slider.Value;
-                        sliderSelector.Slider = new MSlider(name, key, value, 0.0f, max, null, null, true, false);
+                        sliderSelector.Slider = new MSlider(name, key, value, 0.5f, max, null, null, true, false);
                         sliderSelector.Value = value;
                         sliderHolder.SetValue(value);
                     }
