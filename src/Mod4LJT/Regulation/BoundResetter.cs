@@ -8,125 +8,84 @@ namespace Mod4LJT.Regulation
     {
         BlockMapper blockMapper;
         BlockBehaviour block;
-        internal bool refresh;
+        SliderSelector[] selectors;
+        SliderSelector sliderSelector;
+        SliderHolder[] holders;
+        SliderHolder sliderHolder;
+        MSlider mSlider;
+        string sliderName;
+        string key;
+        float min;
+        float max;
+        float value;
         readonly MachineInspector machineInspector = MachineInspector.Instance;
-        int cannonCount;
-        int shrapnelCannonCount;
-        int waterCannonCount;
-
-        public void Start()
-        {
-            this.refresh = true;
-        }
+        int blockCount;
+        public bool refresh;
 
         public void Update()
         {
             if (BlockMapper.IsOpen)
             {
-                if (BlockMapper.CurrentInstance != this.blockMapper)
+                this.refresh |= BlockMapper.CurrentInstance != this.blockMapper;
+                if (this.refresh)
                 {
+                    Mod.Log("1");
                     this.blockMapper = BlockMapper.CurrentInstance;
-                    this.block = null;
-                    this.refresh = true;
-                }
-                if (this.cannonCount != PlayerMachine.GetLocal().GetBlocksOfType((int)BlockType.Cannon).Count)
-                {
-                    this.cannonCount = PlayerMachine.GetLocal().GetBlocksOfType((int)BlockType.Cannon).Count;
-                    this.refresh = true;
-                }
-                else if (this.shrapnelCannonCount != PlayerMachine.GetLocal().GetBlocksOfType((int)BlockType.ShrapnelCannon).Count)
-                {
-                    this.shrapnelCannonCount = PlayerMachine.GetLocal().GetBlocksOfType((int)BlockType.ShrapnelCannon).Count;
-                    this.refresh = true;
-                }
-                else if (this.waterCannonCount != PlayerMachine.GetLocal().GetBlocksOfType((int)BlockType.WaterCannon).Count)
-                {
-                    this.waterCannonCount = PlayerMachine.GetLocal().GetBlocksOfType((int)BlockType.WaterCannon).Count;
-                    this.refresh = true;
-                }
-                if (!this.refresh) return;
-                if (this.blockMapper.IsBlock)
-                {
-                    this.block = this.blockMapper.Block;
-                    if (this.block.Prefab.Type == BlockType.Cannon)
+                    this.refresh &= this.blockMapper.IsBlock;
+                    if (this.refresh) 
                     {
-                        this.machineInspector.regulation.ChildBlockRestriction.TryGetValue((int)BlockType.Cannon, out BlockRestriction blockRestriction);
-                        SliderSelector sliderSelector = this.blockMapper.GetComponentInChildren<SliderSelector>();
-                        SliderHolder sliderHolder = this.blockMapper.GetComponentInChildren<SliderHolder>();
-                        MSlider slider = sliderSelector.Slider;
-                        string name = slider.DisplayName;
-                        string key = slider.Key;
-                        float max = blockRestriction.maxPowers[cannonCount - 1];
-                        float value = slider.Value;
-                        if (cannonCount <= blockRestriction.maxNum && cannonCount > 0)
+                        Mod.Log("2");
+                        this.block = this.blockMapper.Block;
+                        this.blockCount = PlayerMachine.GetLocal().GetBlocksOfType((int)this.block.Prefab.Type).Count;
+                        this.refresh &= this.machineInspector.regulation.ChildBlockRestriction.TryGetValue((int)this.block.Prefab.Type, out BlockRestriction blockRestriction);
+                        if (this.refresh)
                         {
-                            sliderSelector.Slider = new MSlider(name, key, value, 0.1f, max, null, null, true, false);
-                            sliderSelector.Value = value;
-                            sliderHolder.SetValue(value);
+                            Mod.Log("3");
+                            this.selectors = this.blockMapper.GetComponentsInChildren<SliderSelector>();
+                            this.holders = this.blockMapper.GetComponentsInChildren<SliderHolder>();
+                            switch (this.block.Prefab.Type)
+                            {
+                                case BlockType.Cannon:
+                                    this.min = blockRestriction.minPower;
+                                    this.max = blockRestriction.maxPowers[this.blockCount - 1];
+                                    this.sliderSelector = this.selectors[0];
+                                    this.sliderHolder = this.holders[0];
+                                    break;
+                                case BlockType.ShrapnelCannon:
+                                case BlockType.WaterCannon:
+                                    this.min = blockRestriction.minPower;
+                                    this.max = blockRestriction.maxPowers[0];
+                                    this.sliderSelector = this.selectors[0];
+                                    this.sliderHolder = this.holders[0];
+                                    break;
+                                case BlockType.CogMediumPowered:
+                                case BlockType.Wheel:
+                                case BlockType.LargeWheel:
+                                    this.min = blockRestriction.minPower;
+                                    this.max = blockRestriction.maxPowers[0];
+                                    this.sliderSelector = this.selectors[0];
+                                    this.sliderHolder = this.holders[0];
+                                    break;
+                                case BlockType.Rocket:
+                                    this.min = blockRestriction.minPower;
+                                    this.max = blockRestriction.maxPowers[0];
+                                    this.sliderSelector = this.selectors[1];
+                                    this.sliderHolder = this.holders[1];
+                                    break;
+                                default:
+                                    return;
+                            }
+                            this.mSlider = this.sliderSelector.Slider;
+                            this.sliderName = this.mSlider.DisplayName;
+                            this.key = this.mSlider.Key;
+                            this.value = this.mSlider.Value;
+                            if (this.blockCount <= blockRestriction.maxNum && this.blockCount > 0)
+                            {
+                                this.sliderSelector.Slider = new MSlider(this.sliderName, this.key, this.value, this.min, this.max, null, null, true, false);
+                                this.sliderSelector.Value = value;
+                                this.sliderHolder.SetValue(value);
+                            }
                         }
-                    }
-                    else if (this.block.Prefab.Type == BlockType.ShrapnelCannon)
-                    {
-                        this.machineInspector.regulation.ChildBlockRestriction.TryGetValue((int)BlockType.ShrapnelCannon, out BlockRestriction blockRestriction);
-                        SliderSelector sliderSelector = this.blockMapper.GetComponentInChildren<SliderSelector>();
-                        SliderHolder sliderHolder = this.blockMapper.GetComponentInChildren<SliderHolder>();
-                        MSlider slider = sliderSelector.Slider;
-                        string name = slider.DisplayName;
-                        string key = slider.Key;
-                        float max = blockRestriction.maxPowers[0];
-                        float value = slider.Value;
-                        if (shrapnelCannonCount <= blockRestriction.maxNum && shrapnelCannonCount > 0)
-                        {
-                            sliderSelector.Slider = new MSlider(name, key, value, 0.1f, max, null, null, true, false);
-                            sliderSelector.Value = value;
-                            sliderHolder.SetValue(value);
-                        }
-                    }
-                    else if (this.block.Prefab.Type == BlockType.WaterCannon)
-                    {
-                        this.machineInspector.regulation.ChildBlockRestriction.TryGetValue((int)BlockType.WaterCannon, out BlockRestriction blockRestriction);
-                        SliderSelector sliderSelector = this.blockMapper.GetComponentInChildren<SliderSelector>();
-                        SliderHolder sliderHolder = this.blockMapper.GetComponentInChildren<SliderHolder>();
-                        MSlider slider = sliderSelector.Slider;
-                        string name = slider.DisplayName;
-                        string key = slider.Key;
-                        float max = blockRestriction.maxPowers[0];
-                        float value = slider.Value;
-                        if (waterCannonCount <= blockRestriction.maxNum && waterCannonCount > 0)
-                        {
-                            sliderSelector.Slider = new MSlider(name, key, value, 0.1f, max, null, null, true, false);
-                            sliderSelector.Value = value;
-                            sliderHolder.SetValue(value);
-                        }
-                    }
-                    else if (this.block.Prefab.Type == BlockType.CogMediumPowered || this.block.Prefab.Type == BlockType.Wheel || this.block.Prefab.Type == BlockType.LargeWheel)
-                    {
-                        this.machineInspector.regulation.ChildBlockRestriction.TryGetValue((int)BlockType.CogMediumPowered, out BlockRestriction blockRestriction);
-                        SliderSelector sliderSelector = this.blockMapper.GetComponentInChildren<SliderSelector>();
-                        SliderHolder sliderHolder = this.blockMapper.GetComponentInChildren<SliderHolder>();
-                        MSlider slider = sliderSelector.Slider;
-                        string name = slider.DisplayName;
-                        string key = slider.Key;
-                        float max = blockRestriction.maxPowers[0];
-                        float value = slider.Value;
-                        sliderSelector.Slider = new MSlider(name, key, value, 0.0f, max, null, null, true, false);
-                        sliderSelector.Value = value;
-                        sliderHolder.SetValue(value);
-                    }
-                    else if (this.block.Prefab.Type == BlockType.Rocket)
-                    {
-                        SliderSelector[] selectors = this.blockMapper.GetComponentsInChildren<SliderSelector>();
-                        SliderSelector sliderSelector = selectors[1];
-                        SliderHolder[] holders = this.blockMapper.GetComponentsInChildren<SliderHolder>();
-                        SliderHolder sliderHolder = holders[1];
-                        MSlider slider = sliderSelector.Slider;
-                        string name = slider.DisplayName;
-                        string key = slider.Key;
-                        float max = 4f;
-                        float value = slider.Value;
-                        sliderSelector.Slider = new MSlider(name, key, value, 0.5f, max, null, null, true, false);
-                        sliderSelector.Value = value;
-                        sliderHolder.SetValue(value);
                     }
                 }
                 this.refresh = false;
