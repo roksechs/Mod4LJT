@@ -64,7 +64,7 @@ namespace Mod4LJT.Regulation
         bool openURL = false;
         Rect windowRect = new Rect(25f, 125f, 525f, 100f);
         Rect windowRect2 = new Rect(700f, 400f, 400f, 100f);
-        Rect windowRect3 = new Rect(700f, 800f, 400f, 50f);
+        Rect windowRect3 = new Rect(700f, 125f, 400f, 50f);
         float labelWidth1 = 160f;
         float labelWidth2 = 75f;
         float labelWidth3 = 100f;
