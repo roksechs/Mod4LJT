@@ -29,7 +29,7 @@ namespace Mod4LJT
             }
             SceneManager.activeSceneChanged += (x, y) =>
             {
-                if (StatMaster.isMP)
+                if (y.buildIndex == 9)
                 {
                     this.playerLabels = GameObject.Find("HUD/MULTIPLAYER/PLAYER_LABELS");
                     this.DepthDisplayChange(0);

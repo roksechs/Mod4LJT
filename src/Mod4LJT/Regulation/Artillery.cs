@@ -23,7 +23,7 @@ namespace Mod4LJT.Regulation
             {
                 this.blockRestrictions = new Dictionary<int, BlockRestriction>()
             {
-                { (int) BlockType.Bomb,  new BlockRestriction(5, 251)},
+                { (int) BlockType.Bomb,  new BlockRestriction(5, this.MaxBlockCount)},
             };
                 foreach (var kvp in base.blockRestrictions)
                 {

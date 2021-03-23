@@ -29,18 +29,15 @@ namespace Mod4LJT.Regulation
                 this.refresh |= BlockMapper.CurrentInstance != this.blockMapper;
                 if (this.refresh)
                 {
-                    Mod.Log("1");
                     this.blockMapper = BlockMapper.CurrentInstance;
                     this.refresh &= this.blockMapper.IsBlock;
                     if (this.refresh) 
                     {
-                        Mod.Log("2");
                         this.block = this.blockMapper.Block;
                         this.blockCount = PlayerMachine.GetLocal().GetBlocksOfType((int)this.block.Prefab.Type).Count;
                         this.refresh &= this.machineInspector.regulation.ChildBlockRestriction.TryGetValue((int)this.block.Prefab.Type, out BlockRestriction blockRestriction);
                         if (this.refresh)
                         {
-                            Mod.Log("3");
                             this.selectors = this.blockMapper.GetComponentsInChildren<SliderSelector>();
                             this.holders = this.blockMapper.GetComponentsInChildren<SliderHolder>();
                             switch (this.block.Prefab.Type)

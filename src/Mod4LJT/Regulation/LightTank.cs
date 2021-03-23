@@ -25,11 +25,11 @@ namespace Mod4LJT.Regulation
                 { (int) BlockType.Flamethrower,  new BlockRestriction(0, 1)},
                 { (int) BlockType.Crossbow,  new BlockRestriction(0, 1)},
                 { (int) BlockType.Log,  new BlockRestriction(0, 10)},
-                { (int) BlockType.CogMediumPowered,  new BlockRestriction(0, 251, 0f, 4f)},
-                { (int) BlockType.Wheel,  new BlockRestriction(0, 251, 0f, 4f)},
-                { (int) BlockType.LargeWheel,  new BlockRestriction(0, 251, 0f, 4f)},
-                { (int) BlockType.SmallPropeller,  new BlockRestriction(0, 251)},
-                { (int) BlockType.Propeller,  new BlockRestriction(0, 251)},
+                { (int) BlockType.CogMediumPowered,  new BlockRestriction(0, 221, 0f, 4f)},
+                { (int) BlockType.Wheel,  new BlockRestriction(0, 221, 0f, 4f)},
+                { (int) BlockType.LargeWheel,  new BlockRestriction(0, 221, 0f, 4f)},
+                { (int) BlockType.SmallPropeller,  new BlockRestriction(0, 221)},
+                { (int) BlockType.Propeller,  new BlockRestriction(0, 221)},
             };
             foreach(var kvp in base.blockRestrictions)
             {

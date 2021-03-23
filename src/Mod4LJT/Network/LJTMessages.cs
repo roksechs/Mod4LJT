@@ -9,7 +9,7 @@ namespace Mod4LJT.Network
 
         public static void CreateMessageTypes()
         {
-            tankTypeMessage = ModNetworking.CreateMessageType(DataType.ByteArray);
+            tankTypeMessage = ModNetworking.CreateMessageType(DataType.ByteArray, DataType.Boolean);
             ModNetworking.Callbacks[tankTypeMessage] += LJTMachine.OnTankTypeMessageReceive;
         }
     }
