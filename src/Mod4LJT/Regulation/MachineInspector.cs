@@ -64,7 +64,7 @@ namespace Mod4LJT.Regulation
         bool openURL = false;
         Rect windowRect = new Rect(25f, 125f, 525f, 100f);
         Rect windowRect2 = new Rect(700f, 400f, 400f, 100f);
-        Rect windowRect3 = new Rect(700f, 800f, 400f, 100f);
+        Rect windowRect3 = new Rect(700f, 800f, 400f, 50f);
         float labelWidth1 = 160f;
         float labelWidth2 = 75f;
         float labelWidth3 = 100f;
@@ -78,6 +78,7 @@ namespace Mod4LJT.Regulation
             this.SetLanguage();
             StatMaster.hudHiddenChanged += () => this.hudToggle = !this.hudToggle;
             StartCoroutine(CheckVersion());
+            defaultStyle.wordWrap = true;
             nameStyle.wordWrap = true;
             defaultStyle.alignment = TextAnchor.MiddleCenter;
             nameStyle.alignment = TextAnchor.MiddleLeft;
@@ -161,19 +162,19 @@ namespace Mod4LJT.Regulation
                 if (this.uf)
                     this.windowRect2 = GUILayout.Window(32575340, this.windowRect2, new GUI.WindowFunction(this.UsageAndFunction), LocalisationFile.GetTranslatedString("UF"));
                 if (this.playerStats)
-                    this.windowRect3 = GUILayout.Window(32575341, this.windowRect3, new GUI.WindowFunction(this.StatusWindow), LocalisationFile.GetTranslatedString("UF"));
+                    this.windowRect3 = GUILayout.Window(32575341, this.windowRect3, new GUI.WindowFunction(this.StatusWindow), LocalisationFile.GetTranslatedString("PlayerStats"));
 
             }
         }
 
         public void UsageAndFunction(int windowId)
         {
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF1"), this.defaultStyle);
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF2"), this.defaultStyle);
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF3"), this.defaultStyle);
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF4"), this.defaultStyle);
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF5"), this.defaultStyle);
-            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF6"), this.defaultStyle);
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF1"), this.nameStyle);
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF2"), this.nameStyle);
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF3"), this.nameStyle);
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF4"), this.nameStyle);
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF5"), this.nameStyle);
+            GUILayout.Label("・" + LocalisationFile.GetTranslatedString("UF6"), this.nameStyle);
             GUI.DragWindow();
         }
 
@@ -189,12 +190,13 @@ namespace Mod4LJT.Regulation
             foreach (var kvp in LJTMachine.MachineDic)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(kvp.Key.Player.Name, this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(kvp.Key.Name, this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(LocalisationFile.GetTranslatedString(((TankType)kvp.Value.TankTypeInt).ToString()), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(kvp.Value.HasCompliance ? "OK" : "NO", kvp.Value.HasCompliance ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(kvp.Key.Player.Name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
+                GUILayout.Label(kvp.Key.Name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
+                GUILayout.Label(LocalisationFile.GetTranslatedString(((TankType)kvp.Value.TankTypeInt).ToString()), this.defaultStyle, GUILayout.Width(this.labelWidth3));
+                GUILayout.Label(kvp.Value.HasCompliance ? "OK" : "NO", kvp.Value.HasCompliance ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth3));
                 GUILayout.EndHorizontal();
             }
+            GUI.DragWindow();
         }
 
         public void MainWindow(int windowId)
@@ -208,7 +210,7 @@ namespace Mod4LJT.Regulation
             GUILayout.BeginHorizontal();
             this.openURL = GUILayout.Button(LocalisationFile.GetTranslatedString("Link"));
             GUILayout.FlexibleSpace();
-            this.playerStats = GUILayout.Toggle(this.playerStats, "PlayerStats");
+            this.playerStats = GUILayout.Toggle(this.playerStats, LocalisationFile.GetTranslatedString("PlayerStats"));
             GUILayout.Space(15f);
             this.uf = GUILayout.Toggle(this.uf, LocalisationFile.GetTranslatedString("UF"));
             GUILayout.Space(15f);

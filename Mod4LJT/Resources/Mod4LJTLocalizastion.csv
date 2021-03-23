@@ -28,3 +28,4 @@ Caution,Load a machine. If you want to build a new one delete this core-only mac
 Player,PLAYER,プレイヤー
 Machine,MACHINE,マシン
 Compliance,COMPLIANCE,レギュ遵守
+PlayerStats,PLAYERSTATS,プレイヤー情報
