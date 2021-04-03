@@ -157,7 +157,6 @@ namespace Mod4LJT.Regulation
                 }
                 this.weakPointCount = 0;
                 if (StatMaster.isMP) LJTMachine.MachineDic[PlayerMachine.GetLocal()].HasCompliance = this.hasCompliance;
-                this.hasCompliance = true;
                 this.windowRect = GUILayout.Window(32575339, this.windowRect, new GUI.WindowFunction(this.MainWindow), LocalisationFile.GetTranslatedString("Title"));
                 if (this.uf)
                     this.windowRect2 = GUILayout.Window(32575340, this.windowRect2, new GUI.WindowFunction(this.UsageAndFunction), LocalisationFile.GetTranslatedString("UF"));
@@ -201,10 +200,8 @@ namespace Mod4LJT.Regulation
 
         public void MainWindow(int windowId)
         {
-            if (!this.minimise)
-            {
-                this.RegulationCheck();
-            }
+            this.hasCompliance = true;
+            this.InspectBlocks();
             GUILayout.FlexibleSpace();
             GUILayout.Space(5f);
             GUILayout.BeginHorizontal();
@@ -219,29 +216,32 @@ namespace Mod4LJT.Regulation
             GUI.DragWindow(new Rect(0, 0, 10000f, 20f));
         }
 
-        public void RegulationCheck()
+        public void InspectBlocks()
         {
             if (!this.machine)
             {
                 GUILayout.Label(LocalisationFile.GetTranslatedString("Caution"), this.defaultStyle);
                 return;
             }
-            GUILayout.Space(5f);
-            GUILayout.BeginHorizontal();
-            this._tankTypeInt = GUILayout.SelectionGrid(_tankTypeInt, translatedNames, 3);
-            if (this._tankTypeInt != (int)this._tankType)
-                this.OnTypeChangeFromGUI(this._tankTypeInt);
-            GUILayout.EndHorizontal();
-            GUILayout.Space(5f);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Block"), this.nameStyle, GUILayout.Width(this.labelWidth1));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Minimum"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Maximum"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Current"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Power"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Judge"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.EndHorizontal();
-            GUILayout.Space(5f);
+            if (!this.minimise)
+            {
+                GUILayout.Space(5f);
+                GUILayout.BeginHorizontal();
+                this._tankTypeInt = GUILayout.SelectionGrid(_tankTypeInt, translatedNames, 3);
+                if (this._tankTypeInt != (int)this._tankType)
+                    this.OnTypeChangeFromGUI(this._tankTypeInt);
+                GUILayout.EndHorizontal();
+                GUILayout.Space(5f);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(LocalisationFile.GetTranslatedString("Block"), this.nameStyle, GUILayout.Width(this.labelWidth1));
+                GUILayout.Label(LocalisationFile.GetTranslatedString("Minimum"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(LocalisationFile.GetTranslatedString("Maximum"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(LocalisationFile.GetTranslatedString("Current"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(LocalisationFile.GetTranslatedString("Power"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(LocalisationFile.GetTranslatedString("Judge"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.EndHorizontal();
+                GUILayout.Space(5f);
+            }
             foreach (BlockBehaviour BB in this.machine.BuildingBlocks)
             {
                 if (!this.restrictedBlocksDic.ContainsKey((int)BB.Prefab.Type)) continue;
@@ -285,6 +285,7 @@ namespace Mod4LJT.Regulation
                         judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.ChildBlockRestriction[kvp.Key].maxPowers[0];
                         judge &= current >= min && current <= max;
                         this.hasCompliance &= judge;
+                        if (this.minimise) continue;
                         GUILayout.BeginHorizontal();
                         GUILayout.Label(ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper(), this.nameStyle, GUILayout.Width(this.labelWidth1));
                         GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
@@ -316,6 +317,7 @@ namespace Mod4LJT.Regulation
                         }
                         judge &= current >= min;
                         this.hasCompliance &= judge;
+                        if (this.minimise) continue;
                         GUILayout.BeginHorizontal();
                         GUILayout.Label((ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper()), this.nameStyle, GUILayout.Width(this.labelWidth1));
                         GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
@@ -332,6 +334,7 @@ namespace Mod4LJT.Regulation
                         judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.ChildBlockRestriction[kvp.Key].maxPowers[0];
                         judge &= current >= min && current <= max;
                         this.hasCompliance &= judge;
+                        if (this.minimise) continue;
                         GUILayout.BeginHorizontal();
                         GUILayout.Label(ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper(), this.nameStyle, GUILayout.Width(this.labelWidth1));
                         GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
@@ -348,6 +351,7 @@ namespace Mod4LJT.Regulation
                         judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.ChildBlockRestriction[kvp.Key].maxPowers[0];
                         judge &= current >= min && current <= max;
                         this.hasCompliance &= judge;
+                        if (this.minimise) continue;
                         GUILayout.BeginHorizontal();
                         GUILayout.Label(ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper(), this.nameStyle, GUILayout.Width(this.labelWidth1));
                         GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
@@ -362,28 +366,37 @@ namespace Mod4LJT.Regulation
                         continue;
                 }
             }
-            GUILayout.Space(5f);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("WeakPointBomb"), this.nameStyle, GUILayout.Width(this.labelWidth1));
-            GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Label(this.weakPointCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Space(this.labelWidth2);
+            if (!this.minimise)
+            {
+                GUILayout.Space(5f);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(LocalisationFile.GetTranslatedString("WeakPointBomb"), this.nameStyle, GUILayout.Width(this.labelWidth1));
+                GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(this.weakPointCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Space(this.labelWidth2);
+            }
             bool flag4 = this.weakPointCount == 1;
             this.hasCompliance &= flag4;
-            GUILayout.Label(flag4 ? "OK" : "NO", flag4 ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.EndHorizontal();
-            GUILayout.Space(5f);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Machine(All)"), this.nameStyle, GUILayout.Width(this.labelWidth1));
-            GUILayout.Label(0.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Label(this.regulation.MaxBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Label(this.machine.DisplayBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.Space(this.labelWidth2);
+            if (!this.minimise)
+            {
+                GUILayout.Label(flag4 ? "OK" : "NO", flag4 ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.EndHorizontal();
+                GUILayout.Space(5f);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(LocalisationFile.GetTranslatedString("Machine(All)"), this.nameStyle, GUILayout.Width(this.labelWidth1));
+                GUILayout.Label(0.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(this.regulation.MaxBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(this.machine.DisplayBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Space(this.labelWidth2);
+            }
             bool flag2 = this.regulation.MaxBlockCount >= this.machine.DisplayBlockCount;
             this.hasCompliance &= flag2;
-            GUILayout.Label(this.hasCompliance ? "OK" : "NO", this.hasCompliance ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-            GUILayout.EndHorizontal();
+            if (!this.minimise)
+            {
+                GUILayout.Label(this.hasCompliance ? "OK" : "NO", this.hasCompliance ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.EndHorizontal();
+            }
         }
 
         public override string Name => "MachineInspector";
