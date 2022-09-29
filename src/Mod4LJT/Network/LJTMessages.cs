@@ -1,5 +1,5 @@
-﻿using Modding;
-using Mod4LJT.Blocks;
+﻿using Mod4LJT.Blocks;
+using Modding;
 
 namespace Mod4LJT.Network
 {

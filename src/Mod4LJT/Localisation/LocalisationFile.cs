@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Modding;
+﻿using System.Collections.Generic;
 
 namespace Mod4LJT.Localisation
 {
@@ -17,9 +13,9 @@ namespace Mod4LJT.Localisation
         public static void ReadLocalisationFile()
         {
             localisationDic.Clear();
-            lines = ModIO.ReadAllLines(locatisationFilePath);
+            lines = Modding.ModIO.ReadAllLines(locatisationFilePath);
             languages = lines[0].Split(',');
-            for(int i = 1; i < lines.Length; i++)
+            for (int i = 1; i < lines.Length; i++)
             {
                 string[] strs = lines[i].Split(',');
                 localisationDic.Add(strs[0], strs);
@@ -28,7 +24,7 @@ namespace Mod4LJT.Localisation
 
         public static string GetTranslatedString(string key)
         {
-            if(localisationDic.TryGetValue(key, out string[] strs))
+            if (localisationDic.TryGetValue(key, out string[] strs))
                 return strs[languageInt];
             Mod.Warning("Cannot find in the localisation file: " + key);
             return key;

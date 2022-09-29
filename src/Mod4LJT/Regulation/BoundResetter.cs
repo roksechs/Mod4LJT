@@ -1,5 +1,5 @@
-﻿using Selectors;
-using Modding.Blocks;
+﻿using Modding.Blocks;
+using Selectors;
 
 namespace Mod4LJT.Regulation
 {
@@ -31,7 +31,7 @@ namespace Mod4LJT.Regulation
                 {
                     this.blockMapper = BlockMapper.CurrentInstance;
                     this.refresh &= this.blockMapper.IsBlock;
-                    if (this.refresh) 
+                    if (this.refresh)
                     {
                         this.block = this.blockMapper.Block;
                         this.blockCount = PlayerMachine.GetLocal().GetBlocksOfType((int)this.block.Prefab.Type).Count;

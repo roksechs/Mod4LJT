@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using Mod4LJT.Network;
 using Modding;
 using Modding.Blocks;
-using Mod4LJT.Network;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Mod4LJT.Blocks
 {

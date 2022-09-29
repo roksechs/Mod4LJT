@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Mod4LJT.Blocks;
+using Modding;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Modding;
-using Mod4LJT.Blocks;
 
 namespace Mod4LJT
 {
     class LJTPlayerLabelManager : SingleInstance<LJTPlayerLabelManager>
     {
         GameObject playerLabels;
-        readonly List<string> typeIconList = new List<string>() 
+        readonly List<string> typeIconList = new List<string>()
         {
             "LightTankIcon",
             "MediumTankIcon",
@@ -35,7 +35,7 @@ namespace Mod4LJT
                     this.DepthDisplayChange(0);
                 }
             };
-            StatMaster.hudHiddenChanged += () => 
+            StatMaster.hudHiddenChanged += () =>
             {
                 if (StatMaster.isMP)
                 {
@@ -44,7 +44,7 @@ namespace Mod4LJT
             };
             ModResource.OnAllResourcesLoaded += () =>
             {
-                for(int i = 0; i < this.typeIconList.Count; i++)
+                for (int i = 0; i < this.typeIconList.Count; i++)
                 {
                     Texture texture = ModResource.GetTexture(this.typeIconList[i]);
                     this.typeIconDic.Add(i, texture);
@@ -56,7 +56,7 @@ namespace Mod4LJT
         {
             if (StatMaster.isMP)
             {
-                foreach(var kvp in LJTMachine.MachineDic)
+                foreach (var kvp in LJTMachine.MachineDic)
                 {
                     this.ChangeTeamIcon(kvp.Key.Player.InternalObject, kvp.Value.TankTypeInt);
                 }
@@ -88,7 +88,7 @@ namespace Mod4LJT
                 if (NetworkScene.Instance.hud.playerLabelManager.Get(player, out PlayerLabel playerLabel))
                 {
                     GameObject teamIcon = playerLabel.transform.Find("Content/TeamIcon").gameObject;
-                    if(this.typeIconDic.TryGetValue(machineTypeInt, out Texture iconTexture))
+                    if (this.typeIconDic.TryGetValue(machineTypeInt, out Texture iconTexture))
                     {
                         teamIcon.GetComponent<MeshRenderer>().material.mainTexture = iconTexture;
                     }

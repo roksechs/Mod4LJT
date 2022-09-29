@@ -38,3 +38,51 @@ C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT 
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT Project\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CopyComplete
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT Project\src\Mod4LJT\obj\Debug\Mod4LJT.dll
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT Project\src\Mod4LJT\obj\Debug\Mod4LJT.pdb
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.AssemblyReference.cache
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CoreCompileInputs.cache
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.pdb
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Mod4LJT.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Mod4LJT.pdb
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Assembly-CSharp.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\DynamicText.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\UnityEngine.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\UnityEngine.UI.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Assembly-CSharp-firstpass.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\mcs.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\System.Threading.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Mono.Cecil.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\UnityEngine.Networking.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Open.Nat.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\RakNetSwig.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Ookii.Dialogs.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\ch.sycoforge.Decal.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Ionic.Zip.Unity.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\NATTraversalForUNET.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Newtonsoft.Json.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\System.Runtime.Serialization.dll
+C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CopyComplete
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Mod4LJT.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Mod4LJT.pdb
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Assembly-CSharp.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\DynamicText.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\UnityEngine.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\UnityEngine.UI.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Assembly-CSharp-firstpass.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\mcs.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\System.Threading.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Mono.Cecil.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\UnityEngine.Networking.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Open.Nat.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\RakNetSwig.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Ookii.Dialogs.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\ch.sycoforge.Decal.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Ionic.Zip.Unity.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\NATTraversalForUNET.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Newtonsoft.Json.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\System.Runtime.Serialization.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.AssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CopyComplete
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.dll
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.pdb

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using Modding.Blocks;
+﻿using Modding.Blocks;
+using UnityEngine;
 
 namespace Mod4LJT.Blocks
 {
