@@ -7,23 +7,24 @@ using System.Linq;
 
 namespace Mod4LJT.Blocks
 {
-    class BlockScriptManager : SingleInstance<BlockScriptManager>
+    static class BlockScriptManager
     {
-        public void AddBlockScript(Block block)
+        public static void AddBlockScript(Block block)
         {
             if (StatMaster.levelSimulating) return;
             switch (block.Prefab.InternalObject.Type)
             {
                 case BlockType.StartingBlock:
-                    this.AddTankTypeMenu(block);
+                    LJTMachine ljtMachine = null;
                     if (StatMaster.isMP)
                     {
                         if (!block.Machine.InternalObject.gameObject.GetComponent<LJTMachine>())
                         {
-                            LJTMachine ljtMachine = block.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
+                            ljtMachine = block.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
                             ljtMachine.PlayerMachine = block.Machine;
                         }
                     }
+                    AddTankTypeMenu(block, ljtMachine);
                     break;
                 case BlockType.Bomb:
                     WeakPointBomb weakPoint = block.GameObject.AddComponent<WeakPointBomb>();
@@ -46,7 +47,7 @@ namespace Mod4LJT.Blocks
             }
         }
 
-        void AddTankTypeMenu(Block block)
+        private static void AddTankTypeMenu(Block block, LJTMachine ljtMachine)
         {
             MMenu tankTypeMenu = block.InternalObject.AddMenu(new MMenu("tankTypeMenu", 5, Enum.GetNames(typeof(TankType)).ToList(), false));
             tankTypeMenu.ValueChanged += tankTypeInt =>
@@ -56,7 +57,10 @@ namespace Mod4LJT.Blocks
                     if (block.Machine == PlayerMachine.GetLocal())
                     {
                         MachineInspector.Instance.SetTankType((TankType)tankTypeInt);
-                        StartCoroutine(this.SetTankTypeCoroutine(block.Machine, tankTypeInt));
+                        if (ljtMachine != null)
+                        {
+                            ljtMachine.TankTypeInt = tankTypeInt;
+                        }
                     }
                 }
             };
@@ -70,16 +74,5 @@ namespace Mod4LJT.Blocks
                 }
             };
         }
-
-        IEnumerator SetTankTypeCoroutine(PlayerMachine playerMachine, int tankTypeInt)
-        {
-            yield return null;
-            if (LJTMachine.MachineDic.TryGetValue(playerMachine, out LJTMachine ljtMachine))
-            {
-                ljtMachine.TankTypeInt = tankTypeInt;
-            }
-        }
-
-        public override string Name => "Block Script Manager";
     }
 }

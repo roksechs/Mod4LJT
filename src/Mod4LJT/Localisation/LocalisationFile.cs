@@ -26,7 +26,7 @@ namespace Mod4LJT.Localisation
         {
             if (localisationDic.TryGetValue(key, out string[] strs))
                 return strs[languageInt];
-            Mod.Warning("Cannot find in the localisation file: " + key);
+            EntryPoint.Warning("Cannot find in the localisation file: " + key);
             return key;
         }
     }

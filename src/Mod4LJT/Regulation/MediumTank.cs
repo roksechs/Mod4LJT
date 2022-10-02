@@ -24,7 +24,7 @@ namespace Mod4LJT.Regulation
                 { (int) BlockType.Propeller,  new BlockRestriction(0, 10)},
                 { (int) BlockType.SmallPropeller,  new BlockRestriction(0, 10)},
             };
-            foreach (var kvp in base.blockRestrictions)
+            foreach (KeyValuePair<int, BlockRestriction> kvp in base.blockRestrictions)
             {
                 if (!this.blockRestrictions.ContainsKey(kvp.Key))
                 {

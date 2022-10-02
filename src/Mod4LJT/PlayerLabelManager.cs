@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Mod4LJT
 {
-    class LJTPlayerLabelManager : SingleInstance<LJTPlayerLabelManager>
+    class PlayerLabelManager : SingleInstance<PlayerLabelManager>
     {
         GameObject playerLabels;
         readonly List<string> typeIconList = new List<string>()
@@ -56,7 +56,7 @@ namespace Mod4LJT
         {
             if (StatMaster.isMP)
             {
-                foreach (var kvp in LJTMachine.MachineDic)
+                foreach (KeyValuePair<Modding.Blocks.PlayerMachine, LJTMachine> kvp in LJTMachine.MachineDic)
                 {
                     this.ChangeTeamIcon(kvp.Key.Player.InternalObject, kvp.Value.TankTypeInt);
                 }
@@ -65,7 +65,7 @@ namespace Mod4LJT
 
         public void DepthDisplayChange(int layer)
         {
-            foreach (UnityEngine.Transform transform1 in playerLabels.transform)
+            foreach (UnityEngine.Transform transform1 in this.playerLabels.transform)
             {
                 UnityEngine.Transform transform2 = transform1.Find("Background");
                 transform2.gameObject.layer = layer;

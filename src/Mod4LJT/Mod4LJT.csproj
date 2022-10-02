@@ -52,9 +52,16 @@
     <Compile Include="Blocks\BlockScriptManager.cs" />
     <Compile Include="Blocks\LJTMachine.cs" />
     <Compile Include="Blocks\WeakPointBomb.cs" />
-    <Compile Include="LJTPlayerLabelManager.cs" />
+    <Compile Include="Mod4LJT.cs" />
+    <Compile Include="PlayerLabelManager.cs" />
+    <Compile Include="Localisation\LocalisationManager.cs" />
     <Compile Include="Localisation\LocalisationFile.cs" />
     <Compile Include="Network\LJTMessages.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Regulation\BoundResetter.cs" />
     <Compile Include="Blocks\GrabberFix.cs" />
     <Compile Include="Regulation\BlockRestriction.cs" />
@@ -68,8 +75,14 @@
     <Compile Include="Regulation\LightTank.cs" />
     <Compile Include="Regulation\TankType.cs" />
     <Compile Include="Regulation\MachineInspector.cs" />
-    <Compile Include="Mod.cs" />
+    <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

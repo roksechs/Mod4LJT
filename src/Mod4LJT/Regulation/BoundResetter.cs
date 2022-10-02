@@ -18,9 +18,24 @@ namespace Mod4LJT.Regulation
         float min;
         float max;
         float value;
-        readonly MachineInspector machineInspector = MachineInspector.Instance;
         int blockCount;
         public bool refresh;
+
+        public void Start()
+        {
+            UIManager.onUIModeChanged += delegate (UIManager.UIMode uiMode)
+            {
+                EntryPoint.Log(uiMode.ToString());
+                if (uiMode.Equals(UIManager.UIMode.BlockMapper))
+                {
+
+                }
+            };
+            BlockMapper.onMapperOpen += delegate ()
+            {
+                EntryPoint.Log("Mapper Opened.");
+            };
+        }
 
         public void Update()
         {
@@ -35,7 +50,7 @@ namespace Mod4LJT.Regulation
                     {
                         this.block = this.blockMapper.Block;
                         this.blockCount = PlayerMachine.GetLocal().GetBlocksOfType((int)this.block.Prefab.Type).Count;
-                        this.refresh &= this.machineInspector.regulation.ChildBlockRestriction.TryGetValue((int)this.block.Prefab.Type, out BlockRestriction blockRestriction);
+                        this.refresh &= MachineInspector.Instance.regulation.ChildBlockRestriction.TryGetValue((int)this.block.Prefab.Type, out BlockRestriction blockRestriction);
                         if (this.refresh)
                         {
                             this.selectors = this.blockMapper.GetComponentsInChildren<SliderSelector>();
@@ -79,8 +94,8 @@ namespace Mod4LJT.Regulation
                             if (this.blockCount <= blockRestriction.maxNum && this.blockCount > 0)
                             {
                                 this.sliderSelector.Slider = new MSlider(this.sliderName, this.key, this.value, this.min, this.max, null, null, true, false);
-                                this.sliderSelector.Value = value;
-                                this.sliderHolder.SetValue(value);
+                                this.sliderSelector.Value = this.value;
+                                this.sliderHolder.SetValue(this.value);
                             }
                         }
                     }

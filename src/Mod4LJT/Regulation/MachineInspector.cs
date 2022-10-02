@@ -77,21 +77,21 @@ namespace Mod4LJT.Regulation
         {
             this.SetLanguage();
             StatMaster.hudHiddenChanged += () => this.hudToggle = !this.hudToggle;
-            StartCoroutine(CheckVersion());
-            defaultStyle.wordWrap = true;
-            nameStyle.wordWrap = true;
-            defaultStyle.alignment = TextAnchor.MiddleCenter;
-            nameStyle.alignment = TextAnchor.MiddleLeft;
-            noStyle.alignment = TextAnchor.MiddleCenter;
-            noStyle.normal.textColor = Color.red;
-            defaultStyle.normal.textColor = Color.white;
-            nameStyle.normal.textColor = Color.white;
+            this.StartCoroutine(this.CheckVersion());
+            this.defaultStyle.wordWrap = true;
+            this.nameStyle.wordWrap = true;
+            this.defaultStyle.alignment = TextAnchor.MiddleCenter;
+            this.nameStyle.alignment = TextAnchor.MiddleLeft;
+            this.noStyle.alignment = TextAnchor.MiddleCenter;
+            this.noStyle.normal.textColor = Color.red;
+            this.defaultStyle.normal.textColor = Color.white;
+            this.nameStyle.normal.textColor = Color.white;
         }
 
         IEnumerator CheckVersion()
         {
             yield return new WaitForSecondsRealtime(1f);
-            Mod.Log("version " + Mods.GetVersion(new Guid("4713d96a-ce6c-4556-8bf4-7dc838b52973")));
+            EntryPoint.Log("version " + Mods.GetVersion(new Guid("4713d96a-ce6c-4556-8bf4-7dc838b52973")));
         }
 
         public void SetTankType(TankType tankType)
@@ -99,7 +99,7 @@ namespace Mod4LJT.Regulation
             this.machine = Machine.Active();
             this._tankType = tankType;
             this._tankTypeInt = (int)tankType;
-            this.regulations.TryGetValue((int)_tankType, out this.regulation);
+            this.regulations.TryGetValue((int)this._tankType, out this.regulation);
             BoundResetter.Instance.refresh = true;
             if (this._tankTypeInt == 5)
             {
@@ -126,7 +126,7 @@ namespace Mod4LJT.Regulation
             }
             for (int i = 0; i < 6; i++)
             {
-                this.translatedNames[i] = LocalisationFile.GetTranslatedString(typeNames[i]);
+                this.translatedNames[i] = LocalisationFile.GetTranslatedString(this.typeNames[i]);
             }
         }
 
@@ -138,7 +138,7 @@ namespace Mod4LJT.Regulation
             }
             if (this.minimise)
                 this.windowRect.size = new Vector2(200f, 10f);
-            if (openURL)
+            if (this.openURL)
             {
                 Application.OpenURL("https://scrapbox.io/bsgjapancom-28777692/Lazy%E5%BC%8F%E3%82%B8%E3%83%A3%E3%83%B3%E3%82%AF%E3%82%BF%E3%83%B3%E3%82%AF%EF%BC%88LJT%EF%BC%89");
                 this.openURL = false;
@@ -148,20 +148,20 @@ namespace Mod4LJT.Regulation
         public void OnGUI()
         {
             if (StatMaster.SimulationState >= SimulationState.GlobalSimulation || StatMaster.inMenu || StatMaster.isMainMenu || (StatMaster.SimulationState == SimulationState.SpectatorMode && StatMaster.isMP)) return;
-            if (hudToggle)
+            if (this.hudToggle)
             {
-                foreach (var kvp in this.restrictedBlocksDic)
+                foreach (KeyValuePair<int, BlockCount> kvp in this.restrictedBlocksDic)
                 {
                     kvp.Value.currentCount = 0;
                     kvp.Value.highestPowerValue = 0;
                 }
                 this.weakPointCount = 0;
                 if (StatMaster.isMP) LJTMachine.MachineDic[PlayerMachine.GetLocal()].HasCompliance = this.hasCompliance;
-                this.windowRect = GUILayout.Window(32575339, this.windowRect, new GUI.WindowFunction(this.MainWindow), LocalisationFile.GetTranslatedString("Title"));
+                this.windowRect = GUILayout.Window(32575339, this.windowRect, new GUI.WindowFunction(this.MainWindow), Properties.Resources.Title);
                 if (this.uf)
                     this.windowRect2 = GUILayout.Window(32575340, this.windowRect2, new GUI.WindowFunction(this.UsageAndFunction), LocalisationFile.GetTranslatedString("UF"));
                 if (this.playerStats)
-                    this.windowRect3 = GUILayout.Window(32575341, this.windowRect3, new GUI.WindowFunction(this.StatusWindow), LocalisationFile.GetTranslatedString("PlayerStats"));
+                    this.windowRect3 = GUILayout.Window(32575341, this.windowRect3, new GUI.WindowFunction(this.StatusWindow), Properties.Resources.PlayerStats);
 
             }
         }
@@ -180,13 +180,13 @@ namespace Mod4LJT.Regulation
         public void StatusWindow(int windowId)
         {
             GUILayout.BeginHorizontal();
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Player"), this.defaultStyle, GUILayout.Width(this.labelWidth3));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Machine"), this.defaultStyle, GUILayout.Width(this.labelWidth3));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("TankType"), this.defaultStyle, GUILayout.Width(this.labelWidth3));
-            GUILayout.Label(LocalisationFile.GetTranslatedString("Compliance"), this.defaultStyle, GUILayout.Width(this.labelWidth3));
+            GUILayout.Label(Properties.Resources.Player, this.defaultStyle, GUILayout.Width(this.labelWidth3));
+            GUILayout.Label(Properties.Resources.MachineAll, this.defaultStyle, GUILayout.Width(this.labelWidth3));
+            GUILayout.Label(Properties.Resources.TankType, this.defaultStyle, GUILayout.Width(this.labelWidth3));
+            GUILayout.Label(Properties.Resources.Compliance, this.defaultStyle, GUILayout.Width(this.labelWidth3));
             GUILayout.EndHorizontal();
             GUILayout.Space(5f);
-            foreach (var kvp in LJTMachine.MachineDic)
+            foreach (KeyValuePair<PlayerMachine, LJTMachine> kvp in LJTMachine.MachineDic)
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(kvp.Key.Player.Name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
@@ -207,11 +207,11 @@ namespace Mod4LJT.Regulation
             GUILayout.BeginHorizontal();
             this.openURL = GUILayout.Button(LocalisationFile.GetTranslatedString("Link"));
             GUILayout.FlexibleSpace();
-            this.playerStats = GUILayout.Toggle(this.playerStats, LocalisationFile.GetTranslatedString("PlayerStats"));
+            this.playerStats = GUILayout.Toggle(this.playerStats, Properties.Resources.PlayerStats);
             GUILayout.Space(15f);
             this.uf = GUILayout.Toggle(this.uf, LocalisationFile.GetTranslatedString("UF"));
             GUILayout.Space(15f);
-            this.minimise = GUILayout.Toggle(this.minimise, LocalisationFile.GetTranslatedString("Minimise"));
+            this.minimise = GUILayout.Toggle(this.minimise, Properties.Resources.Minimise);
             GUILayout.EndHorizontal();
             GUI.DragWindow(new Rect(0, 0, 10000f, 20f));
         }
@@ -227,18 +227,18 @@ namespace Mod4LJT.Regulation
             {
                 GUILayout.Space(5f);
                 GUILayout.BeginHorizontal();
-                this._tankTypeInt = GUILayout.SelectionGrid(_tankTypeInt, translatedNames, 3);
+                this._tankTypeInt = GUILayout.SelectionGrid(this._tankTypeInt, this.translatedNames, 3);
                 if (this._tankTypeInt != (int)this._tankType)
                     this.OnTypeChangeFromGUI(this._tankTypeInt);
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5f);
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(LocalisationFile.GetTranslatedString("Block"), this.nameStyle, GUILayout.Width(this.labelWidth1));
-                GUILayout.Label(LocalisationFile.GetTranslatedString("Minimum"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(LocalisationFile.GetTranslatedString("Maximum"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(LocalisationFile.GetTranslatedString("Current"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(LocalisationFile.GetTranslatedString("Power"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(LocalisationFile.GetTranslatedString("Judge"), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(Properties.Resources.Block, this.nameStyle, GUILayout.Width(this.labelWidth1));
+                GUILayout.Label(Properties.Resources.Minimum, this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(Properties.Resources.Maximum, this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(Properties.Resources.Current, this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(Properties.Resources.Power, this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                GUILayout.Label(Properties.Resources.Judge, this.defaultStyle, GUILayout.Width(this.labelWidth2));
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5f);
             }
@@ -269,7 +269,7 @@ namespace Mod4LJT.Regulation
                         continue;
                 }
             }
-            foreach (var kvp in this.restrictedBlocksDic)
+            foreach (KeyValuePair<int, BlockCount> kvp in this.restrictedBlocksDic)
             {
                 int min;
                 int max;
@@ -370,7 +370,7 @@ namespace Mod4LJT.Regulation
             {
                 GUILayout.Space(5f);
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(LocalisationFile.GetTranslatedString("WeakPointBomb"), this.nameStyle, GUILayout.Width(this.labelWidth1));
+                GUILayout.Label(Properties.Resources.WeakPointBomb, this.nameStyle, GUILayout.Width(this.labelWidth1));
                 GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
                 GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
                 GUILayout.Label(this.weakPointCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
@@ -384,7 +384,7 @@ namespace Mod4LJT.Regulation
                 GUILayout.EndHorizontal();
                 GUILayout.Space(5f);
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(LocalisationFile.GetTranslatedString("Machine(All)"), this.nameStyle, GUILayout.Width(this.labelWidth1));
+                GUILayout.Label(Properties.Resources.MachineAll, this.nameStyle, GUILayout.Width(this.labelWidth1));
                 GUILayout.Label(0.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
                 GUILayout.Label(this.regulation.MaxBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
                 GUILayout.Label(this.machine.DisplayBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));

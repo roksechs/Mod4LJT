@@ -20,7 +20,7 @@
             {
                 { (int) BlockType.Bomb,  new BlockRestriction(5, this.MaxBlockCount)},
             };
-                foreach (var kvp in base.blockRestrictions)
+                foreach (KeyValuePair<int, BlockRestriction> kvp in base.blockRestrictions)
                 {
                     if (!this.blockRestrictions.ContainsKey(kvp.Key))
                     {

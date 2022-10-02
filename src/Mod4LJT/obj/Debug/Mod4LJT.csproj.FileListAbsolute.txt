@@ -86,3 +86,5 @@ C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CopyComplete
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.dll
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.pdb
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.Properties.Resources.resources
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.GenerateResource.cache

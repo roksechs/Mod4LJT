@@ -18,16 +18,16 @@ namespace Mod4LJT.Blocks
                     {
                         if (ljtMachine.TankTypeInt == 5) return;
                         this.joint = this.GetComponent<Joint>();
-                        joint.breakForce = 20000f;
-                        joint.breakTorque = 20000f;
+                        this.joint.breakForce = 20000f;
+                        this.joint.breakTorque = 20000f;
                     }
                 }
                 else
                 {
                     if (MachineInspector.Instance.isJunkTank) return;
                     this.joint = this.GetComponent<Joint>();
-                    joint.breakForce = 20000f;
-                    joint.breakTorque = 20000f;
+                    this.joint.breakForce = 20000f;
+                    this.joint.breakTorque = 20000f;
                 }
             }
         }
