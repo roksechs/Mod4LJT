@@ -11,7 +11,7 @@ namespace Mod4LJT.Regulation
             if (BlockMapper.CurrentInstance.IsBlock)
             {
                 int blockCount = PlayerMachine.GetLocal().GetBlocksOfType((int)BlockMapper.CurrentInstance.Block.Prefab.Type).Count;
-                if (Mod.machineInspectorUI.regulation.BlockRestriction.TryGetValue((int)BlockMapper.CurrentInstance.Block.Prefab.Type, out BlockRestriction blockRestriction))
+                if (Mod.machineInspectorUI.LJTMachine.Regulation.BlockRestriction.TryGetValue((int)BlockMapper.CurrentInstance.Block.Prefab.Type, out BlockRestriction blockRestriction))
                 {
                     SliderSelector[] selectors = BlockMapper.CurrentInstance.GetComponentsInChildren<SliderSelector>();
                     SliderHolder[] holders = BlockMapper.CurrentInstance.GetComponentsInChildren<SliderHolder>();

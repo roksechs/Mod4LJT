@@ -2,7 +2,7 @@
 
 namespace Mod4LJT.Regulation
 {
-    class LightTank : CommonRegulation
+    class LightTank : AbstractRegulation
     {
         public override int MaxBlockCount => 221;
         private static readonly LightTank instance = new LightTank();

@@ -61,15 +61,6 @@ namespace Mod4LJT.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ARTILLERY.
-        /// </summary>
-        internal static string Artillery {
-            get {
-                return ResourceManager.GetString("Artillery", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to BLOCK.
         /// </summary>
         internal static string Block {
@@ -219,6 +210,15 @@ namespace Mod4LJT.Properties {
         internal static string Power {
             get {
                 return ResourceManager.GetString("Power", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ARTILLERY.
+        /// </summary>
+        internal static string SelfPropelledArtillery {
+            get {
+                return ResourceManager.GetString("SelfPropelledArtillery", resourceCulture);
             }
         }
         

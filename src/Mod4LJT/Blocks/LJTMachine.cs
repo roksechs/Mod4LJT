@@ -7,37 +7,41 @@ namespace Mod4LJT.Blocks
 {
     class LJTMachine : MonoBehaviour
     {
-        PlayerMachine playerMachine;
         private Machine machine;
-        public MMenu tankTypeMenu;
-        bool hasCompliance;
-        public static readonly Dictionary<PlayerMachine, LJTMachine> MachineDic = new Dictionary<PlayerMachine, LJTMachine>();
-
-        public PlayerMachine PlayerMachine { get => this.playerMachine; set => this.playerMachine = value; }
-        public int TankTypeInt => this.tankTypeMenu.Value;
-        // TODO Deal with a HasCompliance problem
-        public bool HasCompliance { get => this.hasCompliance; set => this.hasCompliance = value; }
-
-        void Awake()
+        private MMenu tankTypeMenu;
+        private bool hasCompliance;
+        public static readonly Dictionary<Machine, LJTMachine> MachineDic = new Dictionary<Machine, LJTMachine>();
+        static readonly Dictionary<int, AbstractRegulation> regulations = new Dictionary<int, AbstractRegulation>()
         {
-            this.machine = this.gameObject.GetComponent<Machine>();
-        }
+            { (int) TankType.LightTank, LightTank.Instance },
+            { (int) TankType.MediumTank, MediumTank.Instance },
+            { (int) TankType.HeavyTank, HeavyTank.Instance },
+            { (int) TankType.Destroyer, Destroyer.Instance },
+            { (int) TankType.SelfPropelledArtillery, SelfPropelledArtillery.Instance },
+            { (int) TankType.JunkTank, JunkTank.Instance },
+        };
+
+        public Machine Machine { get => this.machine; set => this.machine = value; }
+        public MMenu TankTypeMenu { set => this.tankTypeMenu = value; }
+        public TankType TankType => (TankType)this.tankTypeMenu.Value;
+        public AbstractRegulation Regulation => regulations[(int)this.TankType];
+        public bool HasCompliance { get => this.hasCompliance; set => this.hasCompliance = value; }
 
         void Start()
         {
-            if (LJTMachine.MachineDic.ContainsKey(this.playerMachine))
+            if (LJTMachine.MachineDic.ContainsKey(this.machine))
             {
-                LJTMachine.MachineDic[this.playerMachine] = this;
+                LJTMachine.MachineDic[this.machine] = this;
             }
             else
             {
-                LJTMachine.MachineDic.Add(this.playerMachine, this);
+                LJTMachine.MachineDic.Add(this.machine, this);
             }
         }
 
         void OnDestroy()
         {
-            LJTMachine.MachineDic.Remove(this.playerMachine);
+            LJTMachine.MachineDic.Remove(this.machine);
         }
     }
 }

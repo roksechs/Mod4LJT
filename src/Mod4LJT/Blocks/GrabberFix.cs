@@ -12,7 +12,7 @@ namespace Mod4LJT.Blocks
         {
             if (StatMaster.levelSimulating && (!StatMaster.isClient || StatMaster.isLocalSim))
             {
-                if (!this.ljtMachine.tankTypeMenu.Value.Equals((int)TankType.JunkTank))
+                if (!this.ljtMachine.TankType.Equals(TankType.JunkTank))
                 {
                     this.joint = this.gameObject.GetComponent<Joint>();
                     this.joint.breakForce = 20000f;

@@ -2,7 +2,7 @@
 
 namespace Mod4LJT.Regulation
 {
-    class JunkTank : CommonRegulation
+    class JunkTank : AbstractRegulation
     {
         public override int MaxBlockCount => 251;
         private static readonly JunkTank instance = new JunkTank();

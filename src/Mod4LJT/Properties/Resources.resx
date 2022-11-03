@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Artillery" xml:space="preserve">
-    <value>ARTILLERY</value>
-  </data>
   <data name="Block" xml:space="preserve">
     <value>BLOCK</value>
   </data>
@@ -170,6 +167,9 @@
   </data>
   <data name="Power" xml:space="preserve">
     <value>POWER</value>
+  </data>
+  <data name="SelfPropelledArtillery" xml:space="preserve">
+    <value>ARTILLERY</value>
   </data>
   <data name="TankType" xml:space="preserve">
     <value>TANK TYPE</value>

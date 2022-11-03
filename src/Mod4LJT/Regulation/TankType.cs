@@ -6,7 +6,7 @@
         MediumTank,
         HeavyTank,
         Destroyer,
-        Artillery,
+        SelfPropelledArtillery,
         JunkTank
     }
 }

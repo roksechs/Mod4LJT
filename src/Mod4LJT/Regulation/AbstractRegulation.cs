@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Mod4LJT.Regulation
 {
-    abstract class CommonRegulation
+    abstract class AbstractRegulation
     {
         public abstract int MaxBlockCount { get; }
         public abstract Dictionary<int, BlockRestriction> BlockRestriction { get; }
 
         protected Dictionary<int, BlockRestriction> blockRestriction;
 
-        public CommonRegulation()
+        public AbstractRegulation()
         {
             this.blockRestriction = new Dictionary<int, BlockRestriction>()
             {
@@ -44,7 +44,7 @@ namespace Mod4LJT.Regulation
             return delegate (List<BlockBehaviour> blockBehaviours)
             {
                 bool countOk = blockBehaviours.Count >= min && blockBehaviours.Count <= max;
-                foreach(BlockBehaviour blockBehaviour in blockBehaviours)
+                foreach (BlockBehaviour blockBehaviour in blockBehaviours)
                 {
 
                 }

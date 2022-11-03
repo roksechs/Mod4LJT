@@ -19,8 +19,9 @@ namespace Mod4LJT
 
             gameObject = new GameObject("Mod4LJT");
             gameObject.AddComponent<UI.PlayerLabelManager>();
+            machineInspectorUI = gameObject.AddComponent<MachineInspectorUI>();
 
-            RegisterDelegate();
+            RegisterToDelegate();
 
             LocalisationFile.ReadLocalisationFile();
             LJTMessages.CreateMessageTypes();
@@ -28,15 +29,15 @@ namespace Mod4LJT
             UnityEngine.Object.DontDestroyOnLoad(gameObject);
         }
 
-        private static void RegisterDelegate()
+        private static void RegisterToDelegate()
         {
-            Events.OnBlockInit += BlockScriptManager.Instance.AddBlockScript;
+            ReferenceMaster.onBlockPlaced += BlockIntialiser.Instance.AddBlockScript;
 
-            ReferenceMaster.onSceneLoaded += delegate ()
-            {
-                GameObject gameObjectScene = new GameObject("Mod4LJT_Scene");
-                machineInspectorUI = gameObjectScene.AddComponent<MachineInspectorUI>();
-            };
+            //ReferenceMaster.onSceneLoaded += delegate ()
+            //{
+            //    if (StatMaster.isHosting || StatMaster.isClient)
+            //        machineInspectorUI.enabled = true;
+            //};
 
             BlockMapper.onMapperOpen += BoundResetter.ResetBound;
         }

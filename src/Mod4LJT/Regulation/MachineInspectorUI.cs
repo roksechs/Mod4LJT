@@ -1,7 +1,6 @@
 ﻿using Mod4LJT.Blocks;
 using Mod4LJT.ModLocalisation;
 using Modding.Blocks;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,16 +8,11 @@ namespace Mod4LJT.Regulation
 {
     delegate void TypeChangeDelegate(int index);
 
-    class MachineInspectorUI : MonoBehaviour, Localisation.ILocalisationAware
+    class MachineInspectorUI : SingleInstance<MachineInspectorUI>, Localisation.ILocalisationAware
     {
-        TankType _tankType;
-        readonly string[] typeNames = Enum.GetNames(typeof(TankType));
-        public string[] translatedNames = new string[6];
-        public CommonRegulation regulation;
-        Machine machine;
+        LJTMachine ljtMachine;
         bool hasCompliance;
         public int weakPointCount = 0;
-        public bool isJunkTank = false;
         readonly Dictionary<int, BlockCount> restrictedBlocksDic = new Dictionary<int, BlockCount>()
         {
             { (int) BlockType.Bomb, new BlockCount() },
@@ -44,16 +38,6 @@ namespace Mod4LJT.Regulation
             { (int) BlockType.BuildNode, new BlockCount() },
             { (int) BlockType.BuildSurface, new BlockCount() },
         };
-        readonly Dictionary<int, CommonRegulation> regulations = new Dictionary<int, CommonRegulation>()
-        {
-            { (int) TankType.LightTank, LightTank.Instance },
-            { (int) TankType.MediumTank, MediumTank.Instance },
-            { (int) TankType.HeavyTank, HeavyTank.Instance },
-            { (int) TankType.Destroyer, Destroyer.Instance },
-            { (int) TankType.Artillery, Mod4LJT.Regulation.Artillery.Instance },
-            { (int) TankType.JunkTank, JunkTank.Instance },
-        };
-        int _tankTypeInt = 0;
         bool hudToggle = true;
         bool minimise = false;
         bool uf = false;
@@ -68,6 +52,11 @@ namespace Mod4LJT.Regulation
         readonly GUIStyle noStyle = new GUIStyle();
         readonly GUIStyle defaultStyle = new GUIStyle();
         readonly GUIStyle nameStyle = new GUIStyle();
+
+        public LJTMachine LJTMachine { get => this.ljtMachine; set => this.ljtMachine = value; }
+
+        public override string Name => "MachineInspectorUI";
+
         public event TypeChangeDelegate OnTypeChangeFromGUI;
 
         void Start()
@@ -84,22 +73,6 @@ namespace Mod4LJT.Regulation
             this.nameStyle.normal.textColor = Color.white;
         }
 
-        public void SetTankType(TankType tankType)
-        {
-            this.machine = Machine.Active();
-            this._tankType = tankType;
-            this._tankTypeInt = (int)tankType;
-            this.regulations.TryGetValue((int)this._tankType, out this.regulation);
-            if (this._tankTypeInt == 5)
-            {
-                this.isJunkTank = true;
-            }
-            else
-            {
-                this.isJunkTank = false;
-            }
-        }
-
         void SetLanguage()
         {
             switch (OptionsMaster.BesiegeConfig.Language)
@@ -111,10 +84,6 @@ namespace Mod4LJT.Regulation
                 case "Japanese":
                     LocalisationFile.languageInt = 2;
                     break;
-            }
-            for (int i = 0; i < 6; i++)
-            {
-                this.translatedNames[i] = LocalisationFile.GetTranslatedString(this.typeNames[i]);
             }
         }
 
@@ -131,16 +100,14 @@ namespace Mod4LJT.Regulation
 
         public void OnGUI()
         {
-            if (StatMaster.SimulationState >= SimulationState.GlobalSimulation || StatMaster.inMenu || StatMaster.isMainMenu || (StatMaster.SimulationState == SimulationState.SpectatorMode && StatMaster.isMP)) return;
-            if (this.hudToggle)
+            if (StatMaster.PlayMode.Equals(BesiegePlayMode.BuildMode) && this.hudToggle)
             {
-                foreach (KeyValuePair<int, BlockCount> kvp in this.restrictedBlocksDic)
+                foreach (BlockCount blockCount in this.restrictedBlocksDic.Values)
                 {
-                    kvp.Value.currentCount = 0;
-                    kvp.Value.highestPowerValue = 0;
+                    blockCount.currentCount = 0;
+                    blockCount.highestPowerValue = 0;
                 }
                 this.weakPointCount = 0;
-                if (StatMaster.isMP) LJTMachine.MachineDic[PlayerMachine.GetLocal()].HasCompliance = this.hasCompliance;
                 this.windowRect = GUILayout.Window(32575339, this.windowRect, new GUI.WindowFunction(this.MainWindow), Properties.Resources.Title);
                 if (this.uf)
                     this.windowRect2 = GUILayout.Window(32575340, this.windowRect2, new GUI.WindowFunction(this.UsageAndFunction), LocalisationFile.GetTranslatedString("UF"));
@@ -170,12 +137,12 @@ namespace Mod4LJT.Regulation
             GUILayout.Label(Properties.Resources.Compliance, this.defaultStyle, GUILayout.Width(this.labelWidth3));
             GUILayout.EndHorizontal();
             GUILayout.Space(5f);
-            foreach (KeyValuePair<PlayerMachine, LJTMachine> kvp in LJTMachine.MachineDic)
+            foreach (KeyValuePair<Machine, LJTMachine> kvp in LJTMachine.MachineDic)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(kvp.Key.Player.Name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
+                GUILayout.Label(Playerlist.GetPlayer(kvp.Key.PlayerID).name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
                 GUILayout.Label(kvp.Key.Name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
-                GUILayout.Label(LocalisationFile.GetTranslatedString(((TankType)kvp.Value.TankTypeInt).ToString()), this.defaultStyle, GUILayout.Width(this.labelWidth3));
+                GUILayout.Label(LocalisationFile.GetTranslatedString(kvp.Value.TankType.ToString()), this.defaultStyle, GUILayout.Width(this.labelWidth3));
                 GUILayout.Label(kvp.Value.HasCompliance ? "OK" : "NO", kvp.Value.HasCompliance ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth3));
                 GUILayout.EndHorizontal();
             }
@@ -202,184 +169,192 @@ namespace Mod4LJT.Regulation
 
         public void InspectBlocks()
         {
-            if (!this.machine)
+            if (this.ljtMachine)
+            {
+                if (!this.minimise)
+                {
+                    GUILayout.Space(5f);
+                    GUILayout.BeginHorizontal();
+                    int tankTypeInt = GUILayout.SelectionGrid((int)this.ljtMachine.TankType, new string[] {
+                        Properties.Resources.LightTank, Properties.Resources.MediumTank, Properties.Resources.HeavyTank,
+                        Properties.Resources.Destroyer, Properties.Resources.SelfPropelledArtillery, Properties.Resources.JunkTank,
+                    }, 3);
+                    if (this.ljtMachine.TankType.Equals((TankType)tankTypeInt))
+                        this.OnTypeChangeFromGUI(tankTypeInt);
+                    GUILayout.EndHorizontal();
+                    GUILayout.Space(5f);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(Properties.Resources.Block, this.nameStyle, GUILayout.Width(this.labelWidth1));
+                    GUILayout.Label(Properties.Resources.Minimum, this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Label(Properties.Resources.Maximum, this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Label(Properties.Resources.Current, this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Label(Properties.Resources.Power, this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Label(Properties.Resources.Judge, this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.EndHorizontal();
+                    GUILayout.Space(5f);
+                }
+                foreach (BlockBehaviour BB in this.ljtMachine.Machine.BuildingBlocks)
+                {
+                    if (!this.restrictedBlocksDic.ContainsKey((int)BB.Prefab.Type)) continue;
+                    this.restrictedBlocksDic[(int)BB.Prefab.Type].currentCount++;
+                    switch (BB.Prefab.Type)
+                    {
+                        case BlockType.Cannon:
+                        case BlockType.ShrapnelCannon:
+                            if (this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue < (BB as CanonBlock).StrengthSlider.Value)
+                                this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue = (BB as CanonBlock).StrengthSlider.Value;
+                            continue;
+                        case BlockType.CogMediumPowered:
+                        case BlockType.Wheel:
+                        case BlockType.LargeWheel:
+                            if (this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue < (BB as CogMotorControllerHinge).SpeedSlider.Value)
+                                this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue = (BB as CogMotorControllerHinge).SpeedSlider.Value;
+                            continue;
+                        case BlockType.Rocket:
+                            if ((BB as TimedRocket).PowerSlider.Value <= 0.5f)
+                                this.restrictedBlocksDic[(int)BB.Prefab.Type].currentCount--;
+                            continue;
+                        case BlockType.Bomb:
+                            WeakPointBomb weakPointBomb;
+                            if ((weakPointBomb = BB.gameObject.GetComponent<WeakPointBomb>()) != null && weakPointBomb.isActive)
+                                this.weakPointCount++;
+
+                            continue;
+                    }
+                }
+                foreach (KeyValuePair<int, BlockCount> kvp in this.restrictedBlocksDic)
+                {
+                    int min;
+                    int max;
+                    int current;
+                    bool powerFlag;
+                    bool judge;
+                    switch (kvp.Key)
+                    {
+                        case (int)BlockType.Propeller:
+                            min = this.ljtMachine.Regulation.BlockRestriction[kvp.Key].minCount;
+                            max = this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxCount;
+                            current = kvp.Value.currentCount + this.restrictedBlocksDic[(int)BlockType.SmallPropeller].currentCount;
+                            judge = powerFlag = kvp.Value.highestPowerValue <= this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxPowers[0];
+                            judge &= current >= min && current <= max;
+                            this.hasCompliance &= judge;
+                            if (this.minimise) continue;
+                            GUILayout.BeginHorizontal();
+                            GUILayout.Label(ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper(), this.nameStyle, GUILayout.Width(this.labelWidth1));
+                            GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(max.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(current.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Space(this.labelWidth2);
+                            GUILayout.Label(judge ? "OK" : "NO", judge ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.EndHorizontal();
+                            continue;
+                        case (int)BlockType.SmallPropeller:
+                        case (int)BlockType.BuildEdge:
+                        case (int)BlockType.BuildNode:
+                            continue;
+                        case (int)BlockType.Cannon:
+                            min = this.ljtMachine.Regulation.BlockRestriction[kvp.Key].minCount;
+                            max = this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxCount;
+                            current = kvp.Value.currentCount;
+                            if (current == 0)
+                            {
+                                judge = powerFlag = kvp.Value.highestPowerValue <= this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxPowers[0];
+                            }
+                            else if (current <= max)
+                            {
+                                judge = powerFlag = kvp.Value.highestPowerValue <= this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxPowers[current - 1];
+                            }
+                            else
+                            {
+                                judge = powerFlag = false;
+                            }
+                            judge &= current >= min;
+                            this.hasCompliance &= judge;
+                            if (this.minimise) continue;
+                            GUILayout.BeginHorizontal();
+                            GUILayout.Label((ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper()), this.nameStyle, GUILayout.Width(this.labelWidth1));
+                            GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(max.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(current.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(powerFlag ? "OK" : "NO", powerFlag ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(judge ? "OK" : "NO", judge ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.EndHorizontal();
+                            continue;
+                        case (int)BlockType.ShrapnelCannon:
+                            min = this.ljtMachine.Regulation.BlockRestriction[kvp.Key].minCount;
+                            max = this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxCount;
+                            current = kvp.Value.currentCount;
+                            judge = powerFlag = kvp.Value.highestPowerValue <= this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxPowers[0];
+                            judge &= current >= min && current <= max;
+                            this.hasCompliance &= judge;
+                            if (this.minimise) continue;
+                            GUILayout.BeginHorizontal();
+                            GUILayout.Label(ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper(), this.nameStyle, GUILayout.Width(this.labelWidth1));
+                            GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(max.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(current.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(powerFlag ? "OK" : "NO", powerFlag ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(judge ? "OK" : "NO", judge ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.EndHorizontal();
+                            continue;
+                        default:
+                            min = this.ljtMachine.Regulation.BlockRestriction[kvp.Key].minCount;
+                            max = this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxCount;
+                            current = kvp.Value.currentCount;
+                            judge = powerFlag = kvp.Value.highestPowerValue <= this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxPowers[0];
+                            judge &= current >= min && current <= max;
+                            this.hasCompliance &= judge;
+                            if (this.minimise) continue;
+                            GUILayout.BeginHorizontal();
+                            GUILayout.Label(ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper(), this.nameStyle, GUILayout.Width(this.labelWidth1));
+                            GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(max.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(current.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                            if (this.ljtMachine.Regulation.BlockRestriction[kvp.Key].maxPowers[0] == 0)
+                                GUILayout.Space(this.labelWidth2);
+                            else
+                                GUILayout.Label(powerFlag ? "OK" : "NO", powerFlag ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.Label(judge ? "OK" : "NO", judge ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                            GUILayout.EndHorizontal();
+                            continue;
+                    }
+                }
+                if (!this.minimise)
+                {
+                    GUILayout.Space(5f);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(Properties.Resources.WeakPointBomb, this.nameStyle, GUILayout.Width(this.labelWidth1));
+                    GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Label(this.weakPointCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Space(this.labelWidth2);
+                }
+                bool flag4 = this.weakPointCount == 1;
+                this.hasCompliance &= flag4;
+                if (!this.minimise)
+                {
+                    GUILayout.Label(flag4 ? "OK" : "NO", flag4 ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.EndHorizontal();
+                    GUILayout.Space(5f);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(Properties.Resources.MachineAll, this.nameStyle, GUILayout.Width(this.labelWidth1));
+                    GUILayout.Label(0.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Label(this.ljtMachine.Regulation.MaxBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Label(this.ljtMachine.Machine.DisplayBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.Space(this.labelWidth2);
+                }
+                bool flag2 = this.ljtMachine.Regulation.MaxBlockCount >= this.ljtMachine.Machine.DisplayBlockCount;
+                this.hasCompliance &= flag2;
+                if (!this.minimise)
+                {
+                    GUILayout.Label(this.hasCompliance ? "OK" : "NO", this.hasCompliance ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
+                    GUILayout.EndHorizontal();
+                }
+                this.ljtMachine.HasCompliance = this.hasCompliance;
+            }
+            else
             {
                 GUILayout.Label(LocalisationFile.GetTranslatedString("Caution"), this.defaultStyle);
-                return;
-            }
-            if (!this.minimise)
-            {
-                GUILayout.Space(5f);
-                GUILayout.BeginHorizontal();
-                this._tankTypeInt = GUILayout.SelectionGrid(this._tankTypeInt, this.translatedNames, 3);
-                if (this._tankTypeInt != (int)this._tankType)
-                    this.OnTypeChangeFromGUI(this._tankTypeInt);
-                GUILayout.EndHorizontal();
-                GUILayout.Space(5f);
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(Properties.Resources.Block, this.nameStyle, GUILayout.Width(this.labelWidth1));
-                GUILayout.Label(Properties.Resources.Minimum, this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(Properties.Resources.Maximum, this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(Properties.Resources.Current, this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(Properties.Resources.Power, this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(Properties.Resources.Judge, this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.EndHorizontal();
-                GUILayout.Space(5f);
-            }
-            foreach (BlockBehaviour BB in this.machine.BuildingBlocks)
-            {
-                if (!this.restrictedBlocksDic.ContainsKey((int)BB.Prefab.Type)) continue;
-                this.restrictedBlocksDic[(int)BB.Prefab.Type].currentCount++;
-                switch (BB.Prefab.Type)
-                {
-                    case BlockType.Cannon:
-                    case BlockType.ShrapnelCannon:
-                        if (this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue < (BB as CanonBlock).StrengthSlider.Value)
-                            this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue = (BB as CanonBlock).StrengthSlider.Value;
-                        continue;
-                    case BlockType.CogMediumPowered:
-                    case BlockType.Wheel:
-                    case BlockType.LargeWheel:
-                        if (this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue < (BB as CogMotorControllerHinge).SpeedSlider.Value)
-                            this.restrictedBlocksDic[(int)BB.Prefab.Type].highestPowerValue = (BB as CogMotorControllerHinge).SpeedSlider.Value;
-                        continue;
-                    case BlockType.Rocket:
-                        if ((BB as TimedRocket).PowerSlider.Value <= 0.5f)
-                            this.restrictedBlocksDic[(int)BB.Prefab.Type].currentCount--;
-                        continue;
-                    case BlockType.Bomb:
-                        if (BB.gameObject.GetComponent<WeakPointBomb>() != null)
-                            this.weakPointCount++;
-                        continue;
-                }
-            }
-            foreach (KeyValuePair<int, BlockCount> kvp in this.restrictedBlocksDic)
-            {
-                int min;
-                int max;
-                int current;
-                bool powerFlag;
-                bool judge;
-                switch (kvp.Key)
-                {
-                    case (int)BlockType.Propeller:
-                        min = this.regulation.BlockRestriction[kvp.Key].minCount;
-                        max = this.regulation.BlockRestriction[kvp.Key].maxCount;
-                        current = kvp.Value.currentCount + this.restrictedBlocksDic[(int)BlockType.SmallPropeller].currentCount;
-                        judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.BlockRestriction[kvp.Key].maxPowers[0];
-                        judge &= current >= min && current <= max;
-                        this.hasCompliance &= judge;
-                        if (this.minimise) continue;
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Label(ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper(), this.nameStyle, GUILayout.Width(this.labelWidth1));
-                        GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(max.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(current.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Space(this.labelWidth2);
-                        GUILayout.Label(judge ? "OK" : "NO", judge ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.EndHorizontal();
-                        continue;
-                    case (int)BlockType.SmallPropeller:
-                    case (int)BlockType.BuildEdge:
-                    case (int)BlockType.BuildNode:
-                        continue;
-                    case (int)BlockType.Cannon:
-                        min = this.regulation.BlockRestriction[kvp.Key].minCount;
-                        max = this.regulation.BlockRestriction[kvp.Key].maxCount;
-                        current = kvp.Value.currentCount;
-                        if (current == 0)
-                        {
-                            judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.BlockRestriction[kvp.Key].maxPowers[0];
-                        }
-                        else if (current <= max)
-                        {
-                            judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.BlockRestriction[kvp.Key].maxPowers[current - 1];
-                        }
-                        else
-                        {
-                            judge = powerFlag = false;
-                        }
-                        judge &= current >= min;
-                        this.hasCompliance &= judge;
-                        if (this.minimise) continue;
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Label((ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper()), this.nameStyle, GUILayout.Width(this.labelWidth1));
-                        GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(max.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(current.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(powerFlag ? "OK" : "NO", powerFlag ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(judge ? "OK" : "NO", judge ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.EndHorizontal();
-                        continue;
-                    case (int)BlockType.ShrapnelCannon:
-                        min = this.regulation.BlockRestriction[kvp.Key].minCount;
-                        max = this.regulation.BlockRestriction[kvp.Key].maxCount;
-                        current = kvp.Value.currentCount;
-                        judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.BlockRestriction[kvp.Key].maxPowers[0];
-                        judge &= current >= min && current <= max;
-                        this.hasCompliance &= judge;
-                        if (this.minimise) continue;
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Label(ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper(), this.nameStyle, GUILayout.Width(this.labelWidth1));
-                        GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(max.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(current.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(powerFlag ? "OK" : "NO", powerFlag ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(judge ? "OK" : "NO", judge ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.EndHorizontal();
-                        continue;
-                    default:
-                        min = this.regulation.BlockRestriction[kvp.Key].minCount;
-                        max = this.regulation.BlockRestriction[kvp.Key].maxCount;
-                        current = kvp.Value.currentCount;
-                        judge = powerFlag = kvp.Value.highestPowerValue <= this.regulation.BlockRestriction[kvp.Key].maxPowers[0];
-                        judge &= current >= min && current <= max;
-                        this.hasCompliance &= judge;
-                        if (this.minimise) continue;
-                        GUILayout.BeginHorizontal();
-                        GUILayout.Label(ReferenceMaster.TranslateBlockName((BlockType)kvp.Key).ToUpper(), this.nameStyle, GUILayout.Width(this.labelWidth1));
-                        GUILayout.Label(min.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(max.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(current.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                        if (this.regulation.BlockRestriction[kvp.Key].maxPowers[0] == 0)
-                            GUILayout.Space(this.labelWidth2);
-                        else
-                            GUILayout.Label(powerFlag ? "OK" : "NO", powerFlag ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.Label(judge ? "OK" : "NO", judge ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-                        GUILayout.EndHorizontal();
-                        continue;
-                }
-            }
-            if (!this.minimise)
-            {
-                GUILayout.Space(5f);
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(Properties.Resources.WeakPointBomb, this.nameStyle, GUILayout.Width(this.labelWidth1));
-                GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(1.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(this.weakPointCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Space(this.labelWidth2);
-            }
-            bool flag4 = this.weakPointCount == 1;
-            this.hasCompliance &= flag4;
-            if (!this.minimise)
-            {
-                GUILayout.Label(flag4 ? "OK" : "NO", flag4 ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.EndHorizontal();
-                GUILayout.Space(5f);
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(Properties.Resources.MachineAll, this.nameStyle, GUILayout.Width(this.labelWidth1));
-                GUILayout.Label(0.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(this.regulation.MaxBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Label(this.machine.DisplayBlockCount.ToString(), this.defaultStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.Space(this.labelWidth2);
-            }
-            bool flag2 = this.regulation.MaxBlockCount >= this.machine.DisplayBlockCount;
-            this.hasCompliance &= flag2;
-            if (!this.minimise)
-            {
-                GUILayout.Label(this.hasCompliance ? "OK" : "NO", this.hasCompliance ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth2));
-                GUILayout.EndHorizontal();
             }
         }
 

@@ -10,7 +10,7 @@ This mod is for a multiplay regulation "Laxuary Junk Tank".
 	
 	<Icon name="thumbnail" />
 	
-	<Debug>false</Debug>
+	<Debug>true</Debug>
 
 	<LoadInTitleScreen />
 

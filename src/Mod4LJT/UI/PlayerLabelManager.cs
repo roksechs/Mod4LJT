@@ -56,9 +56,9 @@ namespace Mod4LJT.UI
         {
             if (StatMaster.isMP)
             {
-                foreach (KeyValuePair<Modding.Blocks.PlayerMachine, LJTMachine> kvp in LJTMachine.MachineDic)
+                foreach (KeyValuePair<Machine, LJTMachine> kvp in LJTMachine.MachineDic)
                 {
-                    this.ChangeTeamIcon(kvp.Key.Player.InternalObject, kvp.Value.TankTypeInt);
+                    this.ChangeTeamIcon(Playerlist.GetPlayer(kvp.Key.PlayerID), (int)kvp.Value.TankType);
                 }
             }
         }

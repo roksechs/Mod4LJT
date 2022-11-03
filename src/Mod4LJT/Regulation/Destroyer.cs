@@ -2,7 +2,7 @@
 
 namespace Mod4LJT.Regulation
 {
-    class Destroyer : CommonRegulation
+    class Destroyer : AbstractRegulation
     {
         public override int MaxBlockCount => 201;
         private static readonly Destroyer instance = new Destroyer();

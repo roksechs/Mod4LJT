@@ -2,7 +2,7 @@
 
 namespace Mod4LJT.Regulation
 {
-    class HeavyTank : CommonRegulation
+    class HeavyTank : AbstractRegulation
     {
         public override int MaxBlockCount => 271;
         private static readonly HeavyTank instance = new HeavyTank();
@@ -21,7 +21,6 @@ namespace Mod4LJT.Regulation
             this.blockRestriction[(int)BlockType.Grabber] = new BlockRestriction(0, 10);
             this.blockRestriction[(int)BlockType.Propeller] = new BlockRestriction(0, 0);
             this.blockRestriction[(int)BlockType.SmallPropeller] = new BlockRestriction(0, 0);
-        };
+        }
     }
-}
 }

@@ -2,7 +2,7 @@
 
 namespace Mod4LJT.Regulation
 {
-    class MediumTank : CommonRegulation
+    class MediumTank : AbstractRegulation
     {
         public override int MaxBlockCount => 251;
         private static readonly MediumTank instance = new MediumTank();

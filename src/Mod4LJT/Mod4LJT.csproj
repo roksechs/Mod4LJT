@@ -49,7 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blocks\BlockScriptManager.cs" />
+    <Compile Include="Blocks\BlockIntialiser.cs" />
     <Compile Include="Blocks\LJTMachine.cs" />
     <Compile Include="Blocks\WeakPointBomb.cs" />
     <Compile Include="Mod.cs" />
@@ -64,14 +64,14 @@
     <Compile Include="Regulation\BoundResetter.cs" />
     <Compile Include="Blocks\GrabberFix.cs" />
     <Compile Include="Regulation\BlockRestriction.cs" />
-    <Compile Include="Regulation\Artillery.cs" />
+    <Compile Include="Regulation\SelfPropelledArtillery.cs" />
     <Compile Include="Regulation\BlockCount.cs" />
     <Compile Include="Regulation\MachineInspector.cs" />
     <Compile Include="Regulation\JunkTank.cs" />
     <Compile Include="Regulation\Destroyer.cs" />
     <Compile Include="Regulation\HeavyTank.cs" />
     <Compile Include="Regulation\MediumTank.cs" />
-    <Compile Include="Regulation\CommonRegulation.cs" />
+    <Compile Include="Regulation\AbstractRegulation.cs" />
     <Compile Include="Regulation\LightTank.cs" />
     <Compile Include="Regulation\TankType.cs" />
     <Compile Include="Regulation\MachineInspectorUI.cs" />

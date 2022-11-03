@@ -5,16 +5,17 @@ namespace Mod4LJT.Blocks
     class WeakPointBomb : MonoBehaviour
     {
         public MachineDamageController machineDamageController;
-        private bool isExploded;
+        public bool isActive;
+        private bool isExploded = false;
 
-        public void Awake()
+        public void Start()
         {
-            this.isExploded = false;
+            EntryPoint.Log(this.isActive.ToString());
         }
 
         public void OnDisable()
         {
-            if (!this.isExploded && (StatMaster.isHosting || StatMaster.isLocalSim))
+            if (this.isActive && !this.isExploded && (StatMaster.isHosting || StatMaster.isLocalSim))
             {
                 this.machineDamageController.ResetTotalDamage();
                 this.machineDamageController.AddTotalDamage(1f);
