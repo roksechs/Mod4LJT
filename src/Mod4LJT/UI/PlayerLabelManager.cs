@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Mod4LJT
+namespace Mod4LJT.UI
 {
     class PlayerLabelManager : SingleInstance<PlayerLabelManager>
     {

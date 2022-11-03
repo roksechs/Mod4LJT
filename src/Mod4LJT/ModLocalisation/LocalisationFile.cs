@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Mod4LJT.Localisation
+namespace Mod4LJT.ModLocalisation
 {
     public static class LocalisationFile
     {

@@ -1,19 +1,28 @@
-﻿using Modding.Blocks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Mod4LJT.Blocks
 {
     class WeakPointBomb : MonoBehaviour
     {
-        public bool isWeakPoint;
+        public MachineDamageController machineDamageController;
+        private bool isExploded;
 
-        void Awake()
+        public void Awake()
         {
-            if (this.isWeakPoint && StatMaster.isMP)
+            this.isExploded = false;
+        }
+
+        public void OnDisable()
+        {
+            if (!this.isExploded && (StatMaster.isHosting || StatMaster.isLocalSim))
             {
-                LJTMachine.MachineDic.TryGetValue(PlayerMachine.From(this.transform.parent.parent.gameObject), out LJTMachine lJTMachine);
-                lJTMachine.WeakPointObject = this.gameObject;
+                this.machineDamageController.ResetTotalDamage();
+                this.machineDamageController.AddTotalDamage(1f);
+                this.machineDamageController.ApplyJointDamage(1000f);
+                this.machineDamageController.ResetTotalDamage();
+                this.machineDamageController.Toggle(false);
             }
+            this.isExploded = true;
         }
     }
 }

@@ -10,23 +10,11 @@
             private static readonly Artillery instance = new Artillery();
             public static Artillery Instance => instance;
 
-            public override Dictionary<int, BlockRestriction> ChildBlockRestriction => this.blockRestrictions;
-            public TankType tankType = TankType.Artillery;
-            new public Dictionary<int, BlockRestriction> blockRestrictions;
+            public override Dictionary<int, BlockRestriction> BlockRestriction => this.blockRestriction;
 
-            public Artillery()
+            public Artillery() : base()
             {
-                this.blockRestrictions = new Dictionary<int, BlockRestriction>()
-            {
-                { (int) BlockType.Bomb,  new BlockRestriction(5, this.MaxBlockCount)},
-            };
-                foreach (KeyValuePair<int, BlockRestriction> kvp in base.blockRestrictions)
-                {
-                    if (!this.blockRestrictions.ContainsKey(kvp.Key))
-                    {
-                        this.blockRestrictions.Add(kvp.Key, kvp.Value);
-                    }
-                }
+                this.blockRestriction[(int)BlockType.Bomb] = new BlockRestriction(5, this.MaxBlockCount);
             }
         }
     }

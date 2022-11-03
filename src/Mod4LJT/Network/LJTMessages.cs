@@ -1,5 +1,4 @@
-﻿using Mod4LJT.Blocks;
-using Modding;
+﻿using Modding;
 
 namespace Mod4LJT.Network
 {
@@ -9,8 +8,8 @@ namespace Mod4LJT.Network
 
         public static void CreateMessageTypes()
         {
-            tankTypeMessage = ModNetworking.CreateMessageType(DataType.ByteArray, DataType.Boolean);
-            ModNetworking.Callbacks[tankTypeMessage] += LJTMachine.OnTankTypeMessageReceive;
+            //tankTypeMessage = ModNetworking.CreateMessageType(DataType.ByteArray, DataType.Boolean);
+            //ModNetworking.Callbacks[tankTypeMessage] += LJTMachine.OnTankTypeMessageReceive;
         }
     }
 }

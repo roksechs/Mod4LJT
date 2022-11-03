@@ -1,16 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Mod4LJT.Regulation
 {
     abstract class CommonRegulation
     {
         public abstract int MaxBlockCount { get; }
-        protected Dictionary<int, BlockRestriction> blockRestrictions;
-        public abstract Dictionary<int, BlockRestriction> ChildBlockRestriction { get; }
+        public abstract Dictionary<int, BlockRestriction> BlockRestriction { get; }
+
+        protected Dictionary<int, BlockRestriction> blockRestriction;
 
         public CommonRegulation()
         {
-            this.blockRestrictions = new Dictionary<int, BlockRestriction>()
+            this.blockRestriction = new Dictionary<int, BlockRestriction>()
             {
                 { (int) BlockType.Bomb, new BlockRestriction(1, 1) },
                 { (int) BlockType.Cannon, new BlockRestriction(0, 2, 0.1f, new float[]{ 4f, 4f }) },
@@ -34,6 +36,19 @@ namespace Mod4LJT.Regulation
                 { (int) BlockType.BuildEdge, new BlockRestriction(0, 0) },
                 { (int) BlockType.BuildNode, new BlockRestriction(0, 0) },
                 { (int) BlockType.BuildSurface, new BlockRestriction(0, 0) },
+            };
+        }
+
+        private Func<List<BlockBehaviour>, bool> generateCheckFunc(int min, int max, Dictionary<int, float[]> powerDic)
+        {
+            return delegate (List<BlockBehaviour> blockBehaviours)
+            {
+                bool countOk = blockBehaviours.Count >= min && blockBehaviours.Count <= max;
+                foreach(BlockBehaviour blockBehaviour in blockBehaviours)
+                {
+
+                }
+                return false;
             };
         }
     }

@@ -1,73 +1,71 @@
 ﻿using Mod4LJT.Regulation;
 using Modding.Blocks;
 using System;
-using System.Collections;
 using System.Linq;
 
 
 namespace Mod4LJT.Blocks
 {
-    static class BlockScriptManager
+    class BlockScriptManager : SingleInstance<BlockScriptManager>
     {
-        public static void AddBlockScript(Block block)
+        public override string Name => "BlockScriptManager";
+
+        public void AddBlockScript(Block block)
         {
-            if (StatMaster.levelSimulating) return;
-            switch (block.Prefab.InternalObject.Type)
+            if (!StatMaster.levelSimulating)
             {
-                case BlockType.StartingBlock:
-                    LJTMachine ljtMachine = null;
-                    if (StatMaster.isMP)
-                    {
-                        if (!block.Machine.InternalObject.gameObject.GetComponent<LJTMachine>())
+                LJTMachine ljtMachine = null;
+                switch (block.Prefab.InternalObject.Type)
+                {
+                    case BlockType.StartingBlock:
+                        if (StatMaster.isMP)
                         {
-                            ljtMachine = block.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
-                            ljtMachine.PlayerMachine = block.Machine;
+                            if ((ljtMachine = block.Machine.InternalObject.gameObject.GetComponent<LJTMachine>()) == null)
+                            {
+                                ljtMachine = block.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
+                                ljtMachine.PlayerMachine = block.Machine;
+                            }
                         }
-                    }
-                    AddTankTypeMenu(block, ljtMachine);
-                    break;
-                case BlockType.Bomb:
-                    WeakPointBomb weakPoint = block.GameObject.AddComponent<WeakPointBomb>();
-                    MToggle weakPointToggle = block.InternalObject.AddToggle(new MToggle("Weak Point", "weak_point", false));
-                    weakPointToggle.Toggled += x =>
-                    {
-                        if (x)
+                        this.AddTankTypeMenu(block, ljtMachine);
+                        break;
+                    case BlockType.Bomb:
+                        MToggle weakPointToggle = block.InternalObject.AddToggle(new MToggle("Weak Point", "weak_point", false));
+                        weakPointToggle.Toggled += flag =>
                         {
-                            weakPoint.isWeakPoint = true;
-                        }
-                        else
-                        {
-                            weakPoint.isWeakPoint = false;
-                        }
-                    };
-                    break;
-                case BlockType.Grabber:
-                    block.GameObject.AddComponent<GrabberFix>();
-                    break;
+                            if (flag)
+                            {
+                                WeakPointBomb weakPoint = block.GameObject.AddComponent<WeakPointBomb>();
+                                weakPoint.machineDamageController = block.Machine.InternalObjectServer.DamageController;
+                            }
+                        };
+                        break;
+                    case BlockType.Grabber:
+                        GrabberFix grabberFix = block.GameObject.AddComponent<GrabberFix>();
+                        grabberFix.ljtMachine = block.Machine.InternalObject.gameObject.GetComponent<LJTMachine>();
+                        break;
+                }
             }
         }
 
-        private static void AddTankTypeMenu(Block block, LJTMachine ljtMachine)
+        private void AddTankTypeMenu(Block block, LJTMachine ljtMachine)
         {
             MMenu tankTypeMenu = block.InternalObject.AddMenu(new MMenu("tankTypeMenu", 5, Enum.GetNames(typeof(TankType)).ToList(), false));
+            ljtMachine.tankTypeMenu = tankTypeMenu;
             tankTypeMenu.ValueChanged += tankTypeInt =>
             {
                 if (!StatMaster.levelSimulating)
                 {
                     if (block.Machine == PlayerMachine.GetLocal())
                     {
-                        MachineInspector.Instance.SetTankType((TankType)tankTypeInt);
-                        if (ljtMachine != null)
-                        {
-                            ljtMachine.TankTypeInt = tankTypeInt;
-                        }
+                        Mod.machineInspectorUI.SetTankType((TankType)tankTypeInt);
                     }
                 }
             };
-            MachineInspector.Instance.OnTypeChangeFromGUI += x =>
+            Mod.machineInspectorUI.OnTypeChangeFromGUI += x =>
             {
                 if (block.Machine == PlayerMachine.GetLocal())
                 {
+                    EntryPoint.Log("GUI");
                     tankTypeMenu.SetValue(x);
                     tankTypeMenu.ApplyValue();
                     block.InternalObject.OnSave(new XDataHolder());

@@ -52,10 +52,9 @@
     <Compile Include="Blocks\BlockScriptManager.cs" />
     <Compile Include="Blocks\LJTMachine.cs" />
     <Compile Include="Blocks\WeakPointBomb.cs" />
-    <Compile Include="Mod4LJT.cs" />
-    <Compile Include="PlayerLabelManager.cs" />
-    <Compile Include="Localisation\LocalisationManager.cs" />
-    <Compile Include="Localisation\LocalisationFile.cs" />
+    <Compile Include="Mod.cs" />
+    <Compile Include="UI\PlayerLabelManager.cs" />
+    <Compile Include="ModLocalisation\LocalisationFile.cs" />
     <Compile Include="Network\LJTMessages.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -67,6 +66,7 @@
     <Compile Include="Regulation\BlockRestriction.cs" />
     <Compile Include="Regulation\Artillery.cs" />
     <Compile Include="Regulation\BlockCount.cs" />
+    <Compile Include="Regulation\MachineInspector.cs" />
     <Compile Include="Regulation\JunkTank.cs" />
     <Compile Include="Regulation\Destroyer.cs" />
     <Compile Include="Regulation\HeavyTank.cs" />
@@ -74,7 +74,7 @@
     <Compile Include="Regulation\CommonRegulation.cs" />
     <Compile Include="Regulation\LightTank.cs" />
     <Compile Include="Regulation\TankType.cs" />
-    <Compile Include="Regulation\MachineInspector.cs" />
+    <Compile Include="Regulation\MachineInspectorUI.cs" />
     <Compile Include="EntryPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
