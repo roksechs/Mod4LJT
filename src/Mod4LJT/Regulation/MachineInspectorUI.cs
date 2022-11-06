@@ -179,7 +179,7 @@ namespace Mod4LJT.Regulation
                         Properties.Resources.LightTank, Properties.Resources.MediumTank, Properties.Resources.HeavyTank,
                         Properties.Resources.Destroyer, Properties.Resources.SelfPropelledArtillery, Properties.Resources.JunkTank,
                     }, 3);
-                    if (this.ljtMachine.TankType.Equals((TankType)tankTypeInt))
+                    if (!this.ljtMachine.TankType.Equals((TankType)tankTypeInt))
                         this.OnTypeChangeFromGUI(tankTypeInt);
                     GUILayout.EndHorizontal();
                     GUILayout.Space(5f);
