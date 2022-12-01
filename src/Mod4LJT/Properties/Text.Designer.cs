@@ -22,24 +22,24 @@ namespace Mod4LJT.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Text {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Text() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Mod4LJT.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Mod4LJT.Properties.Text", typeof(Text).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Mod4LJT.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to BLOCK.
         /// </summary>
-        internal static string Block {
+        public static string Block {
             get {
                 return ResourceManager.GetString("Block", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to COMPLIANCE.
         /// </summary>
-        internal static string Compliance {
+        public static string Compliance {
             get {
                 return ResourceManager.GetString("Compliance", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to CURRENT.
         /// </summary>
-        internal static string Current {
+        public static string Current {
             get {
                 return ResourceManager.GetString("Current", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to DESTROYER.
         /// </summary>
-        internal static string Destroyer {
+        public static string Destroyer {
             get {
                 return ResourceManager.GetString("Destroyer", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to HEAVY TANK.
         /// </summary>
-        internal static string HeavyTank {
+        public static string HeavyTank {
             get {
                 return ResourceManager.GetString("HeavyTank", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to JUDGE.
         /// </summary>
-        internal static string Judge {
+        public static string Judge {
             get {
                 return ResourceManager.GetString("Judge", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to JUNK TANK.
         /// </summary>
-        internal static string JunkTank {
+        public static string JunkTank {
             get {
                 return ResourceManager.GetString("JunkTank", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to LIGHT TANK.
         /// </summary>
-        internal static string LightTank {
+        public static string LightTank {
             get {
                 return ResourceManager.GetString("LightTank", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MACHINE.
         /// </summary>
-        internal static string Machine {
+        public static string Machine {
             get {
                 return ResourceManager.GetString("Machine", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MACHINE (ALL).
         /// </summary>
-        internal static string MachineAll {
+        public static string MachineAll {
             get {
                 return ResourceManager.GetString("MachineAll", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MAX.
         /// </summary>
-        internal static string Maximum {
+        public static string Maximum {
             get {
                 return ResourceManager.GetString("Maximum", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MEDIUM TANK.
         /// </summary>
-        internal static string MediumTank {
+        public static string MediumTank {
             get {
                 return ResourceManager.GetString("MediumTank", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MINIMISE.
         /// </summary>
-        internal static string Minimise {
+        public static string Minimise {
             get {
                 return ResourceManager.GetString("Minimise", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to MIN.
         /// </summary>
-        internal static string Minimum {
+        public static string Minimum {
             get {
                 return ResourceManager.GetString("Minimum", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PLAYER.
         /// </summary>
-        internal static string Player {
+        public static string Player {
             get {
                 return ResourceManager.GetString("Player", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to PLAYERSTATS.
         /// </summary>
-        internal static string PlayerStats {
+        public static string PlayerStats {
             get {
                 return ResourceManager.GetString("PlayerStats", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to POWER.
         /// </summary>
-        internal static string Power {
+        public static string Power {
             get {
                 return ResourceManager.GetString("Power", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to ARTILLERY.
         /// </summary>
-        internal static string SelfPropelledArtillery {
+        public static string SelfPropelledArtillery {
             get {
                 return ResourceManager.GetString("SelfPropelledArtillery", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to TANK TYPE.
         /// </summary>
-        internal static string TankType {
+        public static string TankType {
             get {
                 return ResourceManager.GetString("TankType", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to LJT REGULATION.
         /// </summary>
-        internal static string Title {
+        public static string Title {
             get {
                 return ResourceManager.GetString("Title", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace Mod4LJT.Properties {
         /// <summary>
         ///   Looks up a localized string similar to WEAK POINT BOMB.
         /// </summary>
-        internal static string WeakPointBomb {
+        public static string WeakPointBomb {
             get {
                 return ResourceManager.GetString("WeakPointBomb", resourceCulture);
             }

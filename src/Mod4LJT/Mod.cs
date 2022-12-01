@@ -20,7 +20,6 @@ namespace Mod4LJT
             gameObject = new GameObject("Mod4LJT");
             gameObject.AddComponent<UI.PlayerLabelManager>();
             machineInspectorUI = gameObject.AddComponent<MachineInspectorUI>();
-            machineInspectorUI.enabled = false;
 
             RegisterToDelegate();
 
@@ -32,42 +31,11 @@ namespace Mod4LJT
 
         private static void RegisterToDelegate()
         {
-            ReferenceMaster.onBlockPlaced += BlockIntialiser.Instance.AddBlockScript;
-
-            ReferenceMaster.onMachinePostLoad += delegate (Machine machine)
-            {
-
-            };
-
-            StatMaster.inMenuChanged += delegate
-            {
-
-                if (StatMaster.inMenu)
-                    machineInspectorUI.enabled = false;
-                else
-                    machineInspectorUI.enabled = true;
-            };
-
-            ReferenceMaster.onLevelSimulation += delegate (bool flag)
-            {
-                EntryPoint.Log($"ReferenceMaster.onLevelSimulation:{flag}");
-            };
-
-            ReferenceMaster.onMachineSimulation += delegate (bool flag)
-            {
-                EntryPoint.Log($"ReferenceMaster.onMachineSimulation:{flag}");
-                machineInspectorUI.enabled = !flag;
-            };
-
-            ReferenceMaster.onSceneLoaded += delegate
-            {
-                if (StatMaster.isMainMenu)
-                    machineInspectorUI.enabled = false;
-                else
-                    machineInspectorUI.enabled = true;
-            };
+            Events.OnBlockInit += BlockIntialiser.Instance.AddBlockScript;
 
             BlockMapper.onMapperOpen += BoundResetter.ResetBound;
+
+            
         }
     }
 }

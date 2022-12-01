@@ -1,8 +1,5 @@
-﻿using Mod4LJT.Regulation;
-using Modding.Blocks;
-using System;
+﻿using Modding.Blocks;
 using System.Collections.Generic;
-using System.Linq;
 
 
 namespace Mod4LJT.Blocks
@@ -11,9 +8,9 @@ namespace Mod4LJT.Blocks
     {
         public override string Name => "LJTBlockIntialiser";
 
-        public void AddBlockScript(BlockBehaviour blockBehaviour)
+        public void AddBlockScript(Block block)
         {
-
+            BlockBehaviour blockBehaviour = block.InternalObject;
             switch (blockBehaviour.Prefab.Type)
             {
                 case BlockType.StartingBlock:
@@ -24,11 +21,11 @@ namespace Mod4LJT.Blocks
                         ljtMachine.Machine = blockBehaviour.ParentMachine;
                     }
                     MMenu tankTypeMenu = blockBehaviour.AddMenu(new MMenu("tankTypeMenu", 5, new List<string>() {
-                        Properties.Resources.LightTank, Properties.Resources.MediumTank, Properties.Resources.HeavyTank,
-                        Properties.Resources.Destroyer, Properties.Resources.SelfPropelledArtillery, Properties.Resources.JunkTank,
+                        Properties.Text.LightTank, Properties.Text.MediumTank, Properties.Text.HeavyTank,
+                        Properties.Text.Destroyer, Properties.Text.SelfPropelledArtillery, Properties.Text.JunkTank,
                     }, false));
                     ljtMachine.TankTypeMenu = tankTypeMenu;
-                    if ((blockBehaviour.ParentMachine as ServerMachine).isLocalMachine)
+                    if (blockBehaviour.ParentMachine.isLocalMachine)
                     {
                         Mod.machineInspectorUI.LJTMachine = ljtMachine;
                         Mod.machineInspectorUI.OnTypeChangeFromGUI += x =>
