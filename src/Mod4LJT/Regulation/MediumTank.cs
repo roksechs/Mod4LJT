@@ -23,7 +23,7 @@ namespace Mod4LJT.Regulation
                 { (int) BlockType.Log,  new BlockRestriction(0, 30)},
                 { (int) BlockType.Propeller,  new BlockRestriction(0, 10)},
                 { (int) BlockType.SmallPropeller,  new BlockRestriction(0, 10)},
-                { (int) BlockType.WaterCannon, new BlockRestriction(0,4) }
+                { (int) BlockType.WaterCannon, new BlockRestriction(0, 4, 0.1f, 4f)},
             };
             foreach (var kvp in base.blockRestrictions)
             {
