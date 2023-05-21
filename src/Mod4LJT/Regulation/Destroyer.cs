@@ -17,7 +17,7 @@ namespace Mod4LJT.Regulation
         {
             this.blockRestrictions = new Dictionary<int, BlockRestriction>()
             {
-                { (int) BlockType.Cannon,  new BlockRestriction(0, 2, 0.1f, new float[]{ 13f, 10f })},
+                { (int) BlockType.Cannon,  new BlockRestriction(0, 2, 0.1f, new float[]{ 12f, 10f })},
                 { (int) BlockType.ShrapnelCannon,  new BlockRestriction(0, 6, 0.1f, 13f)},
                 { (int) BlockType.WaterCannon,  new BlockRestriction(0, 1, 0.1f, 4f)},
                 { (int) BlockType.Log,  new BlockRestriction(0, 10)},

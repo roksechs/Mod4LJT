@@ -1,7 +1,6 @@
 ﻿using Mod4LJT.Regulation;
 using Modding.Blocks;
 using System;
-using System.Collections;
 using System.Linq;
 
 
@@ -21,7 +20,7 @@ namespace Mod4LJT.Blocks
                         if (!block.Machine.InternalObject.gameObject.GetComponent<LJTMachine>())
                         {
                             LJTMachine ljtMachine = block.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
-                            ljtMachine.PlayerMachine = block.Machine;
+                            ljtMachine.Initialise(block.Machine);
                         }
                     }
                     break;
@@ -56,7 +55,10 @@ namespace Mod4LJT.Blocks
                     if (block.Machine == PlayerMachine.GetLocal())
                     {
                         MachineInspector.Instance.SetTankType((TankType)tankTypeInt);
-                        StartCoroutine(this.SetTankTypeCoroutine(block.Machine, tankTypeInt));
+                        if (StatMaster.isMP)
+                        {
+                            this.SetTankTypeToLJTMachine(block.Machine.InternalObjectServer.PlayerID, tankTypeInt);
+                        }
                     }
                 }
             };
@@ -71,10 +73,9 @@ namespace Mod4LJT.Blocks
             };
         }
 
-        IEnumerator SetTankTypeCoroutine(PlayerMachine playerMachine, int tankTypeInt)
+        void SetTankTypeToLJTMachine(ushort playerId, int tankTypeInt)
         {
-            yield return null;
-            if (LJTMachine.MachineDic.TryGetValue(playerMachine, out LJTMachine ljtMachine))
+            if (LJTMachine.MachineDic.TryGetValue(playerId, out LJTMachine ljtMachine))
             {
                 ljtMachine.TankTypeInt = tankTypeInt;
             }

@@ -13,36 +13,17 @@ namespace Mod4LJT.Blocks
         bool hasCompliance;
         GameObject weakPointObject;
         float unscaledElapsedTime;
-        public static readonly Dictionary<PlayerMachine, LJTMachine> MachineDic = new Dictionary<PlayerMachine, LJTMachine>();
+        public static readonly Dictionary<ushort, LJTMachine> MachineDic = new Dictionary<ushort, LJTMachine>();
 
         public PlayerMachine PlayerMachine { get => this.playerMachine; set => this.playerMachine = value; }
         public int TankTypeInt { get => this.tankTypeInt; set => this.tankTypeInt = value; }
         public bool HasCompliance { get => this.hasCompliance; set => this.hasCompliance = value; }
         public GameObject WeakPointObject { get => this.weakPointObject; set => this.weakPointObject = value; }
 
-        void Start()
-        {
-            if (LJTMachine.MachineDic.ContainsKey(this.playerMachine))
-            {
-                LJTMachine.MachineDic[this.playerMachine] = this;
-            }
-            else
-            {
-                LJTMachine.MachineDic.Add(this.playerMachine, this);
-            }
-        }
-
-        void SendTankTypeMessage()
-        {
-            byte[] data = new byte[1] { (byte)this.tankTypeInt };
-            Message message = LJTMessages.tankTypeMessage.CreateMessage(data, this.hasCompliance);
-            ModNetworking.SendToAll(message);
-        }
-
         public static void OnTankTypeMessageReceive(Message message)
         {
             if (message.Sender.Machine == null) return;
-            if (LJTMachine.MachineDic.TryGetValue(message.Sender.Machine, out LJTMachine ljtMachine))
+            if (LJTMachine.MachineDic.TryGetValue(message.Sender.Machine.InternalObjectServer.PlayerID, out LJTMachine ljtMachine))
             {
                 ljtMachine.TankTypeInt = ((byte[])message.GetData(0))[0];
                 ljtMachine.hasCompliance = (bool)message.GetData(1);
@@ -54,6 +35,27 @@ namespace Mod4LJT.Blocks
                     newLJTMachine = message.Sender.Machine.InternalObject.gameObject.AddComponent<LJTMachine>();
                 newLJTMachine.playerMachine = message.Sender.Machine;
             }
+        }
+
+        internal void Initialise(PlayerMachine playerMachine)
+        {
+            this.playerMachine = playerMachine;
+
+            if (LJTMachine.MachineDic.ContainsKey(this.playerMachine.InternalObjectServer.PlayerID))
+            {
+                LJTMachine.MachineDic[this.playerMachine.InternalObjectServer.PlayerID] = this;
+            }
+            else
+            {
+                LJTMachine.MachineDic.Add(this.playerMachine.InternalObjectServer.PlayerID, this);
+            }
+        }
+
+        void SendTankTypeMessage()
+        {
+            byte[] data = new byte[1] { (byte)this.tankTypeInt };
+            Message message = LJTMessages.tankTypeMessage.CreateMessage(data, this.hasCompliance);
+            ModNetworking.SendToAll(message);
         }
 
         void ApplyDamage()
@@ -90,7 +92,7 @@ namespace Mod4LJT.Blocks
 
         void OnDestroy()
         {
-            LJTMachine.MachineDic.Remove(this.playerMachine);
+            LJTMachine.MachineDic.Remove(this.playerMachine.InternalObjectServer.PlayerID);
         }
     }
 }

@@ -62,6 +62,7 @@ C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\NATTraversalForUNET.dl
 C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\Newtonsoft.Json.dll
 C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\bin\Debug\System.Runtime.Serialization.dll
 C:\Users\rokus\source\repos\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CopyComplete
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CoreCompileInputs.cache
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Mod4LJT.dll
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Mod4LJT.pdb
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Assembly-CSharp.dll
@@ -81,8 +82,8 @@ C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\NATTraversalForUNET.dll
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\Newtonsoft.Json.dll
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\System.Runtime.Serialization.dll
-C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.AssemblyReference.cache
-C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\bin\Debug\UnityEngine.xml
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.CopyComplete
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.dll
 C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.pdb
+C:\Program Files (x86)\Steam\steamapps\common\Besiege\Besiege_Data\Mods\Mod4LJT\src\Mod4LJT\obj\Debug\Mod4LJT.csproj.AssemblyReference.cache

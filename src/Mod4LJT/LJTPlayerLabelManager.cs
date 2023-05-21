@@ -58,7 +58,10 @@ namespace Mod4LJT
             {
                 foreach (var kvp in LJTMachine.MachineDic)
                 {
-                    this.ChangeTeamIcon(kvp.Key.Player.InternalObject, kvp.Value.TankTypeInt);
+                    if(Playerlist.GetPlayer(kvp.Key, out PlayerData playerData))
+                    {
+                        this.ChangeTeamIcon(playerData, kvp.Value.TankTypeInt);
+                    }
                 }
             }
         }

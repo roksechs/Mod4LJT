@@ -11,7 +11,7 @@ namespace Mod4LJT.Blocks
         {
             if (this.isWeakPoint && StatMaster.isMP)
             {
-                LJTMachine.MachineDic.TryGetValue(PlayerMachine.From(this.transform.parent.parent.gameObject), out LJTMachine lJTMachine);
+                LJTMachine.MachineDic.TryGetValue(this.transform.parent.parent.gameObject.GetComponent<Machine>().PlayerID, out LJTMachine lJTMachine);
                 lJTMachine.WeakPointObject = this.gameObject;
             }
         }

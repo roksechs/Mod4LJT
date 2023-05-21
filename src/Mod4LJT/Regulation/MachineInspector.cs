@@ -156,7 +156,7 @@ namespace Mod4LJT.Regulation
                     kvp.Value.highestPowerValue = 0;
                 }
                 this.weakPointCount = 0;
-                if (StatMaster.isMP) LJTMachine.MachineDic[PlayerMachine.GetLocal()].HasCompliance = this.hasCompliance;
+                if (StatMaster.isMP) LJTMachine.MachineDic[PlayerMachine.GetLocal().InternalObject.PlayerID].HasCompliance = this.hasCompliance;
                 this.windowRect = GUILayout.Window(32575339, this.windowRect, new GUI.WindowFunction(this.MainWindow), LocalisationFile.GetTranslatedString("Title"));
                 if (this.uf)
                     this.windowRect2 = GUILayout.Window(32575340, this.windowRect2, new GUI.WindowFunction(this.UsageAndFunction), LocalisationFile.GetTranslatedString("UF"));
@@ -188,12 +188,15 @@ namespace Mod4LJT.Regulation
             GUILayout.Space(5f);
             foreach (var kvp in LJTMachine.MachineDic)
             {
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(kvp.Key.Player.Name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
-                GUILayout.Label(kvp.Key.Name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
-                GUILayout.Label(LocalisationFile.GetTranslatedString(((TankType)kvp.Value.TankTypeInt).ToString()), this.defaultStyle, GUILayout.Width(this.labelWidth3));
-                GUILayout.Label(kvp.Value.HasCompliance ? "OK" : "NO", kvp.Value.HasCompliance ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth3));
-                GUILayout.EndHorizontal();
+                if(Playerlist.GetPlayer(kvp.Key, out PlayerData playerData))
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(playerData.name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
+                    GUILayout.Label(playerData.machine.Name, this.defaultStyle, GUILayout.Width(this.labelWidth3));
+                    GUILayout.Label(LocalisationFile.GetTranslatedString(((TankType)kvp.Value.TankTypeInt).ToString()), this.defaultStyle, GUILayout.Width(this.labelWidth3));
+                    GUILayout.Label(kvp.Value.HasCompliance ? "OK" : "NO", kvp.Value.HasCompliance ? this.defaultStyle : this.noStyle, GUILayout.Width(this.labelWidth3));
+                    GUILayout.EndHorizontal();
+                }
             }
             GUI.DragWindow();
         }
