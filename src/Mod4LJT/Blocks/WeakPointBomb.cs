@@ -7,7 +7,7 @@ namespace Mod4LJT.Blocks
     {
         public bool isWeakPoint;
 
-        void Awake()
+        void Start()
         {
             if (this.isWeakPoint && StatMaster.isMP)
             {
