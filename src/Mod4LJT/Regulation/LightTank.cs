@@ -27,6 +27,7 @@ namespace Mod4LJT.Regulation
                 { (int) BlockType.LargeWheel,  new BlockRestriction(0, 221, 0f, 4f)},
                 { (int) BlockType.SmallPropeller,  new BlockRestriction(0, 221)},
                 { (int) BlockType.Propeller,  new BlockRestriction(0, 221)},
+                { (int) BlockType.FlyingBlock,  new BlockRestriction(0, 8, 0f, 20f)},
             };
             foreach (var kvp in base.blockRestrictions)
             {

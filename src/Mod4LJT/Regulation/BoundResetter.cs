@@ -58,6 +58,7 @@ namespace Mod4LJT.Regulation
                                 case BlockType.CogMediumPowered:
                                 case BlockType.Wheel:
                                 case BlockType.LargeWheel:
+                                case BlockType.FlyingBlock:
                                     this.min = blockRestriction.minPower;
                                     this.max = blockRestriction.maxPowers[0];
                                     this.sliderSelector = this.selectors[0];

@@ -19,8 +19,8 @@ namespace Mod4LJT.Blocks
                         if (ljtMachine.TankTypeInt != 5)
                         {
                             this.joint = this.GetComponent<Joint>();
-                            joint.breakForce = 20000f;
-                            joint.breakTorque = 20000f;
+                            joint.breakForce = 35000f;
+                            joint.breakTorque = 35000f;
                         }
                     }
                 }
@@ -29,8 +29,8 @@ namespace Mod4LJT.Blocks
                     if (!MachineInspector.Instance.isJunkTank)
                     {
                         this.joint = this.GetComponent<Joint>();
-                        joint.breakForce = 20000f;
-                        joint.breakTorque = 20000f;
+                        joint.breakForce = 35000f;
+                        joint.breakTorque = 35000f;
                     }
                 }
             }
